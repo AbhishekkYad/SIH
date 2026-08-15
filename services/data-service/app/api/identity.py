@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 import logging
+import uuid
 
 from app.dependencies import get_db, verify_internal_api_key
 from app.schemas.common import APIResponse
@@ -9,6 +10,26 @@ from app.repositories.identity import IdentityRepository
 
 logger = logging.getLogger("sih.api.identity")
 router = APIRouter(prefix="/internal/identity", tags=["identity"], dependencies=[Depends(verify_internal_api_key)])
+
+@router.get("/organizations/{org_id}", response_model=APIResponse[OrganizationOut])
+async def get_organization(org_id: uuid.UUID, db: AsyncSession = Depends(get_db)):
+    """
+    Retrieves an organization read model by its ID.
+    Used to resolve authoritative fabric_msp_id for blockchain transactions.
+    """
+    org = await IdentityRepository.get_organization_by_id(db, org_id)
+    if not org:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Organization with ID {org_id} not found."
+        )
+    
+    org_out = OrganizationOut.model_validate(org)
+    return APIResponse(
+        success=True,
+        data=org_out,
+        message="Organization retrieved successfully."
+    )
 
 @router.post("/organizations", response_model=APIResponse[OrganizationOut], status_code=status.HTTP_201_CREATED)
 async def create_organization(payload: OrganizationCreate, db: AsyncSession = Depends(get_db)):

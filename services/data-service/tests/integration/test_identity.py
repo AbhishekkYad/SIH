@@ -25,6 +25,19 @@ async def test_identity_organization_endpoints(client):
     assert data["data"]["org_id"] == org_id
     assert data["data"]["status"] == "ACTIVE"
 
+    # Test GET organization by ID
+    res = await client.get(f"/internal/identity/organizations/{org_id}", headers=headers)
+    assert res.status_code == 200
+    get_data = res.json()
+    assert get_data["success"] is True
+    assert get_data["data"]["org_id"] == org_id
+    assert get_data["data"]["fabric_msp_id"] == "OrgCitrusMSP"
+
+    # Test GET unknown organization
+    fake_org_id = str(uuid.uuid4())
+    res = await client.get(f"/internal/identity/organizations/{fake_org_id}", headers=headers)
+    assert res.status_code == 404
+
     # Test duplicate name prevention
     org_payload2 = {
         "name": "Cooperative Citrus Farms",
