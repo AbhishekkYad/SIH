@@ -21,6 +21,7 @@ from app.api.events import router as events_router
 from app.api.incidents import router as incidents_router
 from app.api.evidence import router as evidence_router
 from app.api.risk_recall import router as risk_recall_router
+from app.api.identity import router as identity_router
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -60,6 +61,7 @@ app.include_router(events_router)
 app.include_router(incidents_router)
 app.include_router(evidence_router)
 app.include_router(risk_recall_router)
+app.include_router(identity_router)
 
 @app.get("/health", status_code=status.HTTP_200_OK)
 async def health_check():

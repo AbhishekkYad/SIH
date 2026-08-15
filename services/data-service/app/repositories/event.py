@@ -88,3 +88,14 @@ class EventRepository:
         stmt = select(LedgerSync).where(LedgerSync.sync_status == "PENDING").order_by(LedgerSync.last_attempt_at)
         result = await db.execute(stmt)
         return list(result.scalars().all())
+
+    @staticmethod
+    async def get_events(db: AsyncSession, target_id: str = None, event_type: str = None, limit: int = 100, offset: int = 0) -> list[Event]:
+        stmt = select(Event)
+        if target_id:
+            stmt = stmt.where(Event.target_id == target_id)
+        if event_type:
+            stmt = stmt.where(Event.type == event_type)
+        stmt = stmt.order_by(Event.timestamp.desc()).limit(limit).offset(offset)
+        result = await db.execute(stmt)
+        return list(result.scalars().all())
