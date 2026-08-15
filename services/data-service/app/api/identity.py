@@ -4,7 +4,7 @@ import logging
 
 from app.dependencies import get_db, verify_internal_api_key
 from app.schemas.common import APIResponse
-from app.schemas.identity import OrganizationCreate, OrganizationOut, RolePermissionCreate, RolePermissionOut
+from app.schemas.identity import OrganizationCreate, OrganizationOut, RolePermissionCreate, RolePermissionOut, UserCreate, UserOut
 from app.repositories.identity import IdentityRepository
 
 logger = logging.getLogger("sih.api.identity")
@@ -62,4 +62,41 @@ async def assign_role_permission(payload: RolePermissionCreate, db: AsyncSession
         success=True,
         data=perm_out,
         message="Role permission mapped successfully."
+    )
+
+@router.post("/users", response_model=APIResponse[UserOut], status_code=status.HTTP_201_CREATED)
+async def assign_user_role(payload: UserCreate, db: AsyncSession = Depends(get_db)):
+    """
+    Creates a User read model mapping a user subject to a role and organization.
+    """
+    # Verify organization exists (Foreign Key check)
+    org = await IdentityRepository.get_organization_by_id(db, payload.organization_id)
+    if not org:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Organization with ID {payload.organization_id} does not exist."
+        )
+
+    # Check duplicate ID if specified
+    if payload.user_id:
+        existing_id = await IdentityRepository.get_user_by_id(db, payload.user_id)
+        if existing_id:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"User with ID {payload.user_id} already exists."
+            )
+
+    user = await IdentityRepository.create_or_update_user(
+        db=db,
+        organization_id=payload.organization_id,
+        role_id=payload.role_id,
+        auth_subject=payload.auth_subject,
+        user_id=payload.user_id
+    )
+
+    user_out = UserOut.model_validate(user)
+    return APIResponse(
+        success=True,
+        data=user_out,
+        message="User role assigned successfully."
     )

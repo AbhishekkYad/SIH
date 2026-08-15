@@ -2,7 +2,7 @@ import uuid
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from app.models.identity import Organization, RolePermission
+from app.models.identity import Organization, RolePermission, User
 
 class IdentityRepository:
     @staticmethod
@@ -57,3 +57,41 @@ class IdentityRepository:
         stmt = select(RolePermission).where(RolePermission.role_id == role_id)
         result = await db.execute(stmt)
         return list(result.scalars().all())
+
+    @staticmethod
+    async def create_or_update_user(db: AsyncSession, organization_id: uuid.UUID, role_id: str, auth_subject: str, user_id: uuid.UUID = None) -> User:
+        # Check duplicate auth_subject to update role/organization if it exists
+        stmt = select(User).where(User.auth_subject == auth_subject)
+        result = await db.execute(stmt)
+        existing = result.scalar_one_or_none()
+        
+        if existing:
+            existing.organization_id = organization_id
+            existing.role_id = role_id
+            await db.flush()
+            return existing
+
+        user = User(
+            user_id=user_id or uuid.uuid4(),
+            organization_id=organization_id,
+            role_id=role_id,
+            auth_subject=auth_subject,
+            status="ACTIVE"
+        )
+        db.add(user)
+        await db.flush()
+        return user
+
+    @staticmethod
+    async def get_user_by_id(db: AsyncSession, user_id: uuid.UUID) -> User | None:
+        result = await db.execute(
+            select(User).where(User.user_id == user_id)
+        )
+        return result.scalar_one_or_none()
+
+    @staticmethod
+    async def get_user_by_subject(db: AsyncSession, auth_subject: str) -> User | None:
+        result = await db.execute(
+            select(User).where(User.auth_subject == auth_subject)
+        )
+        return result.scalar_one_or_none()

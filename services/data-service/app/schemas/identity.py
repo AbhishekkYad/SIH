@@ -27,3 +27,19 @@ class RolePermissionOut(BaseModel):
 
     class Config:
         from_attributes = True
+
+class UserCreate(BaseModel):
+    user_id: Optional[UUID4] = None
+    organization_id: UUID4
+    role_id: str = Field(..., min_length=2)
+    auth_subject: str = Field(..., min_length=2)
+
+class UserOut(BaseModel):
+    user_id: UUID4
+    organization_id: UUID4
+    role_id: str
+    auth_subject: str
+    status: str
+
+    class Config:
+        from_attributes = True
