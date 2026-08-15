@@ -23,26 +23,17 @@ class ProductService:
             actor_context=actor.dict()
         )
         
-        # Step 3: Write to Data Service Read Model upon commit
-        product_data = {
-            "product_id": product_id,
-            "name": payload.name,
-            "sku": payload.sku,
-            "category": payload.category,
-            "producer_org_id": actor.org_id,
-            "specifications": payload.specifications or {},
-            "blockchain_tx_id": tx_result.get("tx_id")
-        }
-        saved_product = await self.data_client.save_product(product_data)
+        # Step 3: D1 persistence will happen asynchronously via the Fabric Webhook
+        from datetime import datetime
         
         return ProductResponse(
-            product_id=saved_product["product_id"],
-            name=saved_product["name"],
-            sku=saved_product["sku"],
-            category=saved_product["category"],
-            producer_org_id=saved_product["producer_org_id"],
-            created_at=saved_product["created_at"],
-            blockchain_tx_id=saved_product.get("blockchain_tx_id")
+            product_id=product_id,
+            name=payload.name,
+            sku=payload.sku,
+            category=payload.category,
+            producer_org_id=actor.org_id,
+            created_at=datetime.utcnow().isoformat(),
+            blockchain_tx_id=tx_result.get("transaction_id")
         )
 
     async def get_product(self, product_id: str) -> ProductResponse:

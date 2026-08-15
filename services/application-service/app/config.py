@@ -9,11 +9,14 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     
     # Mock Mode: when True, uses Mock DataServiceClient and Mock BlockchainServiceClient
-    MOCK_MODE: bool = True
+    MOCK_MODE: bool = False
     
     # Service URLs for real inter-service REST communication
     DATA_SERVICE_URL: str = "http://localhost:8001"
-    BLOCKCHAIN_SERVICE_URL: str = "http://localhost:8002"
+    BLOCKCHAIN_SERVICE_URL: str = "http://localhost:3005"
+    
+    # Internal Auth
+    INTERNAL_API_KEY: str = "sih_super_secret_internal_key_2026"
     
     # Auth / JWT Config
     JWT_SECRET: str = "sih-2026-super-secret-jwt-key-food-traceability-platform-change-in-prod"
