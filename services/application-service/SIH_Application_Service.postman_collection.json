@@ -1,0 +1,236 @@
+{
+	"info": {
+		"_postman_id": "sih-2026-app-service-collection-v2",
+		"name": "SIH 2026 - Application Service API (TRD v2.0 Complete)",
+		"description": "Complete Postman Collection for SIH 2026 Developer 3 FastAPI Application Service covering TRD v2.0 and System Design v1.0",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/health",
+					"protocol": "http",
+					"host": ["127", "0", "0", "1"],
+					"port": "8000",
+					"path": ["health"]
+				}
+			}
+		},
+		{
+			"name": "Auth - Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"producer_john\",\n  \"password\": \"password123\",\n  \"role\": \"producer\",\n  \"org_id\": \"org-citrus-farms\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/auth/login",
+					"protocol": "http",
+					"host": ["127", "0", "0", "1"],
+					"port": "8000",
+					"path": ["api", "v1", "auth", "login"]
+				}
+			}
+		},
+		{
+			"name": "Products - Create Product",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Fresh Organic Orange Juice\",\n  \"sku\": \"SKU-ORJ-500ML\",\n  \"category\": \"BEVERAGE\",\n  \"specifications\": {\"volume\": \"500ml\", \"organic\": true}\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/products",
+					"protocol": "http",
+					"host": ["127", "0", "0", "1"],
+					"port": "8000",
+					"path": ["api", "v1", "products"]
+				}
+			}
+		},
+		{
+			"name": "Batches - Create Batch",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"product_id\": \"prd-oj-001\",\n  \"quantity\": 1000.0,\n  \"unit_of_measure\": \"KG\",\n  \"parent_batch_ids\": []\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/batches",
+					"protocol": "http",
+					"host": ["127", "0", "0", "1"],
+					"port": "8000",
+					"path": ["api", "v1", "batches"]
+				}
+			}
+		},
+		{
+			"name": "Batches - Validate Batch (P0 Milestone)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"notes\": \"Quality inspection passed\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/batches/batch-raw-101/validate",
+					"protocol": "http",
+					"host": ["127", "0", "0", "1"],
+					"port": "8000",
+					"path": ["api", "v1", "batches", "batch-raw-101", "validate"]
+				}
+			}
+		},
+		{
+			"name": "QR - Resolve Outer QR",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"qr_reference\": \"batch-raw-101\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/qr/resolve",
+					"protocol": "http",
+					"host": ["127", "0", "0", "1"],
+					"port": "8000",
+					"path": ["api", "v1", "qr", "resolve"]
+				}
+			}
+		},
+		{
+			"name": "Feedback - Submit Consumer Issue",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"batch_or_unit_id\": \"batch-raw-101\",\n  \"category\": \"OFF_FLAVOR_SPOILAGE\",\n  \"description\": \"Product tastes sour\",\n  \"evidence_filename\": \"photo.jpg\",\n  \"evidence_base64\": \"SGVsbG8gV29ybGQ=\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/feedback/submit",
+					"protocol": "http",
+					"host": ["127", "0", "0", "1"],
+					"port": "8000",
+					"path": ["api", "v1", "feedback", "submit"]
+				}
+			}
+		},
+		{
+			"name": "Risk - Propagate Risk",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"source_batch_id\": \"batch-raw-101\",\n  \"direction\": \"BOTH\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/risk/propagate",
+					"protocol": "http",
+					"host": ["127", "0", "0", "1"],
+					"port": "8000",
+					"path": ["api", "v1", "risk", "propagate"]
+				}
+			}
+		},
+		{
+			"name": "Recall - Issue Recall Action",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"affected_batch_ids\": [\"batch-raw-101\"],\n  \"reason\": \"Class I recall due to bacterial hazard\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/recall/recalls",
+					"protocol": "http",
+					"host": ["127", "0", "0", "1"],
+					"port": "8000",
+					"path": ["api", "v1", "recall", "recalls"]
+				}
+			}
+		},
+		{
+			"name": "Dashboard - Supply Chain Overview",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/dashboard/supply-chain-overview",
+					"protocol": "http",
+					"host": ["127", "0", "0", "1"],
+					"port": "8000",
+					"path": ["api", "v1", "dashboard", "supply-chain-overview"]
+				}
+			}
+		},
+		{
+			"name": "Audit - Get Trail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/audit/trail",
+					"protocol": "http",
+					"host": ["127", "0", "0", "1"],
+					"port": "8000",
+					"path": ["api", "v1", "audit", "trail"]
+				}
+			}
+		}
+	]
+}
