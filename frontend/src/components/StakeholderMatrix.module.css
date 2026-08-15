@@ -1,0 +1,120 @@
+.blockStakeholders {
+  padding: var(--size-80) 0;
+  background-color: var(--color-oat-light);
+}
+
+.matrixGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--size-24);
+}
+
+@media (max-width: 1040px) {
+  .matrixGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .matrixGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.actorCard {
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-oat-300);
+  border-radius: var(--radius-xl);
+  padding: var(--size-32);
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-16);
+  transition: all var(--transition-base);
+  box-shadow: 0 4px 16px rgba(27, 41, 30, 0.04);
+}
+
+.actorCard:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-grass-400);
+  box-shadow: 0 16px 36px rgba(46, 107, 78, 0.12);
+}
+
+.actorCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.iconCircle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--color-grass-100);
+  color: var(--color-grass-400);
+}
+
+.actorName {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--color-bean-400);
+}
+
+.contractScope {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-grass-400);
+  background-color: var(--color-grass-100);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  width: fit-content;
+}
+
+.actorDesc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+.permWrap {
+  padding-top: var(--size-16);
+  border-top: 1px solid var(--color-oat-200);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.permTitle {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.permList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.permItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-bean-400);
+}
+
+.permDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--color-grass-400);
+}
