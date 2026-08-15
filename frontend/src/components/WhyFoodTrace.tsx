@@ -1,94 +1,114 @@
 'use client';
 import styles from './WhyFoodTrace.module.css';
 
-interface ImpactCard {
-  num: string;
-  title: string;
-  desc: string;
-  benefit: string;
-  icon: string;
-}
-
-const IMPACT_CARDS: ImpactCard[] = [
-  {
-    num: '01',
-    title: 'Transparency',
-    desc: 'Know where the product came from and how it moved at every point of handover.',
-    benefit: 'Granular batch & origin visibility across multi-tier agricultural supply lines.',
-    icon: 'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z',
-  },
-  {
-    num: '02',
-    title: 'Accountability',
-    desc: 'Every important supply-chain action is connected to an authenticated, signed stakeholder identity.',
-    benefit: 'Non-repudiable audit trails for farmers, millers, lab certifiers, and freight haulers.',
-    icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
-  },
-  {
-    num: '03',
-    title: 'Faster Response',
-    desc: 'Identify potential problems earlier in the chain instead of discovering them at retail shelves.',
-    benefit: 'Autonomous POS quarantine in under 200ms without disruptive blanket recalls.',
-    icon: 'M13 10V3L4 14h7v7l9-11h-7z',
-  },
-  {
-    num: '04',
-    title: 'Consumer Trust',
-    desc: 'Give consumers a simple, smartphone-ready way to verify the authentic products they purchase.',
-    benefit: 'Instant GS1 Digital Link scan without downloading any proprietary app.',
-    icon: 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z',
-  },
-  {
-    num: '05',
-    title: 'Business Intelligence',
-    desc: 'Turn raw supply-chain activity and transit telemetry into actionable operational insights.',
-    benefit: 'Reduce food waste, optimize delivery corridors, and verify quality compliance.',
-    icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
-  },
-];
-
 export default function WhyFoodTrace() {
   return (
-    <section className={styles.section} id="why">
+    <section className={styles.blockWhy} id="why">
       <div className="container">
-        {/* Editorial Manifesto Card */}
-        <div className={styles.manifestoCard}>
-          <div className={styles.manifestoHeader}>
-            <span className="eyebrow">WHY WE BUILT THIS PLATFORM</span>
-            <h2 className={styles.manifestoTitle}>
-              Food supply chains are complex, fragmented and difficult to verify.
+        {/* Part 1: Top Image + Text Split */}
+        <div className={styles.featureSplit}>
+          <div className={styles.featureContent}>
+            <span className="eyebrow">WHY WE BUILT FOODTRACE</span>
+
+            <h2 className={styles.featureTitle}>
+              People and public health <strong>depend on verifiable truth.</strong>
             </h2>
+
+            <div className={styles.featureDesc}>
+              <p>
+                The way food moves across traditional supply chains loses custody, temperature, and origin records at every handoff. Suspected contamination triggers blind, wasteful store-wide product destruction over 7 to 14 days.
+              </p>
+            </div>
+
+            <div className={styles.featureDesc}>
+              <p>
+                FoodTrace replaces opaque paper trails with an immutable consensus DAG — proving that safe, transparent, and instantly verifiable food supply is possible at national scale.
+              </p>
+            </div>
+
+            <div>
+              <a href="#risk-engine" className="btn btn--grass">
+                Inspect Risk Traversal Engine →
+              </a>
+            </div>
           </div>
 
-          <p className={styles.manifestoLead}>
-            When something goes wrong in agricultural supply lines, identifying where the problem originated
-            can be slow, costly, and contentious. We built FoodTrace to create a transparent digital trail for
-            every product — connecting every stakeholder from agricultural origin to everyday consumers.
-          </p>
+          <div className="media-frame" style={{ aspectRatio: '4/3' }}>
+            <img
+              src="/images/logineko/team-at-logineko-farm.jpg"
+              alt="Food traceability and supply chain operations team"
+              loading="lazy"
+            />
+          </div>
         </div>
 
-        {/* 5 Impact Cards Grid */}
-        <div className={styles.impactGrid}>
-          {IMPACT_CARDS.map((card) => (
-            <div key={card.num} className={styles.impactCard}>
-              <div className={styles.cardTop}>
-                <div className={styles.iconWrap}>
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d={card.icon} />
-                  </svg>
-                </div>
-                <span className={styles.cardNum}>{card.num}</span>
+        <hr className={styles.divider} />
+
+        {/* Part 2: 3-Card Grid */}
+        <h3 className={styles.cardsHeading}>
+          Verifiable food for <strong>everyone means</strong>
+        </h3>
+
+        <div className={styles.cardsGrid} role="list">
+          {/* Card 1 */}
+          <div
+            className={styles.whyCard}
+            style={{ backgroundImage: "url('/images/logineko/trace-your-seeds-origin-768x576.jpg')" }}
+          >
+            <div className={styles.whyCardOverlay} />
+            <h4 className={styles.whyCardTitle}>
+              <strong>Food that&apos;s verifiable,</strong> not just claimed on a label.
+            </h4>
+          </div>
+
+          {/* Card 2 */}
+          <div
+            className={styles.whyCard}
+            style={{ backgroundImage: "url('/images/logineko/feat-2-1.png')" }}
+          >
+            <div className={styles.whyCardOverlay} />
+            <h4 className={styles.whyCardTitle}>
+              <strong>Lineage that survives</strong> multi-farm blending &amp; milling.
+            </h4>
+          </div>
+
+          {/* Card 3 */}
+          <div
+            className={styles.whyCard}
+            style={{ backgroundImage: "url('/images/logineko/feat3-1.png')" }}
+          >
+            <div className={styles.whyCardOverlay} />
+            <h4 className={styles.whyCardTitle}>
+              <strong>Targeted lot isolation</strong> in &lt; 200ms with zero collateral waste.
+            </h4>
+          </div>
+        </div>
+
+        {/* Part 3: Quote Block */}
+        <div
+          className={styles.quoteBox}
+          style={{ backgroundImage: "url('/images/logineko/soil-preservation-at-logineko.webp')" }}
+        >
+          <div className={styles.quoteOverlay} />
+          <div className={styles.quoteContent}>
+            <svg className={styles.quoteMark} viewBox="0 0 96 80" aria-hidden="true" focusable="false">
+              <path d="M0 80V48Q0 27 9 14 18 0 36 0v16Q23 16 18 26 13 36 13 48h23v32H0Zm60 0V48q0-21 9-34Q78 0 96 0v16q-13 0-18 10t-5 22h23v32H60Z" />
+            </svg>
+
+            <blockquote className={styles.quoteText}>
+              &ldquo;When a parent buys food for their children, safety and authenticity shouldn&apos;t be an act of faith. <strong>Every grain should carry cryptographic proof of where it grew and how it reached the table.</strong>&rdquo;
+            </blockquote>
+
+            <div className={styles.quoteAuthor}>
+              <div className={styles.quoteAvatar}>
+                <img src="/images/logineko/samo.png" alt="FoodTrace Lead Architect" />
               </div>
-
-              <h3 className={styles.cardTitle}>{card.title}</h3>
-              <p className={styles.cardDesc}>{card.desc}</p>
-
-              <div className={styles.cardBenefit}>
-                <span className={styles.benefitTag}>IMPACT</span>
-                <span className={styles.benefitText}>{card.benefit}</span>
+              <div className={styles.authorMeta}>
+                <span className={styles.authorName}>FoodTrace Architectural Council</span>
+                <span className={styles.authorRole}>National Digital Trust Initiative</span>
               </div>
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>
