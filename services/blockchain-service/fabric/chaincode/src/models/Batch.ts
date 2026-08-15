@@ -1,4 +1,4 @@
-import { Object, Property } from 'fabric-contract-api';
+import { Object as DataType, Property } from 'fabric-contract-api';
 
 export enum BatchState {
     REGISTERED = 'REGISTERED',
@@ -11,7 +11,7 @@ export enum BatchState {
     RECALLED = 'RECALLED'
 }
 
-@Object()
+@DataType()
 export class Batch {
     @Property()
     public readonly docType: string = 'batch';
@@ -28,7 +28,6 @@ export class Batch {
     @Property()
     public current_custodian: string;
 
-    @Property()
     public parent_refs: string[];
 
     @Property()

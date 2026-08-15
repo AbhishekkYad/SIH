@@ -1,6 +1,6 @@
-import { Object, Property } from 'fabric-contract-api';
+import { Object as DataType, Property } from 'fabric-contract-api';
 
-@Object()
+@DataType()
 export class Product {
     @Property()
     public readonly docType: string = 'product';

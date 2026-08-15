@@ -34,3 +34,7 @@ dist/
 *.swo
 .DS_Store
 Thumbs.db
+
+# TypeScript mapping files
+*.js.map
+*.d.ts.map

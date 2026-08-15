@@ -1,7 +1,7 @@
-import { Object, Property } from 'fabric-contract-api';
+import { Object as DataType, Property } from 'fabric-contract-api';
 import { BatchState } from './Batch';
 
-@Object()
+@DataType()
 export class Unit {
     @Property()
     public readonly docType: string = 'unit';

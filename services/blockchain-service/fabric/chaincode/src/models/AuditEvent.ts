@@ -1,11 +1,11 @@
-import { Object, Property } from 'fabric-contract-api';
+import { Object as DataType, Property } from 'fabric-contract-api';
 
 export enum EventType {
     SCAN = 'SCAN',
     VERIFICATION = 'VERIFICATION'
 }
 
-@Object()
+@DataType()
 export class AuditEvent {
     @Property()
     public readonly docType: string = 'audit';

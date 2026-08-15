@@ -1,4 +1,4 @@
-import { Object, Property } from 'fabric-contract-api';
+import { Object as DataType, Property } from 'fabric-contract-api';
 
 export enum IncidentStatus {
     UNDER_INVESTIGATION = 'UNDER_INVESTIGATION',
@@ -6,7 +6,7 @@ export enum IncidentStatus {
     RESOLVED = 'RESOLVED'
 }
 
-@Object()
+@DataType()
 export class Incident {
     @Property()
     public readonly docType: string = 'incident';
