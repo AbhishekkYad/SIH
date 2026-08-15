@@ -1,143 +1,110 @@
 'use client';
 import styles from './StakeholderMatrix.module.css';
 
-interface Actor {
-  id: string;
-  name: string;
+interface RoleCard {
+  role: string;
   badge: string;
-  contract: string;
   desc: string;
+  icon: string;
   permissions: string[];
-  icon: React.ReactNode;
 }
 
-const ACTORS: Actor[] = [
+const ROLES: RoleCard[] = [
   {
-    id: 'farmer',
-    name: 'Farmers & Growers',
-    badge: 'ORIGIN LAYER',
-    contract: 'TraceabilityContract.createBatch()',
-    desc: 'Register raw harvest lots with GPS tags, pin organic soil test certificates to IPFS, and mint initial digital twins.',
-    permissions: ['Mint Raw Produce Batch', 'Pin Soil Certs to IPFS', 'Sign Origin Transfer'],
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-        <path d="M12 22v-9" />
-        <path d="M9 15c0-3 3-5 3-8 0 3 3 5 3 8" />
-        <path d="M6 18c0-3 6-5 6-11 0 6 6 8 6 11" />
-      </svg>
-    ),
+    role: 'Farmer / Producer',
+    badge: 'ORIGIN TIER',
+    desc: 'Where the food begins. Production details, geofence harvesting and genesis registration.',
+    icon: '🌾',
+    permissions: [
+      'Create genesis crop production records',
+      'View & audit own harvest batches',
+      'Update soil health & pesticide records',
+      'Sign initial custody handover DID',
+    ],
   },
   {
-    id: 'processor',
-    name: 'Processors & Millers',
-    badge: 'TRANSFORMATION',
-    contract: 'TraceabilityContract.transformBatch()',
-    desc: 'Record sortex cleaning, grain blending, and milling operations as immutable parent-child edges in the lineage graph.',
-    permissions: ['Consume Parent Batches', 'Mint Child Batch Asset', 'Log Moisture / Quality Assay'],
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-        <path d="M3 21h18" />
-        <path d="M6 18V9l6-6 6 6v9" />
-        <path d="M10 14h4" />
-      </svg>
-    ),
+    role: 'Processor / Miller',
+    badge: 'TRANSFORMATION TIER',
+    desc: 'Milling, optical sortex grading, batch transformation and lab food safety compliance.',
+    icon: '⚙️',
+    permissions: [
+      'Receive raw aggregation shipments',
+      'Add processing & moisture parameters',
+      'Link input crops to output packaged lots',
+      'Attach accredited NABL lab certificates',
+    ],
   },
   {
-    id: 'manufacturer',
-    name: 'Packaging Plants',
-    badge: 'DUAL-QR MINTING',
-    contract: 'TraceabilityContract.mintUnits()',
-    desc: 'Bind public GS1 Digital Link outer QR codes with concealed tamper-evident ECDSA cryptographic inner credentials.',
-    permissions: ['Unit Identity Minting', 'Cryptographic Seal Issuance', 'Dispatch Handoff Sign'],
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-        <rect x="3" y="3" width="18" height="18" rx="2" />
-        <path d="M3 9h18" />
-        <path d="M9 21V9" />
-      </svg>
-    ),
+    role: 'Distributor / Logistics',
+    badge: 'TRANSIT TIER',
+    desc: 'Cold-chain telemetry, reefer temperature monitoring and inter-facility transit handovers.',
+    icon: '🚚',
+    permissions: [
+      'View cryptographically assigned shipments',
+      'Stream real-time IoT temperature & GPS',
+      'Log transit delay or seal status events',
+      'Confirm custody delivery to warehouse / POS',
+    ],
   },
   {
-    id: 'logistics',
-    name: 'Logistics Carriers',
-    badge: 'CHAIN OF CUSTODY',
-    contract: 'TraceabilityContract.transferCustody()',
-    desc: 'Stream continuous IoT cold-chain temperature telemetry and sign cryptographic dual-custody handover events.',
-    permissions: ['Sign Custody Transfer', 'Stream Cold-Chain Telemetry', 'Record Seal Verification'],
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-        <rect x="1" y="3" width="15" height="13" rx="2" />
-        <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
-        <circle cx="5.5" cy="18.5" r="2.5" />
-        <circle cx="18.5" cy="18.5" r="2.5" />
-      </svg>
-    ),
+    role: 'Retailer / Supermarket',
+    badge: 'COMMERCE TIER',
+    desc: 'Inbound dock verification, POS inventory sync, shelf tracking and immediate quarantine receipt.',
+    icon: '🏬',
+    permissions: [
+      'Verify incoming pallet cryptographic seals',
+      'Manage inventory & shelf life limits',
+      'Execute sub-second POS barcode lock',
+      'Review and respond to consumer issues',
+    ],
   },
   {
-    id: 'retailer',
-    name: 'Retailers & Outlets',
-    badge: 'POINT OF SALE',
-    contract: 'TraceabilityContract.receiveInventory()',
-    desc: 'Verify pallet authenticity at warehouse intake and enforce automated real-time recall blocks directly on POS registers.',
-    permissions: ['Dock Intake Verify', 'Store Inventory Intake', 'POS Autonomous Block'],
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-        <line x1="3" y1="6" x2="21" y2="6" />
-        <path d="M16 10a4 4 0 0 1-8 0" />
-      </svg>
-    ),
-  },
-  {
-    id: 'consumer',
-    name: 'Consumers & Regulators',
-    badge: 'VERIFICATION & AUDIT',
-    contract: 'IncidentContract.quarantineScope()',
-    desc: 'Scan packaging for complete provenance, test concealed authenticity seals, and audit full regulatory evidence dossiers.',
-    permissions: ['Public Provenance Lookup', 'Anti-Clone Verification', 'Submit Anomaly Feedback'],
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-        <path d="M12 8v4" />
-        <path d="M12 16h.01" />
-      </svg>
-    ),
+    role: 'Consumer / Citizen',
+    badge: 'VERIFICATION TIER',
+    desc: 'GS1 Digital Link smartphone scan, farm-to-fork journey verification and quality feedback loop.',
+    icon: '📱',
+    permissions: [
+      'Verify authentic farm origin & harvest date',
+      'View complete 8-stage custody history',
+      'Inspect pesticide & nutritional lab reports',
+      'Submit direct quality feedback or defect alert',
+    ],
   },
 ];
 
 export default function StakeholderMatrix() {
   return (
-    <section className={styles.blockStakeholders} id="stakeholders">
+    <section className={styles.section} id="stakeholders">
       <div className="container">
-        <header className="section-intro">
-          <span className="eyebrow">PERMISSIONED ECOSYSTEM MATRIX</span>
-          <h2 className="heading-2">
-            Built for everyone in the chain. <strong>Permissioned access, cryptographic truth.</strong>
+        {/* Header */}
+        <div className={styles.header}>
+          <span className="eyebrow">ROLE-BASED ECOSYSTEM ACCESS</span>
+          <h2 className={styles.title}>
+            Permissioned Ecosystem: <strong>Tailored for every stakeholder.</strong>
           </h2>
-          <p className="lead">
-            Every participant interacts through fine-grained role-based access control (RBAC), preserving commercial
-            confidentiality while providing unbreakable end-to-end auditability.
+          <p className={styles.lead}>
+            FoodTrace operates on a clean, role-based access model. Every participant accesses precisely the data and actions relevant to their operational responsibility.
           </p>
-        </header>
+        </div>
 
-        <div className={styles.matrixGrid} role="list">
-          {ACTORS.map((actor) => (
-            <div key={actor.id} className={styles.actorCard}>
-              <div className={styles.actorCardHeader}>
-                <div className={styles.iconCircle}>{actor.icon}</div>
-                <span className="chip chip--green">{actor.badge}</span>
+        {/* Card-Based Grid */}
+        <div className={styles.grid}>
+          {ROLES.map((item) => (
+            <div key={item.role} className={styles.card}>
+              <div className={styles.cardTop}>
+                <span className={styles.roleIcon}>{item.icon}</span>
+                <span className={styles.roleBadge}>{item.badge}</span>
               </div>
 
-              <h3 className={styles.actorName}>{actor.name}</h3>
-              <div className={styles.contractScope}>{actor.contract}</div>
-              <p className={styles.actorDesc}>{actor.desc}</p>
+              <h3 className={styles.roleTitle}>{item.role}</h3>
+              <p className={styles.roleDesc}>{item.desc}</p>
 
-              <div className={styles.permWrap}>
-                <span className={styles.permTitle}>Authorized Ledger Actions</span>
-                <ul className={styles.permList}>
-                  {actor.permissions.map((p) => (
-                    <li key={p} className={styles.permItem}>
-                      <span className={styles.permDot} />
+              <div className={styles.permsWrap}>
+                <span className={styles.permsHead}>PERMITTED ACTIONS</span>
+                <ul className={styles.permsList}>
+                  {item.permissions.map((p, idx) => (
+                    <li key={idx} className={styles.permItem}>
+                      <span className={styles.permCheck}>✓</span>
                       <span>{p}</span>
                     </li>
                   ))}

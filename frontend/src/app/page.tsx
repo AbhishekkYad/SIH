@@ -3,10 +3,11 @@ import { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import LiveEventsTicker from '@/components/LiveEventsTicker';
-import MissionEditorial from '@/components/MissionEditorial';
+import ProductWorkflow from '@/components/ProductWorkflow';
 import TrackedCropsGrid from '@/components/TrackedCropsGrid';
-import SolutionsSlider from '@/components/SolutionsSlider';
+import HowWeDoIt from '@/components/HowWeDoIt';
 import WhyFoodTrace from '@/components/WhyFoodTrace';
+import ProductFeedback from '@/components/ProductFeedback';
 import StakeholderMatrix from '@/components/StakeholderMatrix';
 import KnowledgeFAQ from '@/components/KnowledgeFAQ';
 import PartnersStrip from '@/components/PartnersStrip';
@@ -44,10 +45,11 @@ export default function Home() {
       <Navbar />
       <Hero />
       <LiveEventsTicker />
-      <MissionEditorial />
+      <ProductWorkflow />
       <TrackedCropsGrid />
-      <SolutionsSlider />
+      <HowWeDoIt />
       <WhyFoodTrace />
+      <ProductFeedback />
       <StakeholderMatrix />
       <KnowledgeFAQ />
       <PartnersStrip />
