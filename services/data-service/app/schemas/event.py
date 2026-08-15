@@ -26,3 +26,18 @@ class ScanEventCreate(BaseModel):
     actor_org_id: Optional[UUID4] = None
     location: Optional[str] = None
     result: Optional[str] = None
+
+class EventOut(BaseModel):
+    event_id: UUID4
+    type: str
+    actor_org_id: UUID4
+    actor_user_id: UUID4
+    target_id: str
+    state_before: Optional[str] = None
+    state_after: Optional[str] = None
+    fabric_tx_id: str
+    timestamp: datetime
+    created_at: datetime
+
+    class Config:
+        from_attributes = True

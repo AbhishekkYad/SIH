@@ -47,12 +47,10 @@ def upgrade() -> None:
 
     # 3. Role Permissions
     op.create_table(
-        'role_permissions',
+        'roles_permissions',
         sa.Column('role_id', sa.String(), nullable=False),
-        sa.Column('resource', sa.String(), nullable=False),
-        sa.Column('action', sa.String(), nullable=False),
-        sa.Column('permitted', sa.Boolean(), nullable=False),
-        sa.PrimaryKeyConstraint('role_id', 'resource', 'action')
+        sa.Column('permission_code', sa.String(), nullable=False),
+        sa.PrimaryKeyConstraint('role_id', 'permission_code')
     )
 
     # 4. Products
@@ -348,6 +346,6 @@ def downgrade() -> None:
     op.drop_table('units')
     op.drop_table('batches')
     op.drop_table('products')
-    op.drop_table('role_permissions')
+    op.drop_table('roles_permissions')
     op.drop_table('users')
     op.drop_table('organizations')
