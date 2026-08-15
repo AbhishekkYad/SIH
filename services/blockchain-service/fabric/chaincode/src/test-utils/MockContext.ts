@@ -20,6 +20,14 @@ export class MockStub {
     public setEvent(name: string, payload: Buffer): void {
         this.events.set(name, payload);
     }
+
+    public getTxID(): string {
+        return 'mock-tx-id';
+    }
+
+    public getDateTimestamp(): Date {
+        return new Date('2026-08-15T00:00:00.000Z');
+    }
 }
 
 export class MockClientIdentity {
