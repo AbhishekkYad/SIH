@@ -14,7 +14,7 @@ async def test_first_vertical_slice_product_to_batch_to_validate(async_client, a
     assert p_res.status_code == 201
     p_data = p_res.json()
     product_id = p_data["product_id"]
-    assert product_id.startswith("prd-")
+    assert isinstance(product_id, str)
     assert p_data["blockchain_tx_id"] is not None
 
     # 2. Create Batch

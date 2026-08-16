@@ -37,8 +37,10 @@ async def login(payload: LoginRequest):
     if not payload.username:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username is required")
     
+    from app.demo.demo_state import ORG_GREEN_VALLEY_ID
+    
     user_id = f"usr-{payload.username.lower()}"
-    token = create_access_token(subject=user_id, role=payload.role or "producer", org_id=payload.org_id or "org-citrus-farms")
+    token = create_access_token(subject=user_id, role=payload.role or "producer", org_id=payload.org_id or ORG_GREEN_VALLEY_ID)
     
     return TokenResponse(
         access_token=token,
@@ -46,7 +48,7 @@ async def login(payload: LoginRequest):
         expires_in_minutes=1440,
         user_id=user_id,
         role=payload.role or "producer",
-        org_id=payload.org_id or "org-citrus-farms"
+        org_id=payload.org_id or ORG_GREEN_VALLEY_ID
     )
 
 

@@ -41,7 +41,11 @@ async def sync_blockchain_event(payload: EventCreate, db: AsyncSession = Depends
             state_before=payload.state_before,
             state_after=payload.state_after,
             fabric_tx_id=payload.fabric_tx_id,
-            timestamp=payload.timestamp
+            timestamp=payload.timestamp,
+            latitude=payload.latitude,
+            longitude=payload.longitude,
+            location_name=payload.location_name,
+            block_number=payload.block_number
         )
 
         # Mark sync as SYNCED
@@ -71,7 +75,10 @@ async def sync_blockchain_event(payload: EventCreate, db: AsyncSession = Depends
         )
 
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         logger.error(f"Event synchronization failed for TX {payload.fabric_tx_id}: {e}")
+        await db.rollback()
         # Re-raise or record as FAILED in sync tracker
         await EventRepository.upsert_ledger_sync(
             db=db,

@@ -1,6 +1,7 @@
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 import httpx
-
+import uuid
+from app.config import settings
 
 class BlockchainServiceClient:
     """Client for communicating with Developer 2's Blockchain Service (Hyperledger Fabric Gateway & Chaincode)."""
@@ -8,100 +9,123 @@ class BlockchainServiceClient:
     def __init__(self, base_url: str):
         self.base_url = base_url
 
-    async def submit_transaction(self, contract: str, function: str, args: Dict[str, Any], actor_context: Dict[str, Any]) -> Dict[str, Any]:
+    def _get_headers(self, actor_context: Dict[str, Any]) -> Dict[str, str]:
+        fabric_msp_id = actor_context.get("fabric_msp_id")
+        if not fabric_msp_id:
+            raise ValueError("fabric_msp_id is missing from actor_context")
+            
+        return {
+            "Authorization": f"Bearer {settings.INTERNAL_API_KEY}",
+            "X-Actor-MSP": fabric_msp_id,
+            "X-Idempotency-Key": str(uuid.uuid4()),
+            "Content-Type": "application/json"
+        }
+
+    async def register_product(self, product_id: str, name: str, sku: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
         async with httpx.AsyncClient() as client:
             payload = {
-                "contract_name": contract,
-                "function_name": function,
-                "arguments": args,
-                "actor_context": actor_context
+                "productId": product_id,
+                "name": name,
+                "productType": sku  # the handoff says 'productType' is expected, we'll map sku to it
             }
-            res = await client.post(f"{self.base_url}/transactions/submit", json=payload)
+            res = await client.post(
+                f"{self.base_url}/internal/transactions/products",
+                json=payload,
+                headers=self._get_headers(actor_context)
+            )
             res.raise_for_status()
-            return res.json()
+            data = res.json()
+            if data.get("status") != "COMMITTED":
+                raise Exception(f"Transaction not committed: {data}")
+            return data
 
-    # Convenience helper functions mapped to chaincode logical contracts
-    async def register_product(self, product_id: str, name: str, sku: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
-        return await self.submit_transaction(
-            contract="TraceabilityContract",
-            function="registerProduct",
-            args={"product_id": product_id, "name": name, "sku": sku},
-            actor_context=actor_context
-        )
-
-    async def register_batch(self, batch_id: str, product_id: str, quantity: float, unit_of_measure: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
-        return await self.submit_transaction(
-            contract="TraceabilityContract",
-            function="registerBatch",
-            args={
-                "batch_id": batch_id,
-                "product_id": product_id,
+    async def register_batch(self, batch_id: str, product_id: str, quantity: float, unit_of_measure: str, actor_context: Dict[str, Any], metadataJson: str = '') -> Dict[str, Any]:
+        async with httpx.AsyncClient() as client:
+            payload = {
+                "batchId": batch_id,
+                "productId": product_id,
                 "quantity": quantity,
-                "unit_of_measure": unit_of_measure
-            },
-            actor_context=actor_context
-        )
+                "metadataJson": metadataJson
+            }
+            res = await client.post(
+                f"{self.base_url}/internal/transactions/batches",
+                json=payload,
+                headers=self._get_headers(actor_context)
+            )
+            res.raise_for_status()
+            data = res.json()
+            if data.get("status") != "COMMITTED":
+                raise Exception(f"Transaction not committed: {data}")
+            return data
 
-    async def validate_batch(self, batch_id: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
-        return await self.submit_transaction(
-            contract="TraceabilityContract",
-            function="validateBatch",
-            args={"batch_id": batch_id},
-            actor_context=actor_context
-        )
+    async def validate_batch(self, batch_id: str, actor_context: Dict[str, Any], metadataJson: str = '') -> Dict[str, Any]:
+        async with httpx.AsyncClient() as client:
+            payload = {
+                "batchId": batch_id,
+                "validationResult": "VALID",
+                "metadataJson": metadataJson
+            }
+            res = await client.post(
+                f"{self.base_url}/internal/transactions/batches/{batch_id}/validate",
+                json=payload,
+                headers=self._get_headers(actor_context)
+            )
+            res.raise_for_status()
+            data = res.json()
+            if data.get("status") != "COMMITTED":
+                raise Exception(f"Transaction not committed: {data}")
+            return data
 
-    async def receive_batch(self, batch_id: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
-        return await self.submit_transaction(
-            contract="TraceabilityContract",
-            function="receiveBatch",
-            args={"batch_id": batch_id},
-            actor_context=actor_context
-        )
+    async def receive_batch(self, batch_id: str, actor_context: Dict[str, Any], metadataJson: str = '') -> Dict[str, Any]:
+        async with httpx.AsyncClient() as client:
+            payload = {
+                "batchId": batch_id,
+                "metadataJson": metadataJson
+            }
+            res = await client.post(
+                f"{self.base_url}/internal/transactions/receive",
+                json=payload,
+                headers=self._get_headers(actor_context)
+            )
+            res.raise_for_status()
+            data = res.json()
+            if data.get("status") != "COMMITTED":
+                raise Exception(f"Transaction not committed: {data}")
+            return data
 
-    async def transfer_batch(self, batch_id: str, to_org_id: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
-        return await self.submit_transaction(
-            contract="TraceabilityContract",
-            function="transferBatch",
-            args={"batch_id": batch_id, "to_org_id": to_org_id},
-            actor_context=actor_context
-        )
+    async def transfer_batch(self, batch_id: str, to_org_id: str, actor_context: Dict[str, Any], metadataJson: str = '') -> Dict[str, Any]:
+        async with httpx.AsyncClient() as client:
+            payload = {
+                "batchId": batch_id,
+                "targetOrg": to_org_id,
+                "metadataJson": metadataJson
+            }
+            res = await client.post(
+                f"{self.base_url}/internal/transactions/transfer",
+                json=payload,
+                headers=self._get_headers(actor_context)
+            )
+            res.raise_for_status()
+            data = res.json()
+            if data.get("status") != "COMMITTED":
+                raise Exception(f"Transaction not committed: {data}")
+            return data
 
-    async def create_transformation(self, parent_batch_ids: list, child_batch_id: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
-        return await self.submit_transaction(
-            contract="TraceabilityContract",
-            function="createTransformation",
-            args={"parent_batch_ids": parent_batch_ids, "child_batch_id": child_batch_id},
-            actor_context=actor_context
-        )
-
-    async def record_scan(self, reference_id: str, scan_type: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
-        return await self.submit_transaction(
-            contract="AuditContract",
-            function="recordScan",
-            args={"reference_id": reference_id, "scan_type": scan_type},
-            actor_context=actor_context
-        )
-
-    async def record_verification(self, inner_credential_hash: str, is_valid: bool, actor_context: Dict[str, Any]) -> Dict[str, Any]:
-        return await self.submit_transaction(
-            contract="AuditContract",
-            function="recordVerification",
-            args={"inner_credential_hash": inner_credential_hash, "is_valid": is_valid},
-            actor_context=actor_context
-        )
-
-    async def block_batch(self, batch_id: str, reason: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
-        return await self.submit_transaction(
-            contract="IncidentContract",
-            function="blockBatch",
-            args={"batch_id": batch_id, "reason": reason},
-            actor_context=actor_context
-        )
-
-    async def create_recall_action(self, recall_id: str, affected_scope_ids: list, reason: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
-        return await self.submit_transaction(
-            contract="IncidentContract",
-            function="createRecallAction",
-            args={"recall_id": recall_id, "affected_scope_ids": affected_scope_ids, "reason": reason},
-            actor_context=actor_context
-        )
+    async def create_transformation(self, parent_batch_ids: List[str], child_batch_id: str, actor_context: Dict[str, Any], metadataJson: str = '') -> Dict[str, Any]:
+        async with httpx.AsyncClient() as client:
+            payload = {
+                "parentBatchIds": parent_batch_ids,
+                "childBatchId": child_batch_id,
+                "newProductId": "derived-prod-xyz", # just placeholder or need it in args
+                "metadataJson": metadataJson
+            }
+            res = await client.post(
+                f"{self.base_url}/internal/transactions/transform",
+                json=payload,
+                headers=self._get_headers(actor_context)
+            )
+            res.raise_for_status()
+            data = res.json()
+            if data.get("status") != "COMMITTED":
+                raise Exception(f"Transaction not committed: {data}")
+            return data

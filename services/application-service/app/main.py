@@ -34,8 +34,13 @@ async def health_check():
         }
     }
 
+from app.api.webhooks import router as webhooks_router
+
 # Include API v1 Router
 app.include_router(api_v1_router, prefix=settings.API_V1_STR)
+
+# Include Internal Webhooks Router
+app.include_router(webhooks_router, prefix="/api")
 
 if __name__ == "__main__":
     import uvicorn
