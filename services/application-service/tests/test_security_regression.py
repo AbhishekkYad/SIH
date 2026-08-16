@@ -64,10 +64,10 @@ def test_invalid_credential_returns_false_authenticity():
     })
     token = login_res.json()["access_token"]
     
-    # We will test against a known valid batch in mock state (e.g. batch-orange-001-raw)
+    # We will test against a known valid batch in mock state (e.g. batch-apple-001-raw)
     res = client.post("/api/v1/qr/verify-credential", json={
         "inner_credential_code": "SHORT", # Length < 6 is invalid
-        "unit_or_batch_id": "batch-orange-001-raw"
+        "unit_or_batch_id": "batch-apple-001-raw"
     }, headers={"Authorization": f"Bearer {token}"})
     
     assert res.status_code == 200

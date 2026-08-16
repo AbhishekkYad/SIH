@@ -36,6 +36,7 @@ async def receive_fabric_event(payload: Dict[str, Any], token: str = Depends(ver
     fabric_tx_id = payload.get("transaction_id", "UNKNOWN_TX")
     event_payload = payload.get("payload", {})
     timestamp = payload.get("emitted_at")
+    block_number = payload.get("block_number")
     
     # We must forward this to D1 DataServiceClient
     data_client = get_data_client()
@@ -58,6 +59,8 @@ async def receive_fabric_event(payload: Dict[str, Any], token: str = Depends(ver
     # we use the official System Org and User identities specifically seeded in D1 for async background tasks.
     SYSTEM_UUID = "00000000-0000-0000-0000-000000000000"
     
+    metadata = {k: v for k, v in event_payload.items() if k not in ["latitude", "longitude", "location_name", "batch_id", "product_id"]}
+
     mapped_event = {
         "type": event_name,
         "actor_org_id": SYSTEM_UUID,
@@ -65,9 +68,13 @@ async def receive_fabric_event(payload: Dict[str, Any], token: str = Depends(ver
         "target_id": target_id,
         "state_before": None,  # Not provided by Fabric chaincode events
         "state_after": event_payload.get("state"),
-
         "fabric_tx_id": fabric_tx_id,
-        "timestamp": timestamp
+        "timestamp": timestamp,
+        "latitude": event_payload.get("latitude"),
+        "longitude": event_payload.get("longitude"),
+        "location_name": event_payload.get("location_name"),
+        "block_number": block_number,
+        "metadata": metadata
     }
     
     try:

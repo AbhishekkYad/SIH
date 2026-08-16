@@ -1,5 +1,8 @@
 import pytest
 import pytest_asyncio
+import os
+os.environ["MOCK_MODE"] = "true"
+
 from httpx import AsyncClient, ASGITransport
 from app.main import app
 from app.auth import create_access_token

@@ -139,9 +139,9 @@ class MockDataServiceClient:
         return record
 
     async def get_lineage(self, batch_id: str) -> Optional[Dict[str, Any]]:
-        # Build mock lineage from events
-        batch_events = [e for e in demo_state.events if e.get("reference_id") == batch_id]
-        batch_scans = [s for s in demo_state.scan_events if s.get("reference_id") == batch_id]
+        # Build mock lineage from events using the canonical target_id field
+        batch_events = [e for e in demo_state.events if e.get("target_id") == batch_id]
+        batch_scans = [s for s in demo_state.scan_events if s.get("entity_id") == batch_id]
         return {
             "parents": await self.get_parents(batch_id),
             "children": await self.get_children(batch_id),

@@ -36,24 +36,24 @@ class MockBlockchainServiceClient:
     async def register_product(self, product_id: str, name: str, sku: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
         return await self.submit_transaction("TraceabilityContract", "registerProduct", {"product_id": product_id, "name": name, "sku": sku}, actor_context)
 
-    async def register_batch(self, batch_id: str, product_id: str, quantity: float, unit_of_measure: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
-        return await self.submit_transaction("TraceabilityContract", "registerBatch", {"batch_id": batch_id, "product_id": product_id, "quantity": quantity, "unit_of_measure": unit_of_measure}, actor_context)
+    async def register_batch(self, batch_id: str, product_id: str, quantity: float, unit_of_measure: str, actor_context: Dict[str, Any], metadataJson: str = '') -> Dict[str, Any]:
+        return await self.submit_transaction("TraceabilityContract", "registerBatch", {"batch_id": batch_id, "product_id": product_id, "quantity": quantity, "unit_of_measure": unit_of_measure, "metadataJson": metadataJson}, actor_context)
 
-    async def validate_batch(self, batch_id: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
-        return await self.submit_transaction("TraceabilityContract", "validateBatch", {"batch_id": batch_id}, actor_context)
+    async def validate_batch(self, batch_id: str, actor_context: Dict[str, Any], metadataJson: str = '') -> Dict[str, Any]:
+        return await self.submit_transaction("TraceabilityContract", "validateBatch", {"batch_id": batch_id, "metadataJson": metadataJson}, actor_context)
 
-    async def receive_batch(self, batch_id: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
+    async def receive_batch(self, batch_id: str, actor_context: Dict[str, Any], metadataJson: str = '') -> Dict[str, Any]:
         if batch_id in demo_state.batches:
             demo_state.batches[batch_id]["lifecycle_state"] = "RECEIVED"
-        return await self.submit_transaction("TraceabilityContract", "receiveBatch", {"batch_id": batch_id}, actor_context)
+        return await self.submit_transaction("TraceabilityContract", "receiveBatch", {"batch_id": batch_id, "metadataJson": metadataJson}, actor_context)
 
-    async def transfer_batch(self, batch_id: str, to_org_id: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
+    async def transfer_batch(self, batch_id: str, to_org_id: str, actor_context: Dict[str, Any], metadataJson: str = '') -> Dict[str, Any]:
         if batch_id in demo_state.batches:
             demo_state.batches[batch_id]["current_custodian_org_id"] = to_org_id
-        return await self.submit_transaction("TraceabilityContract", "transferBatch", {"batch_id": batch_id, "to_org_id": to_org_id}, actor_context)
+        return await self.submit_transaction("TraceabilityContract", "transferBatch", {"batch_id": batch_id, "to_org_id": to_org_id, "metadataJson": metadataJson}, actor_context)
 
-    async def create_transformation(self, parent_batch_ids: list, child_batch_id: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
-        return await self.submit_transaction("TraceabilityContract", "createTransformation", {"parent_batch_ids": parent_batch_ids, "child_batch_id": child_batch_id}, actor_context)
+    async def create_transformation(self, parent_batch_ids: list, child_batch_id: str, actor_context: Dict[str, Any], metadataJson: str = '') -> Dict[str, Any]:
+        return await self.submit_transaction("TraceabilityContract", "createTransformation", {"parent_batch_ids": parent_batch_ids, "child_batch_id": child_batch_id, "metadataJson": metadataJson}, actor_context)
 
     async def record_scan(self, reference_id: str, scan_type: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
         return await self.submit_transaction("AuditContract", "recordScan", {"reference_id": reference_id, "scan_type": scan_type}, actor_context)

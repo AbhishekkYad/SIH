@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Dict, Any
 from datetime import datetime
 from uuid import UUID
 
@@ -12,6 +12,11 @@ class EventCreate(BaseModel):
     state_after: Optional[str] = None
     fabric_tx_id: str
     timestamp: Optional[datetime] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    location_name: Optional[str] = None
+    block_number: Optional[int] = None
+    metadata: Optional[Dict[str, Any]] = None
 
 class CustodyEventCreate(BaseModel):
     batch_id: Optional[str] = None
@@ -21,6 +26,7 @@ class CustodyEventCreate(BaseModel):
     event_type: str  # TRANSFER, RECEIVE
     timestamp: datetime
     fabric_tx_id: str
+    metadata: Optional[Dict[str, Any]] = None
 
 class ScanEventCreate(BaseModel):
     entity_id: str
@@ -39,6 +45,11 @@ class EventOut(BaseModel):
     fabric_tx_id: str
     timestamp: datetime
     created_at: datetime
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    location_name: Optional[str] = None
+    block_number: Optional[int] = None
+    metadata: Optional[Dict[str, Any]] = None
 
     class Config:
         from_attributes = True

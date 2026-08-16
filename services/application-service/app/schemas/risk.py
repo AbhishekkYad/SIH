@@ -13,5 +13,6 @@ class RiskScopeResponse(BaseModel):
     affected_parent_batches: List[Dict[str, Any]]
     affected_child_batches: List[Dict[str, Any]]
     affected_organizations: List[str]
+    affected_locations: List[Dict[str, Any]] = []
     risk_level: str
     computed_at: str

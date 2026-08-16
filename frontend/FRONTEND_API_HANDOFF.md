@@ -101,30 +101,99 @@ All frontend interactions MUST flow directly through **Developer 3 Application S
 - **Response** (200 OK):
   ```json
   {
-    "reference_id": "batch-orange-001-raw",
+    "qr_reference": "batch-orange-001-raw",
     "entity_type": "BATCH",
-    "product_name": "Organic Valencia Oranges",
-    "current_state": "VALIDATED",
-    "producer_org_id": "11111111-1111-1111-1111-111111111111",
-    "custodian_org_id": "11111111-1111-1111-1111-111111111111",
+    "verification": {
+      "traceability": "VERIFIED",
+      "authenticity": "VERIFIED",
+      "message": "Product traceability verified"
+    },
+    "product": {
+      "product_id": "prd-orange-001",
+      "product_name": "Organic Valencia Oranges",
+      "category": "RAW_MATERIAL",
+      "batch_id": "batch-orange-001-raw",
+      "source_of_raw_materials": [],
+      "ingredients": [],
+      "label_information": {}
+    },
+    "current_status": {
+      "lifecycle_state": "VALIDATED",
+      "current_custodian": {
+        "organization_id": "11111111-1111-1111-1111-111111111111",
+        "organization_name": "Orange Grove Farm",
+        "role": "PRODUCER"
+      },
+      "risk_status": "CLEAR",
+      "recall_status": "NOT_RECALLED"
+    },
+    "origin": {
+      "batch_id": "batch-orange-001-raw",
+      "producer": {
+        "organization_id": "11111111-1111-1111-1111-111111111111",
+        "organization_name": "Orange Grove Farm",
+        "role": "PRODUCER"
+      },
+      "product": "Organic Valencia Oranges",
+      "location": {
+        "location_name": "Nagpur, Maharashtra",
+        "latitude": 21.1458,
+        "longitude": 79.0882
+      },
+      "condition": {}
+    },
+    "lineage": {
+      "parents": [],
+      "current_batch": "batch-orange-001-raw",
+      "children": []
+    },
     "trace_history": [
       {
-        "event": "BATCH_REGISTERED",
-        "org_id": "11111111-1111-1111-1111-111111111111",
-        "timestamp": "2026-08-16T00:00:00Z"
+        "sequence": 1,
+        "event_name": "BATCH_REGISTERED",
+        "action": "Producer registered raw orange batch",
+        "actor": {
+          "organization_id": "11111111-1111-1111-1111-111111111111",
+          "organization_name": "Orange Grove Farm",
+          "role": "PRODUCER",
+          "fabric_msp": "Org1MSP"
+        },
+        "location": {
+          "location_name": "Nagpur, Maharashtra",
+          "latitude": 21.1458,
+          "longitude": 79.0882
+        },
+        "conditions": {},
+        "blockchain": {
+          "transaction_id": "tx-demo-fabric-1001",
+          "channel_id": "traceability-channel",
+          "block_number": 1,
+          "commit_status": "COMMITTED"
+        },
+        "evidence": []
       }
     ],
     "scan_history": [
       {
-        "actor": "usr-john_producer",
-        "org": "11111111-1111-1111-1111-111111111111",
-        "type": "STAKEHOLDER_SCAN"
+        "type": "STAKEHOLDER_SCAN",
+        "timestamp": "2026-08-16T08:00:00Z"
       }
     ],
-    "scan_recorded": true,
-    "audit_tx_id": "tx-mock-scan-a1b2c3d4",
-    "next_allowed_operation": "TRANSFER_OR_PROCESS",
-    "warnings_or_block_status": "NONE"
+    "quality_and_testing": {},
+    "certifications": [],
+    "transport": {},
+    "evidence": [],
+    "risk": {
+      "status": "CLEAR",
+      "level": "LOW",
+      "affected_batches": [],
+      "affected_custodians": [],
+      "affected_locations": []
+    },
+    "recall": {
+      "status": "NOT_RECALLED",
+      "scope": []
+    }
   }
   ```
 

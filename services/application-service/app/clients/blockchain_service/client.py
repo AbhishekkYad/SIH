@@ -39,12 +39,13 @@ class BlockchainServiceClient:
                 raise Exception(f"Transaction not committed: {data}")
             return data
 
-    async def register_batch(self, batch_id: str, product_id: str, quantity: float, unit_of_measure: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
+    async def register_batch(self, batch_id: str, product_id: str, quantity: float, unit_of_measure: str, actor_context: Dict[str, Any], metadataJson: str = '') -> Dict[str, Any]:
         async with httpx.AsyncClient() as client:
             payload = {
                 "batchId": batch_id,
                 "productId": product_id,
-                "quantity": quantity
+                "quantity": quantity,
+                "metadataJson": metadataJson
             }
             res = await client.post(
                 f"{self.base_url}/internal/transactions/batches",
@@ -57,11 +58,12 @@ class BlockchainServiceClient:
                 raise Exception(f"Transaction not committed: {data}")
             return data
 
-    async def validate_batch(self, batch_id: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
+    async def validate_batch(self, batch_id: str, actor_context: Dict[str, Any], metadataJson: str = '') -> Dict[str, Any]:
         async with httpx.AsyncClient() as client:
             payload = {
                 "batchId": batch_id,
-                "validationResult": "VALID"
+                "validationResult": "VALID",
+                "metadataJson": metadataJson
             }
             res = await client.post(
                 f"{self.base_url}/internal/transactions/batches/{batch_id}/validate",
@@ -74,10 +76,11 @@ class BlockchainServiceClient:
                 raise Exception(f"Transaction not committed: {data}")
             return data
 
-    async def receive_batch(self, batch_id: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
+    async def receive_batch(self, batch_id: str, actor_context: Dict[str, Any], metadataJson: str = '') -> Dict[str, Any]:
         async with httpx.AsyncClient() as client:
             payload = {
-                "batchId": batch_id
+                "batchId": batch_id,
+                "metadataJson": metadataJson
             }
             res = await client.post(
                 f"{self.base_url}/internal/transactions/receive",
@@ -90,11 +93,12 @@ class BlockchainServiceClient:
                 raise Exception(f"Transaction not committed: {data}")
             return data
 
-    async def transfer_batch(self, batch_id: str, to_org_id: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
+    async def transfer_batch(self, batch_id: str, to_org_id: str, actor_context: Dict[str, Any], metadataJson: str = '') -> Dict[str, Any]:
         async with httpx.AsyncClient() as client:
             payload = {
                 "batchId": batch_id,
-                "targetOrg": to_org_id
+                "targetOrg": to_org_id,
+                "metadataJson": metadataJson
             }
             res = await client.post(
                 f"{self.base_url}/internal/transactions/transfer",
@@ -107,12 +111,13 @@ class BlockchainServiceClient:
                 raise Exception(f"Transaction not committed: {data}")
             return data
 
-    async def create_transformation(self, parent_batch_ids: List[str], child_batch_id: str, actor_context: Dict[str, Any]) -> Dict[str, Any]:
+    async def create_transformation(self, parent_batch_ids: List[str], child_batch_id: str, actor_context: Dict[str, Any], metadataJson: str = '') -> Dict[str, Any]:
         async with httpx.AsyncClient() as client:
             payload = {
                 "parentBatchIds": parent_batch_ids,
                 "childBatchId": child_batch_id,
-                "newProductId": "derived-prod-xyz" # just placeholder or need it in args
+                "newProductId": "derived-prod-xyz", # just placeholder or need it in args
+                "metadataJson": metadataJson
             }
             res = await client.post(
                 f"{self.base_url}/internal/transactions/transform",

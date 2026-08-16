@@ -22,12 +22,12 @@ const wrapper = (functionName: string, argNames: string[]) => {
 };
 
 router.post('/products', wrapper('registerProduct', ['productId', 'name', 'productType']), submitTransaction);
-router.post('/batches', wrapper('registerBatch', ['batchId', 'productId', 'quantity']), submitTransaction);
-router.post('/batches/:id/validate', wrapper('validateBatch', ['batchId', 'validationResult']), submitTransaction);
-router.post('/transfer', wrapper('transferBatch', ['batchId', 'targetOrg']), submitTransaction);
-router.post('/receive', wrapper('receiveBatch', ['batchId']), submitTransaction);
-router.post('/batches/:id/process', wrapper('processBatch', ['batchId']), submitTransaction);
-router.post('/transform', wrapper('createTransformation', ['parentBatchIds', 'childBatchId', 'newProductId']), submitTransaction);
+router.post('/batches', wrapper('registerBatch', ['batchId', 'productId', 'quantity', 'metadataJson']), submitTransaction);
+router.post('/batches/:id/validate', wrapper('validateBatch', ['batchId', 'validationResult', 'metadataJson']), submitTransaction);
+router.post('/transfer', wrapper('transferBatch', ['batchId', 'targetOrg', 'metadataJson']), submitTransaction);
+router.post('/receive', wrapper('receiveBatch', ['batchId', 'metadataJson']), submitTransaction);
+router.post('/batches/:id/process', wrapper('processBatch', ['batchId', 'metadataJson']), submitTransaction);
+router.post('/transform', wrapper('createTransformation', ['parentBatchIds', 'childBatchId', 'newProductId', 'metadataJson']), submitTransaction);
 router.post('/units', wrapper('createUnit', ['batchId', 'unitId']), submitTransaction);
 
 export default router;
