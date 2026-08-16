@@ -73,7 +73,7 @@ export default function Hero() {
         <div
           className={styles.heroInner}
           style={{
-            backgroundImage: "url('/images/logineko/farming-at-logineko-1.jpg')",
+            backgroundImage: "url('/images/logineko/hero-custom.jpg')",
           }}
         >
           <div className={styles.heroOverlay} />
