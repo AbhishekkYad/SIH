@@ -13,7 +13,7 @@
   flex-direction: column;
   justify-content: flex-end;
   background-size: cover;
-  background-position: center;
+  background-position: right center;
   box-shadow: 0 16px 48px rgba(27, 41, 30, 0.12);
 }
 
@@ -21,18 +21,27 @@
   .heroInner {
     border-radius: var(--radius-xl);
     min-height: 520px;
+    background-position: center center;
   }
 }
 
 .heroOverlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(18, 28, 20, 0.25) 0%,
-    rgba(18, 28, 20, 0.6) 50%,
-    rgba(18, 28, 20, 0.92) 100%
-  );
+  background: 
+    linear-gradient(
+      90deg,
+      rgba(14, 22, 16, 0.88) 0%,
+      rgba(14, 22, 16, 0.65) 42%,
+      rgba(14, 22, 16, 0.2) 70%,
+      rgba(14, 22, 16, 0.02) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(14, 22, 16, 0.05) 0%,
+      transparent 50%,
+      rgba(14, 22, 16, 0.75) 100%
+    );
   z-index: 1;
 }
 
