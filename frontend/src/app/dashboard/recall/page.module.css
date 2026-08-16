@@ -1,0 +1,169 @@
+.pageHeader {
+  margin-bottom: 24px;
+}
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+.subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+.tabs {
+  display: flex;
+  gap: 24px;
+  border-bottom: 1px solid var(--color-oat-200);
+  margin-bottom: 24px;
+}
+.tab {
+  padding: 12px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+}
+.tabActive {
+  color: var(--brand-green);
+  border-bottom-color: var(--brand-green);
+}
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 24px;
+}
+.panel {
+  background: #FFFFFF;
+  border: 1px solid var(--color-oat-200);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.panelTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-bean-400);
+  border-bottom: 1px solid var(--color-oat-200);
+  padding-bottom: 12px;
+}
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.inputLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.inputField {
+  padding: 10px 14px;
+  border: 1px solid var(--color-oat-300);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  outline: none;
+}
+.inputField:focus {
+  border-color: var(--color-grass-400);
+}
+.btnSearch {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--color-bean-400);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btnSearch:hover {
+  opacity: 0.9;
+}
+.recallBtn {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--color-alert-red);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.recallBtn:hover {
+  opacity: 0.9;
+}
+.treeContainer {
+  background: var(--color-oat-light);
+  border: 1px solid var(--color-oat-300);
+  border-radius: var(--radius-md);
+  padding: 32px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-x: auto;
+}
+.treeNode {
+  background: #fff;
+  border: 2px solid var(--color-oat-300);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  width: 260px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  position: relative;
+  margin: 10px;
+}
+.nodeRoot {
+  border-color: var(--color-alert-red);
+  background-color: var(--color-alert-soft);
+}
+.nodeChild {
+  border-color: var(--color-alert-yellow);
+}
+.nodeSafe {
+  border-color: var(--color-grass-400);
+}
+.nodeTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-bean-400);
+  margin-bottom: 4px;
+}
+.nodeType {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.nodeMeta {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--color-oat-200);
+}
+.treeArrow {
+  font-size: 24px;
+  color: var(--color-oat-400);
+  margin: 8px 0;
+}
+.treeRow {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+}

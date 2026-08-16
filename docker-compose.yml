@@ -73,6 +73,46 @@ services:
       ipfs:
         condition: service_healthy
 
+  application-service:
+    build:
+      context: ./services/application-service
+      dockerfile: Dockerfile
+    container_name: sih_application_service
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - MOCK_MODE=false
+      - DATA_SERVICE_URL=http://data-service:8001
+      - BLOCKCHAIN_SERVICE_URL=http://blockchain-gateway:3005
+      - INTERNAL_API_KEY=sih_super_secret_internal_key_2026
+      - JWT_SECRET=sih-2026-super-secret-jwt-key-food-traceability-platform
+      - HOST=0.0.0.0
+      - PORT=8000
+    depends_on:
+      - data-service
+
+  blockchain-gateway:
+    build:
+      context: ./services/blockchain-service/gateway
+      dockerfile: Dockerfile
+    container_name: sih_blockchain_gateway
+    restart: unless-stopped
+    ports:
+      - "3005:3005"
+    environment:
+      - PORT=3005
+      - CHANNEL_NAME=tracechannel
+      - CHAINCODE_NAME=traceability
+      - CRYPTO_PATH=/opt/fabric/crypto-config
+      - WEBHOOK_URL=http://application-service:8000/api/internal/webhooks/fabric
+      - INTERNAL_API_KEY=sih_super_secret_internal_key_2026
+      - EVENT_LISTENER_MSP=Org1MSP
+    volumes:
+      - ./services/blockchain-service/fabric/network/crypto-config:/opt/fabric/crypto-config:ro
+    depends_on:
+      - application-service
+
 volumes:
   postgres_data:
   redis_data:

@@ -1,0 +1,142 @@
+.pageHeader {
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.tabs {
+  display: flex;
+  gap: 24px;
+  border-bottom: 1px solid var(--color-oat-200);
+  margin-bottom: 24px;
+}
+
+.tab {
+  padding: 12px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.tabActive {
+  color: var(--brand-green);
+  border-bottom-color: var(--brand-green);
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 900px) {
+  .metricsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.metricCard {
+  background: #FFFFFF;
+  border: 1px solid var(--color-oat-200);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(27, 41, 30, 0.03);
+}
+
+.metricLabel {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.metricValue {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--color-bean-400);
+}
+
+.metricSub {
+  font-size: 12px;
+  color: var(--color-grass-500);
+  font-weight: 600;
+}
+
+.sectionsGrid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .sectionsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background: #FFFFFF;
+  border: 1px solid var(--color-oat-200);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--color-oat-200);
+  padding-bottom: 12px;
+}
+
+.cardTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-bean-400);
+}
+
+.quickActions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--color-oat-light);
+  border: 1px solid var(--color-oat-300);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--color-bean-400);
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.actionBtn:hover {
+  border-color: var(--color-grass-400);
+  background: #FFFFFF;
+}

@@ -1,0 +1,77 @@
+{
+  "products": [
+    {
+      "id": "PROD-001",
+      "name": "Organic Sharbati Wheat Flour",
+      "category": "Flour & Grains",
+      "gtin": "8901234567890",
+      "manufacturer": "Sahyadri Agro Processing",
+      "date": "10 Aug 2026"
+    },
+    {
+      "id": "PROD-002",
+      "name": "Cold Pressed Mustard Oil 1L",
+      "category": "Edible Oils",
+      "gtin": "8901234567891",
+      "manufacturer": "Sahyadri Agro Processing",
+      "date": "12 Aug 2026"
+    },
+    {
+      "id": "PROD-003",
+      "name": "Pure Himalayan Honey 500g",
+      "category": "Natural Sweeteners",
+      "gtin": "8901234567892",
+      "manufacturer": "Himalayan Apiaries Cluster",
+      "date": "14 Aug 2026"
+    }
+  ],
+  "batches": [
+    {
+      "id": "BATCH-MBTSDM2UM",
+      "productId": "PROD-001",
+      "status": "IN_TRANSIT",
+      "quantity": 5000,
+      "uom": "KG",
+      "custodian": "AgriTransit Logistics",
+      "date": "12 Aug 2026"
+    },
+    {
+      "id": "BATCH-IKHJWTOYD",
+      "productId": "PROD-002",
+      "status": "VALIDATED",
+      "quantity": 1200,
+      "uom": "LITERS",
+      "custodian": "GreenBasket Retail",
+      "date": "14 Aug 2026"
+    }
+  ],
+  "units": [
+    {
+      "id": "UNIT-1001",
+      "batchId": "BATCH-MBTSDM2UM",
+      "status": "PRINTED",
+      "outerQR": "QR-A1B2C3D4",
+      "innerCredential": "SEC-9981-A",
+      "date": "15 Aug 2026"
+    },
+    {
+      "id": "UNIT-1002",
+      "batchId": "BATCH-MBTSDM2UM",
+      "status": "PRINTED",
+      "outerQR": "QR-X9Y8Z7W6",
+      "innerCredential": "SEC-4412-B",
+      "date": "15 Aug 2026"
+    }
+  ],
+  "incidents": [
+    {
+      "id": "INC-9942",
+      "unitId": "UNIT-1002",
+      "category": "Spoilage",
+      "reporter": "Consumer (App)",
+      "status": "NEW",
+      "ipfsCid": "QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco",
+      "date": "15 Aug 2026"
+    }
+  ]
+}
