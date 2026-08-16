@@ -78,7 +78,7 @@
   font-weight: 700;
   padding: 6px 14px;
   border-radius: var(--radius-full);
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-300);
   color: var(--color-bean-300);
   cursor: pointer;
@@ -91,7 +91,7 @@
 
 .cropBtnActive {
   background-color: var(--color-grass-400);
-  color: #FFFFFF;
+  color: #ffffff;
   border-color: var(--color-grass-400);
 }
 
@@ -147,7 +147,7 @@
   align-items: center;
   gap: var(--size-12);
   padding: var(--size-12) var(--size-16);
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-300);
   border-radius: var(--radius-lg);
   cursor: pointer;
@@ -161,7 +161,9 @@
 
 .slotCardActive {
   border-color: var(--color-grass-400);
-  box-shadow: 0 0 0 2px var(--color-grass-100), 0 4px 16px rgba(46, 107, 78, 0.08);
+  box-shadow:
+    0 0 0 2px var(--color-grass-100),
+    0 4px 16px rgba(46, 107, 78, 0.08);
 }
 
 .slotThumbWrap {
@@ -228,7 +230,7 @@
 }
 
 .actionBox {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-300);
   border-radius: var(--radius-xl);
   padding: var(--size-20);
@@ -273,7 +275,7 @@
 }
 
 .previewCard {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-300);
   border-radius: var(--radius-xxl);
   padding: var(--size-32);
@@ -405,7 +407,7 @@
 }
 
 .specsCard {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-300);
   border-radius: var(--radius-xxl);
   padding: var(--size-40);
@@ -479,7 +481,7 @@
 }
 
 .modalContent {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-radius: var(--radius-xxl);
   max-width: 880px;
   width: 100%;

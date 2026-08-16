@@ -48,7 +48,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--size-8);
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-300);
   border-radius: var(--radius-full);
   padding: var(--size-12) var(--size-24);
@@ -122,7 +122,7 @@
 }
 
 .catCard {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-300);
   border-radius: var(--radius-lg);
   padding: var(--size-16) var(--size-20);
@@ -141,8 +141,10 @@
 
 .catCardSelected {
   border-color: var(--color-grass-400);
-  background-color: #FFFFFF;
-  box-shadow: 0 0 0 2px var(--color-grass-100), 0 8px 24px rgba(46, 107, 78, 0.08);
+  background-color: #ffffff;
+  box-shadow:
+    0 0 0 2px var(--color-grass-100),
+    0 8px 24px rgba(46, 107, 78, 0.08);
 }
 
 .catLeft {
@@ -173,7 +175,7 @@
 }
 
 .feedbackConsole {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-300);
   border-radius: var(--radius-xxl);
   overflow: hidden;
@@ -201,7 +203,7 @@
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--color-bean-300);
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   padding: 4px 8px;
   border-radius: var(--radius-xs);
   border: 1px solid var(--color-oat-200);
@@ -261,7 +263,7 @@
 
 .formInput:focus {
   border-color: var(--color-grass-400);
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 
 .tracebackResult {

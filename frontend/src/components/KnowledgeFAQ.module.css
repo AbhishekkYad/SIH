@@ -66,14 +66,14 @@
 .catTabActive {
   background-color: var(--color-grass-400);
   border-color: var(--color-grass-400);
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .searchBar {
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1.5px solid var(--color-oat-300);
   border-radius: var(--radius-full);
   padding: 4px 16px;
@@ -116,7 +116,7 @@
 }
 
 .articleCard {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-300);
   border-radius: var(--radius-xl);
   padding: var(--size-28);
@@ -192,7 +192,7 @@
 
 /* ── FAQ Section ── */
 .faqWrap {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-300);
   border-radius: var(--radius-xxl);
   padding: var(--size-48);
@@ -282,6 +282,12 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

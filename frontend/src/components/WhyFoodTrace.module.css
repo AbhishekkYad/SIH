@@ -6,7 +6,7 @@
 }
 
 .manifestoCard {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-300);
   border-radius: var(--radius-xxl);
   padding: var(--size-48);
@@ -60,7 +60,7 @@
 }
 
 .impactCard {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-300);
   border-radius: var(--radius-xl);
   padding: var(--size-32);

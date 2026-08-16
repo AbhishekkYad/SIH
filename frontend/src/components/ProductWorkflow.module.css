@@ -57,7 +57,7 @@
   align-items: center;
   gap: var(--size-12);
   min-width: 880px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-300);
   border-radius: var(--radius-xl);
   padding: var(--size-16) var(--size-20);
@@ -101,7 +101,7 @@
 
 .nodeItemSelected .nodeIconCircle {
   background-color: var(--color-grass-400);
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .nodeEmoji {
@@ -117,7 +117,7 @@
 }
 
 .nodeItemSelected .nodeStepNum {
-  color: #E2ECE4;
+  color: #e2ece4;
 }
 
 .nodeText {
@@ -153,7 +153,7 @@
 
 /* ── Live Operational Stage Detail Card ── */
 .dashboardCard {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-300);
   border-radius: var(--radius-xxl);
   overflow: hidden;
@@ -209,7 +209,7 @@
   font-family: var(--font-mono);
   font-size: 12px;
   color: var(--color-bean-300);
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-300);
   padding: 6px 12px;
   border-radius: var(--radius-full);
@@ -347,7 +347,7 @@
   justify-content: space-between;
   gap: var(--size-12);
   padding: 10px 14px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-200);
   border-radius: var(--radius-sm);
   font-size: 12.5px;
@@ -385,7 +385,7 @@
 }
 
 .proofCard {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-300);
   border-radius: var(--radius-md);
   padding: var(--size-16);

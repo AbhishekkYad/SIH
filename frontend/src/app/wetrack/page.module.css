@@ -44,7 +44,7 @@
   align-items: center;
   gap: var(--size-8);
   margin-top: var(--size-32);
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-300);
   border-radius: var(--radius-xl);
   padding: var(--size-12) var(--size-20);
@@ -112,7 +112,7 @@
 }
 
 .storyCard {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-300);
   border-radius: var(--radius-xxl);
   padding: var(--size-48);
@@ -276,11 +276,15 @@
   left: 0;
   right: 0;
   padding: var(--size-20);
-  background: linear-gradient(0deg, rgba(18, 28, 20, 0.85) 0%, transparent 100%);
+  background: linear-gradient(
+    0deg,
+    rgba(18, 28, 20, 0.85) 0%,
+    transparent 100%
+  );
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .overlayIcon {
@@ -330,7 +334,7 @@
 }
 
 .miniCard {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid var(--color-oat-300);
   border-radius: var(--radius-xl);
   padding: var(--size-24);
