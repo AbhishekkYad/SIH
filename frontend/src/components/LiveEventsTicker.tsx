@@ -9,7 +9,7 @@ interface SupplyChainEvent {
   title: string;
   description: string;
   meta: string;
-  img?: string;
+  img: string;
 }
 
 const EVENTS: SupplyChainEvent[] = [
@@ -29,6 +29,7 @@ const EVENTS: SupplyChainEvent[] = [
     title: 'One batch becomes the next',
     description: 'Raw material is transformed into a new batch while its parent-child lineage stays connected.',
     meta: 'TRANSFORMATION · W001 → F001',
+    img: '/images/logineko/card-processing-lineage.jpg',
   },
   {
     id: '3',
@@ -37,6 +38,7 @@ const EVENTS: SupplyChainEvent[] = [
     title: 'Every transfer leaves a trail',
     description: 'Verified movement events connect processors, manufacturers, transporters and retailers.',
     meta: 'TRANSFER VERIFIED · CHAIN_EVENT_00481',
+    img: '/images/logineko/card-logistics-custody.jpg',
   },
   {
     id: '4',
@@ -45,6 +47,7 @@ const EVENTS: SupplyChainEvent[] = [
     title: 'The journey reaches your hands',
     description: 'Scan the QR to reveal the product journey and verify its traceability.',
     meta: 'TRACEABILITY VERIFIED · UNIT_B001-U0723',
+    img: '/images/logineko/card-consumer-verification.jpg',
   },
 ];
 
@@ -106,17 +109,14 @@ export default function LiveEventsTicker() {
         <div className={styles.sliderTrack}>
           {visibleEvents.map((evt) => (
             <article key={evt.id} className={styles.eventCard}>
-              {evt.img && (
-                <div className={styles.cardMedia}>
-                  <img src={evt.img} alt={evt.title} loading="lazy" />
-                  <span className={styles.mediaTag}>{evt.stepNum}</span>
-                </div>
-              )}
+              <div className={styles.cardMedia}>
+                <img src={evt.img} alt={evt.title} loading="lazy" />
+                <span className={styles.mediaTag}>{evt.stepNum}</span>
+              </div>
 
               <div className={styles.cardInner}>
                 <div className={styles.cardHeader}>
                   <span className={styles.tagChip}>{evt.tag}</span>
-                  {!evt.img && <span className={styles.stepNum}>{evt.stepNum}</span>}
                 </div>
 
                 <div className={styles.cardBody}>
