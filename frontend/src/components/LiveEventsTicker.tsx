@@ -4,55 +4,45 @@ import styles from './LiveEventsTicker.module.css';
 
 interface SupplyChainEvent {
   id: string;
-  img: string;
-  tag1: string;
-  tag2: string;
+  stepNum: string;
+  tag: string;
   title: string;
-  date: string;
-  type: string;
-  hash: string;
+  description: string;
+  meta: string;
 }
 
 const EVENTS: SupplyChainEvent[] = [
   {
     id: '1',
-    img: '/images/logineko/field-operations-at-logineko-768x432.jpg',
-    tag1: '#FarmOrigin',
-    tag2: '#NashikOrganic',
-    title: '12,000 KG Sharbati Wheat Harvest Minted with Organic Soil Lab Assay CID',
-    date: 'Aug 15, 2026',
-    type: 'FABRIC_TX_0x7c91',
-    hash: 'CID: bafybeic...7k4m',
+    stepNum: '01',
+    tag: 'SOURCE ORIGIN',
+    title: 'Raw material registered at source',
+    description: 'Wheat batch W001 registered with its origin, evidence and source details.',
+    meta: 'SOURCE EVENT · BATCH_W001',
   },
   {
     id: '2',
-    img: '/images/logineko/farming-software-maps-solution-768x513.jpg',
-    tag1: '#SortexMilling',
-    tag2: '#LineageDAG',
-    title: 'Pune Milling Unit #04 Multi-Parent Grain Blending Committed to Lineage Graph',
-    date: 'Aug 14, 2026',
-    type: 'EDGE_8941_PUNE',
-    hash: 'DAG Parent-Child Link',
+    stepNum: '02',
+    tag: 'PROCESSING · LINEAGE',
+    title: 'One batch becomes the next',
+    description: 'Raw material is transformed into a new batch while its parent-child lineage stays connected.',
+    meta: 'TRANSFORMATION · W001 → F001',
   },
   {
     id: '3',
-    img: '/images/logineko/users-and-equipment-on-fields-768x408.jpg',
-    tag1: '#ColdChainIoT',
-    tag2: '#WesternCorridor',
-    title: 'Interstate Freight Checkpoint: Continuous +4.1°C Compliant Telemetry Streamed',
-    date: 'Aug 14, 2026',
-    type: 'IOT_SENSOR_PASS',
-    hash: 'Ed25519 Signed Handoff',
+    stepNum: '03',
+    tag: 'LOGISTICS · CHAIN OF CUSTODY',
+    title: 'Every transfer leaves a trail',
+    description: 'Verified movement events connect processors, manufacturers, transporters and retailers.',
+    meta: 'TRANSFER VERIFIED · CHAIN_EVENT_00481',
   },
   {
     id: '4',
-    img: '/images/logineko/origin-solutions-for-transaprency-768x513.jpg',
-    tag1: '#DualQR',
-    tag2: '#AntiCloning',
-    title: 'Mumbai Packaging Facility Minted 5,000 Retail Units with Concealed ECDSA Seals',
-    date: 'Aug 13, 2026',
-    type: 'GS1_DIGITAL_LINK',
-    hash: 'Batch WF-2026-0815',
+    stepNum: '04',
+    tag: 'CONSUMER · VERIFICATION',
+    title: 'The journey reaches your hands',
+    description: 'Scan the QR to reveal the product journey and verify its traceability.',
+    meta: 'TRACEABILITY VERIFIED · UNIT_B001-U0723',
   },
 ];
 
@@ -67,7 +57,7 @@ export default function LiveEventsTicker() {
     setStartIndex((prev) => (prev - 1 + EVENTS.length) % EVENTS.length);
   };
 
-  // Circular reordering for simple slide effect
+  // Circular reordering for slide interaction
   const visibleEvents = [
     ...EVENTS.slice(startIndex),
     ...EVENTS.slice(0, startIndex),
@@ -77,11 +67,14 @@ export default function LiveEventsTicker() {
     <section className={styles.blockNews}>
       <div className="container">
         <header className={styles.newsHeader}>
-          <div>
-            <span className="eyebrow">LIVE BLOCKCHAIN TELEMETRY</span>
+          <div className={styles.headerLeft}>
+            <span className="eyebrow">LIVE SUPPLY CHAIN</span>
             <h2 className={styles.newsTitle}>
-              Real-time events from <strong>across the chain</strong>
+              See every movement. <strong>Trace every decision.</strong>
             </h2>
+            <p className={styles.newsLead}>
+              From source to shelf, FoodTrace connects every critical event into one trusted journey — so you can see what happened, where it happened, and what it means.
+            </p>
           </div>
 
           <div className={styles.controls}>
@@ -111,19 +104,19 @@ export default function LiveEventsTicker() {
         <div className={styles.sliderTrack}>
           {visibleEvents.map((evt) => (
             <article key={evt.id} className={styles.eventCard}>
-              <div className={styles.cardMedia}>
-                <img src={evt.img} alt={evt.title} loading="lazy" />
+              <div className={styles.cardHeader}>
+                <span className={styles.tagChip}>{evt.tag}</span>
+                <span className={styles.stepNum}>{evt.stepNum}</span>
               </div>
+
               <div className={styles.cardBody}>
-                <div className={styles.tagsRow}>
-                  <span className={styles.tagChip}>{evt.tag1}</span>
-                  <span className={styles.tagChipSub}>{evt.tag2}</span>
-                </div>
                 <h3 className={styles.cardHeading}>{evt.title}</h3>
-                <div className={styles.cardMeta}>
-                  <time>{evt.date}</time>
-                  <span className={styles.metaType}>{evt.type}</span>
-                </div>
+                <p className={styles.cardDesc}>{evt.description}</p>
+              </div>
+
+              <div className={styles.cardFooter}>
+                <span className={styles.metaIndicator} />
+                <span className={styles.metaText}>{evt.meta}</span>
               </div>
             </article>
           ))}
