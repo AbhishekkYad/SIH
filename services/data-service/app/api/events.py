@@ -71,7 +71,10 @@ async def sync_blockchain_event(payload: EventCreate, db: AsyncSession = Depends
         )
 
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         logger.error(f"Event synchronization failed for TX {payload.fabric_tx_id}: {e}")
+        await db.rollback()
         # Re-raise or record as FAILED in sync tracker
         await EventRepository.upsert_ledger_sync(
             db=db,

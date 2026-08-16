@@ -15,6 +15,9 @@ class EventRepository:
         if existing:
             return existing
 
+        if timestamp and timestamp.tzinfo:
+            timestamp = timestamp.replace(tzinfo=None)
+
         event = Event(
             type=event_type,
             actor_org_id=actor_org_id,
@@ -37,6 +40,9 @@ class EventRepository:
         existing = result.scalar_one_or_none()
         if existing:
             return existing
+
+        if timestamp and timestamp.tzinfo:
+            timestamp = timestamp.replace(tzinfo=None)
 
         custody_event = CustodyEvent(
             batch_id=batch_id,
