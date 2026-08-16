@@ -13,7 +13,7 @@ class ProductService:
 
     async def create_product(self, payload: ProductCreate, actor: ActorContext) -> ProductResponse:
         # Step 1: Generate Product ID
-        product_id = f"prd-{uuid.uuid4().hex[:8]}"
+        product_id = str(uuid.uuid4())
         
         # Step 2: Submit to Blockchain Service (TraceabilityContract.registerProduct)
         tx_result = await self.bc_client.register_product(
@@ -23,7 +23,17 @@ class ProductService:
             actor_context=actor.dict()
         )
         
-        # Step 3: D1 persistence will happen asynchronously via the Fabric Webhook
+        # Step 3: D1 persistence
+        # We must save to D1 synchronously because the webhook payload from Fabric
+        # does not contain all product fields (e.g., sku, category).
+        product_data = {
+            "product_id": product_id,
+            "name": payload.name,
+            "product_type": payload.category,
+            "category": payload.category
+        }
+        await self.data_client.save_product(product_data)
+        
         from datetime import datetime
         
         return ProductResponse(

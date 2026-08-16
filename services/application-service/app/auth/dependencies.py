@@ -25,12 +25,21 @@ class ActorContext:
         return res
 
 
+async def get_optional_actor(credentials: Optional[HTTPAuthorizationCredentials] = Depends(security_scheme)) -> Optional[ActorContext]:
+    if not credentials:
+        return None
+    return await process_token(credentials.credentials)
+
 async def get_current_actor(credentials: Optional[HTTPAuthorizationCredentials] = Depends(security_scheme)) -> ActorContext:
     if not credentials:
-        # Fallback default actor for testing or public endpoints when header is omitted
-        return ActorContext(user_id="usr-system-admin", role="admin", org_id="org-platform-admin", fabric_msp_id="Org1MSP")
-    
-    token = credentials.credentials
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication credentials were not provided.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return await process_token(credentials.credentials)
+
+async def process_token(token: str) -> ActorContext:
     payload = decode_access_token(token)
     if not payload:
         raise HTTPException(

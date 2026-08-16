@@ -2,14 +2,15 @@ import pytest
 
 
 @pytest.mark.asyncio
-async def test_login_and_get_me(async_client):
-    login_payload = {
-        "username": "john_producer",
-        "password": "password123",
+async def test_auth_login(async_client):
+    from app.demo.demo_state import ORG_GREEN_VALLEY_ID
+    payload = {
+        "username": "testuser",
+        "password": "password",
         "role": "producer",
-        "org_id": "org-citrus-farms"
+        "org_id": ORG_GREEN_VALLEY_ID
     }
-    response = await async_client.post("/api/v1/auth/login", json=login_payload)
+    response = await async_client.post("/api/v1/auth/login", json=payload)
     assert response.status_code == 200
     token_data = response.json()
     assert "access_token" in token_data
@@ -19,5 +20,5 @@ async def test_login_and_get_me(async_client):
     me_res = await async_client.get("/api/v1/auth/me", headers=headers)
     assert me_res.status_code == 200
     me_data = me_res.json()
-    assert me_data["user_id"] == "usr-john_producer"
+    assert me_data["user_id"] == "usr-testuser"
     assert me_data["role"] == "producer"

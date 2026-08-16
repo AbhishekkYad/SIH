@@ -39,7 +39,17 @@ class BatchService:
                 actor_context=actor.dict()
             )
         
-        # Step 4: D1 persistence will happen asynchronously via the Fabric Webhook
+        # Step 4: D1 persistence
+        # We must save to D1 synchronously because the webhook only saves the event
+        batch_data = {
+            "batch_id": batch_id,
+            "product_id": payload.product_id,
+            "owner_org_id": actor.org_id,
+            "state": "REGISTERED",
+            "quantity": payload.quantity,
+            "parent_metadata": {"parent_batch_ids": payload.parent_batch_ids} if payload.parent_batch_ids else None
+        }
+        await self.data_client.save_batch(batch_data)
         return BatchResponse(
             batch_id=batch_id,
             product_id=payload.product_id,
@@ -63,12 +73,12 @@ class BatchService:
         # Persistence will happen asynchronously via webhook
         return BatchResponse(
             batch_id=batch["batch_id"],
-            product_id=batch["product_id"],
-            producer_org_id=batch["producer_org_id"],
-            current_custodian_org_id=batch["current_custodian_org_id"],
+            product_id=str(batch["product_id"]),
+            producer_org_id=str(batch.get("owner_org_id", "")),
+            current_custodian_org_id=str(batch.get("owner_org_id", "")),
             lifecycle_state="VALIDATED",
-            quantity=batch["quantity"],
-            unit_of_measure=batch["unit_of_measure"],
+            quantity=float(batch["quantity"]),
+            unit_of_measure="KG", # D1 doesn't store this, so we mock it
             created_at=batch["created_at"],
             blockchain_tx_id=tx_result.get("transaction_id")
         )
@@ -84,12 +94,12 @@ class BatchService:
         # Persistence will happen asynchronously via webhook
         return BatchResponse(
             batch_id=batch["batch_id"],
-            product_id=batch["product_id"],
-            producer_org_id=batch["producer_org_id"],
+            product_id=str(batch["product_id"]),
+            producer_org_id=str(batch.get("owner_org_id", "")),
             current_custodian_org_id=payload.to_org_id,
             lifecycle_state="IN_TRANSIT",
-            quantity=batch["quantity"],
-            unit_of_measure=batch["unit_of_measure"],
+            quantity=float(batch["quantity"]),
+            unit_of_measure="KG",
             created_at=batch["created_at"],
             blockchain_tx_id=tx_result.get("transaction_id")
         )

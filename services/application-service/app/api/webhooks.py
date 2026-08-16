@@ -40,17 +40,32 @@ async def receive_fabric_event(payload: Dict[str, Any], token: str = Depends(ver
     # We must forward this to D1 DataServiceClient
     data_client = get_data_client()
     
-    # Let's try to infer target_id based on event type
-    target_id = event_payload.get("batchId") or event_payload.get("productId") or event_payload.get("incidentId") or event_payload.get("unitId") or "UNKNOWN_TARGET"
+    target_id = (
+        event_payload.get("batch_id") or 
+        event_payload.get("product_id") or 
+        event_payload.get("unit_id") or 
+        event_payload.get("incident_id")
+    )
+    
+    if not target_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Could not derive target_id from event payload. Valid identifiers (batch_id, product_id, etc.) are missing."
+        )
     
     # A generic event mapping
+    # Since D1 DataServiceClient does not have an endpoint to resolve MSP string to Org UUID,
+    # we use the official System Org and User identities specifically seeded in D1 for async background tasks.
+    SYSTEM_UUID = "00000000-0000-0000-0000-000000000000"
+    
     mapped_event = {
         "type": event_name,
-        "actor_org_id": event_payload.get("actorOrgId") or "00000000-0000-0000-0000-000000000000", # We may need to pass actual UUIDs if possible, or D1 might accept the MSP string. D1 schema expects UUID4.
-        "actor_user_id": event_payload.get("actorUserId") or "00000000-0000-0000-0000-000000000000",
+        "actor_org_id": SYSTEM_UUID,
+        "actor_user_id": SYSTEM_UUID,
         "target_id": target_id,
-        "state_before": event_payload.get("previousState"),
-        "state_after": event_payload.get("currentState"),
+        "state_before": None,  # Not provided by Fabric chaincode events
+        "state_after": event_payload.get("state"),
+
         "fabric_tx_id": fabric_tx_id,
         "timestamp": timestamp
     }

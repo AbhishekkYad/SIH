@@ -20,6 +20,7 @@ class QRResolveResponse(BaseModel):
     producer_org_id: str
     custodian_org_id: str
     trace_history: List[Dict[str, Any]]
+    scan_history: List[Dict[str, Any]] = []
     scan_recorded: bool
     audit_tx_id: Optional[str] = None
     next_allowed_operation: str = "RECEIVE"
@@ -27,6 +28,6 @@ class QRResolveResponse(BaseModel):
 
 
 class CredentialVerifyResponse(BaseModel):
-    is_authentic: bool
-    verification_message: str
+    traceability: Dict[str, Any]
+    authenticity: Dict[str, Any]
     audit_tx_id: str
