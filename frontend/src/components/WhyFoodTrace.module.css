@@ -42,6 +42,63 @@
   color: var(--text-secondary);
 }
 
+/* Supporting source citation */
+.sourceBlock {
+  display: flex;
+  gap: 14px;
+  padding: 18px 20px;
+  background-color: rgba(46, 107, 78, 0.06);
+  border: 1px solid var(--color-oat-300);
+  border-left: 3px solid var(--color-grass-400);
+  border-radius: var(--radius-lg);
+  margin-top: var(--size-8);
+}
+
+.sourceIcon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-grass-100);
+  border-radius: var(--radius-md);
+  color: var(--color-grass-500);
+}
+
+.sourceText {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sourceLabel {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-bean-400);
+  letter-spacing: 0.02em;
+}
+
+.sourceDesc {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.sourceLink {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--color-grass-500);
+  letter-spacing: 0.03em;
+  transition: color var(--transition-base);
+}
+
+.sourceLink:hover {
+  color: var(--color-grass-600);
+}
+
 .divider {
   height: 1px;
   background-color: var(--color-oat-300);
@@ -153,19 +210,33 @@
   gap: var(--size-24);
 }
 
+.quoteEyebrow {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #A8CEAF;
+  background-color: rgba(46, 107, 78, 0.35);
+  border: 1px solid rgba(168, 206, 175, 0.4);
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+}
+
 .quoteMark {
-  width: 56px;
-  height: 44px;
+  width: 52px;
+  height: 40px;
   fill: #A8CEAF;
   opacity: 0.9;
 }
 
 .quoteText {
-  font-size: clamp(20px, 2.8vw, 30px);
+  font-size: clamp(22px, 3vw, 34px);
   font-weight: 600;
-  line-height: 1.35;
+  line-height: 1.3;
   color: #FFFFFF;
   font-style: italic;
+  max-width: 780px;
 }
 
 .quoteText strong {
@@ -177,15 +248,16 @@
   display: flex;
   align-items: center;
   gap: var(--size-16);
-  margin-top: var(--size-8);
 }
 
 .quoteAvatar {
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   overflow: hidden;
   border: 2px solid #A8CEAF;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
 }
 
 .quoteAvatar img {
@@ -197,16 +269,55 @@
 .authorMeta {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   text-align: left;
+  gap: 2px;
 }
 
 .authorName {
-  font-weight: 700;
+  font-weight: 800;
   font-size: 16px;
   color: #FFFFFF;
+  letter-spacing: -0.01em;
 }
 
 .authorRole {
   font-size: 13px;
-  color: #B0C4B4;
+  color: #C0D6C4;
+  font-weight: 500;
+}
+
+.quotePrinciple {
+  font-size: clamp(14.5px, 1.4vw, 16.5px);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 680px;
+  margin-top: 4px;
+}
+
+.quoteCtaWrap {
+  margin-top: var(--size-8);
+}
+
+.quoteCtaBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-bean-400);
+  background-color: var(--color-oat-100);
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: all var(--transition-base);
+}
+
+.quoteCtaBtn:hover {
+  background-color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  color: var(--color-grass-500);
 }

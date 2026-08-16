@@ -4,13 +4,10 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import LiveEventsTicker from '@/components/LiveEventsTicker';
 import MissionEditorial from '@/components/MissionEditorial';
-import TrackedCropsGrid from '@/components/TrackedCropsGrid';
-import SolutionsSlider from '@/components/SolutionsSlider';
-import WhyFoodTrace from '@/components/WhyFoodTrace';
 import StakeholderMatrix from '@/components/StakeholderMatrix';
+import SolutionsSlider from '@/components/SolutionsSlider';
 import KnowledgeFAQ from '@/components/KnowledgeFAQ';
-import PartnersStrip from '@/components/PartnersStrip';
-import SubscribeCTA from '@/components/SubscribeCTA';
+import WhyFoodTrace from '@/components/WhyFoodTrace';
 import Footer from '@/components/Footer';
 
 export default function Home() {
@@ -45,13 +42,10 @@ export default function Home() {
       <Hero />
       <LiveEventsTicker />
       <MissionEditorial />
-      <TrackedCropsGrid />
-      <SolutionsSlider />
-      <WhyFoodTrace />
       <StakeholderMatrix />
+      <SolutionsSlider />
       <KnowledgeFAQ />
-      <PartnersStrip />
-      <SubscribeCTA />
+      <WhyFoodTrace />
       <Footer />
     </main>
   );
