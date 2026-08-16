@@ -1,10 +1,10 @@
 /* ============================================================
-   HERO SECTION — Redesigned with separated stats & structured buttons
+   HERO SECTION — Clean visual card with direct transition
    ============================================================ */
 
 .hpHero {
   padding-top: 96px;
-  padding-bottom: var(--size-48);
+  padding-bottom: var(--size-32);
   background-color: var(--color-oat-light);
 }
 
@@ -12,7 +12,7 @@
   position: relative;
   border-radius: var(--radius-xxl);
   overflow: hidden;
-  min-height: 560px;
+  min-height: 580px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -171,91 +171,7 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* ============================================================
-   SEPARATED STATS STRIP CARD
-   ============================================================ */
-
-.heroStatsCard {
-  margin-top: var(--size-24);
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  background-color: #FFFFFF;
-  border: 1px solid var(--color-oat-300);
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  box-shadow: 0 8px 32px rgba(27, 41, 30, 0.05);
-}
-
-.statItem {
-  padding: var(--size-24) var(--size-28);
-  border-right: 1px solid var(--color-oat-200);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  transition: background-color 150ms ease;
-}
-
-.statItem:hover {
-  background-color: var(--color-oat-100);
-}
-
-.statItem:last-child {
-  border-right: none;
-}
-
-.statValue {
-  font-family: var(--font-sans);
-  font-size: clamp(24px, 2.5vw, 32px);
-  font-weight: 800;
-  color: var(--color-bean-400);
-  letter-spacing: -0.02em;
-}
-
-.statValueHighlight {
-  color: var(--color-grass-400);
-}
-
-.statLabel {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-bean-300);
-}
-
-.statSub {
-  font-size: 11.5px;
-  color: var(--text-muted);
-}
-
 @keyframes pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.4; transform: scale(0.85); }
-}
-
-@media (max-width: 900px) {
-  .heroStatsCard {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .statItem:nth-child(2) {
-    border-right: none;
-  }
-  .statItem:nth-child(-n+2) {
-    border-bottom: 1px solid var(--color-oat-200);
-  }
-}
-
-@media (max-width: 600px) {
-  .heroStatsCard {
-    grid-template-columns: 1fr;
-  }
-  .statItem {
-    border-right: none;
-    border-bottom: 1px solid var(--color-oat-200);
-    padding: var(--size-16) var(--size-20);
-  }
-  .statItem:last-child {
-    border-bottom: none;
-  }
 }
