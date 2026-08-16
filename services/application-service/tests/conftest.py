@@ -1,5 +1,8 @@
 import pytest
 import pytest_asyncio
+import os
+os.environ["MOCK_MODE"] = "true"
+
 from httpx import AsyncClient, ASGITransport
 from app.main import app
 from app.auth import create_access_token
@@ -14,11 +17,13 @@ async def async_client():
 
 @pytest.fixture
 def auth_headers():
-    token = create_access_token(subject="usr-test-producer", role="producer", org_id="org-citrus-farms")
+    from app.demo.demo_state import ORG_GREEN_VALLEY_ID
+    token = create_access_token(subject="usr-test-producer", role="producer", org_id=ORG_GREEN_VALLEY_ID)
     return {"Authorization": f"Bearer {token}"}
 
 
 @pytest.fixture
 def admin_headers():
-    token = create_access_token(subject="usr-admin-user", role="admin", org_id="org-platform-admin")
+    from app.demo.demo_state import ORG_FSA_ID
+    token = create_access_token(subject="usr-admin-user", role="admin", org_id=ORG_FSA_ID)
     return {"Authorization": f"Bearer {token}"}

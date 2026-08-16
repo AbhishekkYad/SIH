@@ -2,9 +2,16 @@ import { fabricManager } from './fabricManager';
 import axios from 'axios';
 import { ChaincodeEvent } from '@hyperledger/fabric-gateway';
 
-const WEBHOOK_URL = process.env.WEBHOOK_URL || 'http://localhost:8000/api/internal/webhooks/fabric';
-const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY || 'sih_super_secret_internal_key_2026';
-const EVENT_LISTENER_MSP = process.env.EVENT_LISTENER_MSP || 'Org1MSP';
+if (!process.env.WEBHOOK_URL) throw new Error('CRITICAL: WEBHOOK_URL environment variable is not defined.');
+if (!process.env.INTERNAL_API_KEY) throw new Error('CRITICAL: INTERNAL_API_KEY environment variable is not defined.');
+if (!process.env.EVENT_LISTENER_MSP) throw new Error('CRITICAL: EVENT_LISTENER_MSP environment variable is not defined.');
+
+if (!process.env.CHANNEL_NAME) throw new Error('CRITICAL: CHANNEL_NAME environment variable is not defined.');
+
+const WEBHOOK_URL = process.env.WEBHOOK_URL;
+const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY;
+const EVENT_LISTENER_MSP = process.env.EVENT_LISTENER_MSP;
+const CHANNEL_NAME = process.env.CHANNEL_NAME;
 const MAX_RETRIES = 5;
 
 const utf8Decoder = new TextDecoder();
@@ -48,6 +55,7 @@ async function processEvent(event: ChaincodeEvent) {
     const webhookPayload = {
         transaction_id: transactionId,
         block_number: Number(blockNumber),
+        channel_id: CHANNEL_NAME,
         event_name: eventName,
         payload: payloadJson,
         emitted_at: new Date().toISOString()

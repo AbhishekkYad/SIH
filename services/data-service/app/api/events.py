@@ -1,11 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import datetime
+from typing import List, Optional
 import logging
 
 from app.dependencies import get_db, verify_internal_api_key
 from app.schemas.common import APIResponse
-from app.schemas.event import EventCreate, CustodyEventCreate, ScanEventCreate
+from app.schemas.event import EventCreate, CustodyEventCreate, ScanEventCreate, EventOut
 from app.repositories.event import EventRepository
 from app.models.audit import ScanEvent
 from app.redis.client import redis_cache
@@ -40,7 +41,11 @@ async def sync_blockchain_event(payload: EventCreate, db: AsyncSession = Depends
             state_before=payload.state_before,
             state_after=payload.state_after,
             fabric_tx_id=payload.fabric_tx_id,
-            timestamp=payload.timestamp
+            timestamp=payload.timestamp,
+            latitude=payload.latitude,
+            longitude=payload.longitude,
+            location_name=payload.location_name,
+            block_number=payload.block_number
         )
 
         # Mark sync as SYNCED
@@ -70,7 +75,10 @@ async def sync_blockchain_event(payload: EventCreate, db: AsyncSession = Depends
         )
 
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         logger.error(f"Event synchronization failed for TX {payload.fabric_tx_id}: {e}")
+        await db.rollback()
         # Re-raise or record as FAILED in sync tracker
         await EventRepository.upsert_ledger_sync(
             db=db,
@@ -148,4 +156,29 @@ async def record_scan_event(payload: ScanEventCreate, db: AsyncSession = Depends
             "result": scan.result
         },
         message="Scan interaction recorded successfully."
+    )
+
+@router.get("", response_model=APIResponse[List[EventOut]])
+async def get_events(
+    target_id: Optional[str] = None,
+    type: Optional[str] = None,
+    limit: int = 100,
+    offset: int = 0,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Retrieves and queries blockchain-committed synchronized events read models.
+    """
+    events = await EventRepository.get_events(
+        db=db,
+        target_id=target_id,
+        event_type=type,
+        limit=limit,
+        offset=offset
+    )
+    events_out = [EventOut.model_validate(e) for e in events]
+    return APIResponse(
+        success=True,
+        data=events_out,
+        message="Blockchain events retrieved successfully."
     )

@@ -1,6 +1,8 @@
 from typing import Dict, Any, Optional
 from fastapi import HTTPException, status
 import uuid
+import json
+from datetime import datetime
 from app.auth.dependencies import ActorContext
 from app.clients import get_data_client, get_blockchain_client
 from app.schemas.batches import BatchCreate, BatchValidateRequest, CustodyTransferRequest, BatchResponse
@@ -11,6 +13,14 @@ class BatchService:
         self.data_client = get_data_client()
         self.bc_client = get_blockchain_client()
 
+    def _build_metadata_json(self, payload) -> str:
+        meta = {}
+        if getattr(payload, "location", None):
+            meta.update(payload.location.model_dump())
+        if getattr(payload, "metadata", None):
+            meta.update(payload.metadata)
+        return json.dumps(meta) if meta else ""
+
     async def create_batch(self, payload: BatchCreate, actor: ActorContext) -> BatchResponse:
         # Step 1: Verify product exists
         product = await self.data_client.get_product(payload.product_id)
@@ -20,48 +30,48 @@ class BatchService:
         batch_id = f"batch-{uuid.uuid4().hex[:8]}"
         
         # Step 2: Submit to Blockchain Service (TraceabilityContract.registerBatch)
+        metadataJson = self._build_metadata_json(payload)
         tx_result = await self.bc_client.register_batch(
             batch_id=batch_id,
             product_id=payload.product_id,
             quantity=payload.quantity,
             unit_of_measure=payload.unit_of_measure,
-            actor_context=actor.dict()
+            actor_context=actor.dict(),
+            metadataJson=metadataJson
         )
         
         # Step 3: Record Parent Lineage Relationships if transforming/deriving
         if payload.parent_batch_ids:
-            for p_id in payload.parent_batch_ids:
-                await self.data_client.save_lineage_edge(parent_batch_id=p_id, child_batch_id=batch_id)
+            # We don't save lineage edge to D1 directly anymore, it will be done via webhook/transformation event
             # Submit transformation event to Fabric Gateway
             await self.bc_client.create_transformation(
                 parent_batch_ids=payload.parent_batch_ids,
                 child_batch_id=batch_id,
-                actor_context=actor.dict()
+                actor_context=actor.dict(),
+                metadataJson=metadataJson
             )
         
-        # Step 4: Write to Data Service Read Model upon commit
+        # Step 4: D1 persistence
+        # We must save to D1 synchronously because the webhook only saves the event
         batch_data = {
             "batch_id": batch_id,
             "product_id": payload.product_id,
-            "producer_org_id": actor.org_id,
-            "current_custodian_org_id": actor.org_id,
-            "lifecycle_state": "REGISTERED",
+            "owner_org_id": actor.org_id,
+            "state": "REGISTERED",
             "quantity": payload.quantity,
-            "unit_of_measure": payload.unit_of_measure,
-            "blockchain_tx_id": tx_result.get("tx_id")
+            "parent_metadata": {"parent_batch_ids": payload.parent_batch_ids} if payload.parent_batch_ids else None
         }
-        saved_batch = await self.data_client.save_batch(batch_data)
-        
+        await self.data_client.save_batch(batch_data)
         return BatchResponse(
-            batch_id=saved_batch["batch_id"],
-            product_id=saved_batch["product_id"],
-            producer_org_id=saved_batch["producer_org_id"],
-            current_custodian_org_id=saved_batch["current_custodian_org_id"],
-            lifecycle_state=saved_batch["lifecycle_state"],
-            quantity=saved_batch["quantity"],
-            unit_of_measure=saved_batch["unit_of_measure"],
-            created_at=saved_batch["created_at"],
-            blockchain_tx_id=saved_batch.get("blockchain_tx_id")
+            batch_id=batch_id,
+            product_id=payload.product_id,
+            producer_org_id=actor.org_id,
+            current_custodian_org_id=actor.org_id,
+            lifecycle_state="REGISTERED",
+            quantity=payload.quantity,
+            unit_of_measure=payload.unit_of_measure,
+            created_at=datetime.utcnow().isoformat(),
+            blockchain_tx_id=tx_result.get("transaction_id")
         )
 
     async def validate_batch(self, batch_id: str, payload: BatchValidateRequest, actor: ActorContext) -> BatchResponse:
@@ -69,23 +79,20 @@ class BatchService:
         if not batch:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Batch '{batch_id}' not found")
         
-        # Submit validate transaction to Blockchain Service
-        tx_result = await self.bc_client.validate_batch(batch_id=batch_id, actor_context=actor.dict())
+        metadataJson = self._build_metadata_json(payload)
+        tx_result = await self.bc_client.validate_batch(batch_id=batch_id, actor_context=actor.dict(), metadataJson=metadataJson)
         
-        # Update state in Data Service
-        updated_batch = await self.data_client.update_batch_state(batch_id=batch_id, state="VALIDATED")
-        updated_batch["blockchain_tx_id"] = tx_result.get("tx_id")
-        
+        # Persistence will happen asynchronously via webhook
         return BatchResponse(
-            batch_id=updated_batch["batch_id"],
-            product_id=updated_batch["product_id"],
-            producer_org_id=updated_batch["producer_org_id"],
-            current_custodian_org_id=updated_batch["current_custodian_org_id"],
-            lifecycle_state=updated_batch["lifecycle_state"],
-            quantity=updated_batch["quantity"],
-            unit_of_measure=updated_batch["unit_of_measure"],
-            created_at=updated_batch["created_at"],
-            blockchain_tx_id=updated_batch.get("blockchain_tx_id")
+            batch_id=batch["batch_id"],
+            product_id=str(batch["product_id"]),
+            producer_org_id=str(batch.get("owner_org_id", "")),
+            current_custodian_org_id=str(batch.get("owner_org_id", "")),
+            lifecycle_state="VALIDATED",
+            quantity=float(batch["quantity"]),
+            unit_of_measure="KG", # D1 doesn't store this, so we mock it
+            created_at=batch["created_at"],
+            blockchain_tx_id=tx_result.get("transaction_id")
         )
 
     async def transfer_custody(self, batch_id: str, payload: CustodyTransferRequest, actor: ActorContext) -> BatchResponse:
@@ -93,27 +100,20 @@ class BatchService:
         if not batch:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Batch '{batch_id}' not found")
         
-        # Submit custody transfer to Blockchain Service
-        tx_result = await self.bc_client.transfer_batch(batch_id=batch_id, to_org_id=payload.to_org_id, actor_context=actor.dict())
+        metadataJson = self._build_metadata_json(payload)
+        tx_result = await self.bc_client.transfer_batch(batch_id=batch_id, to_org_id=payload.to_org_id, actor_context=actor.dict(), metadataJson=metadataJson)
         
-        # Update Data Service read model
-        updated_batch = await self.data_client.update_batch_state(
-            batch_id=batch_id,
-            state="IN_TRANSIT",
-            custodian_org_id=payload.to_org_id
-        )
-        updated_batch["blockchain_tx_id"] = tx_result.get("tx_id")
-        
+        # Persistence will happen asynchronously via webhook
         return BatchResponse(
-            batch_id=updated_batch["batch_id"],
-            product_id=updated_batch["product_id"],
-            producer_org_id=updated_batch["producer_org_id"],
-            current_custodian_org_id=updated_batch["current_custodian_org_id"],
-            lifecycle_state=updated_batch["lifecycle_state"],
-            quantity=updated_batch["quantity"],
-            unit_of_measure=updated_batch["unit_of_measure"],
-            created_at=updated_batch["created_at"],
-            blockchain_tx_id=updated_batch.get("blockchain_tx_id")
+            batch_id=batch["batch_id"],
+            product_id=str(batch["product_id"]),
+            producer_org_id=str(batch.get("owner_org_id", "")),
+            current_custodian_org_id=payload.to_org_id,
+            lifecycle_state="IN_TRANSIT",
+            quantity=float(batch["quantity"]),
+            unit_of_measure="KG",
+            created_at=batch["created_at"],
+            blockchain_tx_id=tx_result.get("transaction_id")
         )
 
     async def get_batch(self, batch_id: str) -> BatchResponse:

@@ -13,7 +13,7 @@ class ProductService:
 
     async def create_product(self, payload: ProductCreate, actor: ActorContext) -> ProductResponse:
         # Step 1: Generate Product ID
-        product_id = f"prd-{uuid.uuid4().hex[:8]}"
+        product_id = str(uuid.uuid4())
         
         # Step 2: Submit to Blockchain Service (TraceabilityContract.registerProduct)
         tx_result = await self.bc_client.register_product(
@@ -23,26 +23,27 @@ class ProductService:
             actor_context=actor.dict()
         )
         
-        # Step 3: Write to Data Service Read Model upon commit
+        # Step 3: D1 persistence
+        # We must save to D1 synchronously because the webhook payload from Fabric
+        # does not contain all product fields (e.g., sku, category).
         product_data = {
             "product_id": product_id,
             "name": payload.name,
-            "sku": payload.sku,
-            "category": payload.category,
-            "producer_org_id": actor.org_id,
-            "specifications": payload.specifications or {},
-            "blockchain_tx_id": tx_result.get("tx_id")
+            "product_type": payload.category,
+            "category": payload.category
         }
-        saved_product = await self.data_client.save_product(product_data)
+        await self.data_client.save_product(product_data)
+        
+        from datetime import datetime
         
         return ProductResponse(
-            product_id=saved_product["product_id"],
-            name=saved_product["name"],
-            sku=saved_product["sku"],
-            category=saved_product["category"],
-            producer_org_id=saved_product["producer_org_id"],
-            created_at=saved_product["created_at"],
-            blockchain_tx_id=saved_product.get("blockchain_tx_id")
+            product_id=product_id,
+            name=payload.name,
+            sku=payload.sku,
+            category=payload.category,
+            producer_org_id=actor.org_id,
+            created_at=datetime.utcnow().isoformat(),
+            blockchain_tx_id=tx_result.get("transaction_id")
         )
 
     async def get_product(self, product_id: str) -> ProductResponse:

@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import Column, String, ForeignKey, UUID, DateTime, Integer, func
+from sqlalchemy import Column, String, ForeignKey, UUID, DateTime, Integer, Float, JSON, func
 from sqlalchemy.orm import relationship
 
 from app.database import Base
@@ -16,6 +16,11 @@ class Event(Base):
     state_after = Column(String, nullable=True)
     fabric_tx_id = Column(String, unique=True, nullable=False, index=True)  # UNIQUE constraint for idempotency
     timestamp = Column(DateTime, default=func.now(), server_default=func.now(), nullable=False)
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
+    location_name = Column(String, nullable=True)
+    block_number = Column(Integer, nullable=True)
+    metadata = Column(JSON, nullable=True)  # Store conditions, expected custodians, testing reports
 
 class CustodyEvent(Base):
     __tablename__ = "custody_events"
@@ -28,6 +33,7 @@ class CustodyEvent(Base):
     event_type = Column(String, nullable=False)  # TRANSFER, RECEIVE
     timestamp = Column(DateTime, nullable=False)
     fabric_tx_id = Column(String, unique=True, nullable=False, index=True)
+    metadata = Column(JSON, nullable=True)  # Store conditions, location, etc.
 
 class LedgerSync(Base):
     __tablename__ = "ledger_sync"

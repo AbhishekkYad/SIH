@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
-const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY || 'sih_super_secret_internal_key_2026';
-
+if (!process.env.INTERNAL_API_KEY) throw new Error('CRITICAL: INTERNAL_API_KEY environment variable is not defined.');
+const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY;
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
     

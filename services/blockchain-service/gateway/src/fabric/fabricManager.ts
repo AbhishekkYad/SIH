@@ -4,9 +4,19 @@ import * as crypto from 'crypto';
 import { promises as fs } from 'fs';
 import * as path from 'path';
 
-const channelName = process.env.CHANNEL_NAME || 'traceability-channel';
-const chaincodeName = process.env.CHAINCODE_NAME || 'traceability';
-const cryptoPath = process.env.CRYPTO_PATH || path.resolve(__dirname, '..', '..', '..', 'fabric', 'test-network', 'organizations', 'peerOrganizations');
+if (!process.env.CHANNEL_NAME) {
+    throw new Error('CRITICAL: CHANNEL_NAME environment variable is not defined.');
+}
+if (!process.env.CHAINCODE_NAME) {
+    throw new Error('CRITICAL: CHAINCODE_NAME environment variable is not defined.');
+}
+if (!process.env.CRYPTO_PATH) {
+    throw new Error('CRITICAL: CRYPTO_PATH environment variable is not defined.');
+}
+
+const channelName = process.env.CHANNEL_NAME;
+const chaincodeName = process.env.CHAINCODE_NAME;
+const cryptoPath = process.env.CRYPTO_PATH;
 
 export class FabricConnectionManager {
     private gateways: Map<string, Gateway> = new Map();

@@ -1,17 +1,22 @@
-FROM node:18-alpine
+FROM node:20-alpine AS builder
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY package*.json ./
-
-RUN npm install --only=production
+RUN npm ci
 
 COPY . .
+RUN npm run build
 
-# Build TypeScript if necessary (or rely on a pre-build step)
-RUN npm install typescript -g
-RUN tsc
+FROM node:20-alpine AS runner
 
-EXPOSE 7051
+WORKDIR /app
 
-CMD [ "node", "dist/server.js" ]
+COPY package*.json ./
+RUN npm ci --only=production
+
+COPY --from=builder /app/dist ./dist
+
+EXPOSE 3005
+
+CMD ["node", "dist/server.js"]

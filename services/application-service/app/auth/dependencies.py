@@ -2,30 +2,44 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import List, Optional, Dict, Any
 from app.auth.security import decode_access_token
+from app.clients import get_data_client
 
 security_scheme = HTTPBearer(auto_error=False)
 
 
 class ActorContext:
-    def __init__(self, user_id: str, role: str, org_id: str):
+    def __init__(self, user_id: str, role: str, org_id: str, fabric_msp_id: str = None):
         self.user_id = user_id
         self.role = role
         self.org_id = org_id
+        self.fabric_msp_id = fabric_msp_id
 
     def dict(self) -> Dict[str, str]:
-        return {
+        res = {
             "user_id": self.user_id,
             "role": self.role,
             "org_id": self.org_id
         }
+        if self.fabric_msp_id:
+            res["fabric_msp_id"] = self.fabric_msp_id
+        return res
 
 
-def get_current_actor(credentials: Optional[HTTPAuthorizationCredentials] = Depends(security_scheme)) -> ActorContext:
+async def get_optional_actor(credentials: Optional[HTTPAuthorizationCredentials] = Depends(security_scheme)) -> Optional[ActorContext]:
     if not credentials:
-        # Fallback default actor for testing or public endpoints when header is omitted
-        return ActorContext(user_id="usr-system-admin", role="admin", org_id="org-platform-admin")
-    
-    token = credentials.credentials
+        return None
+    return await process_token(credentials.credentials)
+
+async def get_current_actor(credentials: Optional[HTTPAuthorizationCredentials] = Depends(security_scheme)) -> ActorContext:
+    if not credentials:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication credentials were not provided.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return await process_token(credentials.credentials)
+
+async def process_token(token: str) -> ActorContext:
     payload = decode_access_token(token)
     if not payload:
         raise HTTPException(
@@ -44,11 +58,25 @@ def get_current_actor(credentials: Optional[HTTPAuthorizationCredentials] = Depe
             detail="Malformed authentication payload",
         )
     
-    return ActorContext(user_id=user_id, role=role, org_id=org_id)
+    # Resolve authoritative fabric_msp_id from Data Service
+    data_client = get_data_client()
+    org_data = await data_client.get_organization(org_id)
+    if not org_data or not org_data.get("fabric_msp_id"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Could not resolve authoritative fabric_msp_id for organization {org_id}."
+        )
+    
+    return ActorContext(
+        user_id=user_id, 
+        role=role, 
+        org_id=org_id, 
+        fabric_msp_id=org_data["fabric_msp_id"]
+    )
 
 
 def require_roles(allowed_roles: List[str]):
-    def role_checker(actor: ActorContext = Depends(get_current_actor)) -> ActorContext:
+    async def role_checker(actor: ActorContext = Depends(get_current_actor)) -> ActorContext:
         if "admin" in actor.role.lower():
             return actor
         

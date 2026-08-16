@@ -47,3 +47,27 @@ async def test_event_syncing(client, db_session):
     data = res.json()
     assert data["success"] is True
     assert data["data"]["result"] == "VERIFIED"
+
+    # 1. Verify GET events (Successful query)
+    res = await client.get("/internal/events", headers=headers)
+    assert res.status_code == 200
+    data = res.json()
+    assert data["success"] is True
+    assert len(data["data"]) == 1
+    assert data["data"][0]["fabric_tx_id"] == "tx-blockchain-abc"
+
+    # 2. Verify GET events with filtering (type and target_id)
+    res = await client.get("/internal/events?target_id=BATCH-EVENT-01&type=BATCH_REGISTERED", headers=headers)
+    assert res.status_code == 200
+    data = res.json()
+    assert len(data["data"]) == 1
+
+    # 3. Verify GET events with no matches (empty results)
+    res = await client.get("/internal/events?target_id=NON-EXISTENT", headers=headers)
+    assert res.status_code == 200
+    data = res.json()
+    assert len(data["data"]) == 0
+
+    # 4. Verify GET events is protected (401 Unauthorized)
+    res = await client.get("/internal/events")
+    assert res.status_code == 401

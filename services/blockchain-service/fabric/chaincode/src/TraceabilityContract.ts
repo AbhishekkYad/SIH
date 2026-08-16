@@ -6,6 +6,42 @@ import { Unit } from './models/Unit';
 @Info({ title: 'TraceabilityContract', description: 'Smart contract for managing custody and lifecycle of food batches' })
 export class TraceabilityContract extends Contract {
 
+    private enrichPayload(payload: any, metadataJson?: string): any {
+        const enriched = { ...payload };
+        if (metadataJson && metadataJson.trim() !== '') {
+            try {
+                const location = JSON.parse(locationJson);
+                if (location.latitude !== undefined && location.latitude !== null) {
+                    const lat = Number(location.latitude);
+                    if (isNaN(lat) || lat < -90 || lat > 90) throw new Error("Invalid latitude");
+                    enriched.latitude = lat;
+                }
+                if (location.longitude !== undefined && location.longitude !== null) {
+                    const lng = Number(location.longitude);
+                    if (isNaN(lng) || lng < -180 || lng > 180) throw new Error("Invalid longitude");
+                    enriched.longitude = lng;
+                }
+                if (location.location_name !== undefined && location.location_name !== null) {
+                    enriched.location_name = String(location.location_name);
+                }
+            } catch (err: any) {
+                throw new Error(`Invalid metadata JSON: ${err.message}`);
+            }
+            // Include all other metadata fields passed
+            try {
+                const metadata = JSON.parse(metadataJson);
+                for (const key in metadata) {
+                    if (key !== 'latitude' && key !== 'longitude' && key !== 'location_name') {
+                        enriched[key] = metadata[key];
+                    }
+                }
+            } catch (err: any) {
+                // Ignore secondary parse error if the first one passed
+            }
+        }
+        return enriched;
+    }
+
     @Transaction()
     public async registerProduct(ctx: Context, productId: string, name: string, productType: string): Promise<void> {
         const mspId = ctx.clientIdentity.getMSPID();
@@ -22,7 +58,7 @@ export class TraceabilityContract extends Contract {
     }
 
     @Transaction()
-    public async registerBatch(ctx: Context, batchId: string, productId: string, quantity: number): Promise<void> {
+    public async registerBatch(ctx: Context, batchId: string, productId: string, quantity: number, metadataJson: string = ''): Promise<void> {
         const mspId = ctx.clientIdentity.getMSPID();
         
         const productBytes = await ctx.stub.getState(`PRODUCT_${productId}`);
@@ -46,11 +82,11 @@ export class TraceabilityContract extends Contract {
         );
 
         await ctx.stub.putState(`BATCH_${batchId}`, Buffer.from(JSON.stringify(batch)));
-        ctx.stub.setEvent('BATCH_REGISTERED', Buffer.from(JSON.stringify(batch)));
+        ctx.stub.setEvent('BATCH_REGISTERED', Buffer.from(JSON.stringify(this.enrichPayload(batch, metadataJson))));
     }
 
     @Transaction()
-    public async validateBatch(ctx: Context, batchId: string, validationResult: string): Promise<void> {
+    public async validateBatch(ctx: Context, batchId: string, validationResult: string, metadataJson: string = ''): Promise<void> {
         const mspId = ctx.clientIdentity.getMSPID();
         
         const batchBytes = await ctx.stub.getState(`BATCH_${batchId}`);
@@ -67,15 +103,22 @@ export class TraceabilityContract extends Contract {
             throw new Error(`Invalid state transition: Cannot validate batch in state ${batch.state}`);
         }
 
-        batch.state = BatchState.VALIDATED;
+        if (validationResult === 'VALID') {
+            batch.state = BatchState.VALIDATED;
+        } else {
+            batch.state = BatchState.BLOCKED;
+        }
+
         batch.updated_at = ctx.stub.getDateTimestamp().toISOString();
 
         await ctx.stub.putState(`BATCH_${batchId}`, Buffer.from(JSON.stringify(batch)));
-        ctx.stub.setEvent('BATCH_VALIDATED', Buffer.from(JSON.stringify(batch)));
+        ctx.stub.setEvent('BATCH_VALIDATED', Buffer.from(JSON.stringify(this.enrichPayload(batch, metadataJson))));
     }
 
+
+
     @Transaction()
-    public async transferBatch(ctx: Context, batchId: string, targetOrg: string): Promise<void> {
+    public async transferBatch(ctx: Context, batchId: string, targetOrg: string, metadataJson: string = ''): Promise<void> {
         const mspId = ctx.clientIdentity.getMSPID();
         
         const batchBytes = await ctx.stub.getState(`BATCH_${batchId}`);
@@ -98,11 +141,11 @@ export class TraceabilityContract extends Contract {
         (batch as any).pending_custodian = targetOrg;
 
         await ctx.stub.putState(`BATCH_${batchId}`, Buffer.from(JSON.stringify(batch)));
-        ctx.stub.setEvent('BATCH_TRANSFERRED', Buffer.from(JSON.stringify(batch)));
+        ctx.stub.setEvent('BATCH_TRANSFERRED', Buffer.from(JSON.stringify(this.enrichPayload(batch, metadataJson))));
     }
 
     @Transaction()
-    public async receiveBatch(ctx: Context, batchId: string): Promise<void> {
+    public async receiveBatch(ctx: Context, batchId: string, metadataJson: string = ''): Promise<void> {
         const mspId = ctx.clientIdentity.getMSPID();
         
         const batchBytes = await ctx.stub.getState(`BATCH_${batchId}`);
@@ -125,11 +168,11 @@ export class TraceabilityContract extends Contract {
         batch.updated_at = ctx.stub.getDateTimestamp().toISOString();
 
         await ctx.stub.putState(`BATCH_${batchId}`, Buffer.from(JSON.stringify(batch)));
-        ctx.stub.setEvent('BATCH_RECEIVED', Buffer.from(JSON.stringify(batch)));
+        ctx.stub.setEvent('BATCH_RECEIVED', Buffer.from(JSON.stringify(this.enrichPayload(batch, metadataJson))));
     }
 
     @Transaction()
-    public async processBatch(ctx: Context, batchId: string): Promise<void> {
+    public async processBatch(ctx: Context, batchId: string, metadataJson: string = ''): Promise<void> {
         const mspId = ctx.clientIdentity.getMSPID();
         
         const batchBytes = await ctx.stub.getState(`BATCH_${batchId}`);
@@ -150,11 +193,11 @@ export class TraceabilityContract extends Contract {
         batch.updated_at = ctx.stub.getDateTimestamp().toISOString();
 
         await ctx.stub.putState(`BATCH_${batchId}`, Buffer.from(JSON.stringify(batch)));
-        ctx.stub.setEvent('BATCH_PROCESSED', Buffer.from(JSON.stringify(batch)));
+        ctx.stub.setEvent('BATCH_PROCESSED', Buffer.from(JSON.stringify(this.enrichPayload(batch, metadataJson))));
     }
 
     @Transaction()
-    public async createTransformation(ctx: Context, parentBatchIdsStr: string, childBatchId: string, newProductId: string): Promise<void> {
+    public async createTransformation(ctx: Context, parentBatchIdsStr: string, childBatchId: string, newProductId: string, metadataJson: string = ''): Promise<void> {
         const mspId = ctx.clientIdentity.getMSPID();
         
         const parentBatchIds = JSON.parse(parentBatchIdsStr);
@@ -192,7 +235,7 @@ export class TraceabilityContract extends Contract {
         );
 
         await ctx.stub.putState(`BATCH_${childBatchId}`, Buffer.from(JSON.stringify(childBatch)));
-        ctx.stub.setEvent('BATCH_TRANSFORMED', Buffer.from(JSON.stringify(childBatch)));
+        ctx.stub.setEvent('BATCH_TRANSFORMED', Buffer.from(JSON.stringify(this.enrichPayload(childBatch, metadataJson))));
     }
 
     @Transaction()

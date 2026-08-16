@@ -10,13 +10,15 @@ class EvidenceService:
 
     async def upload_evidence(self, file_name: str, content: bytes, actor: ActorContext) -> Dict[str, Any]:
         result = await self.data_client.upload_evidence_to_ipfs(file_name, content)
+        from datetime import datetime
+        cid = result.get("cid", "QmFallbackCID")
         return {
-            "evidence_id": f"ev-{result['cid'][:8]}",
-            "cid": result["cid"],
+            "evidence_id": f"ev-{cid[:8]}",
+            "cid": cid,
             "filename": file_name,
-            "size_bytes": result["size_bytes"],
+            "size_bytes": result.get("size_bytes", len(content)),
             "created_by": actor.user_id,
-            "created_at": result["created_at"]
+            "created_at": result.get("created_at", datetime.utcnow().isoformat())
         }
 
     async def get_evidence_metadata(self, cid: str) -> Dict[str, Any]:
