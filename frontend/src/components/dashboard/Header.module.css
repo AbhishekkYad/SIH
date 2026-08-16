@@ -1,37 +1,162 @@
 .header {
-  height: 72px;
-  background-color: #fff;
-  border-bottom: 1px solid var(--color-oat-200);
+  height: 52px;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 32px;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 40;
 }
-.welcome {
-  font-size: 16px;
-  color: var(--text-primary);
-}
-.actions {
+
+.leftGroup {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
+  flex: 1;
+  max-width: 580px;
 }
-.org {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-secondary);
+
+.searchWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
 }
-.org span {
-  color: var(--color-earth-400);
+
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-subtle);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
 }
-.avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background-color: var(--color-grass-200);
+
+.searchInput {
+  width: 100%;
+  height: 32px;
+  padding: 0 34px 0 30px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  font-size: 12px;
+  background-color: var(--bg-subtle);
+  color: var(--text-primary);
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.searchInput:focus {
+  border-color: var(--border-focus);
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.08);
+}
+
+.kbdBadge {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-color);
+  padding: 1px 4px;
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+.networkPill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+.rightGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.iconButton {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-grass-600);
+  color: var(--text-secondary);
+  cursor: pointer;
+  position: relative;
+  transition: all var(--transition-fast);
+}
+
+.iconButton:hover {
+  background-color: var(--bg-subtle);
+  color: var(--text-primary);
+}
+
+.notifDot {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--color-danger);
+}
+
+.userProfile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 6px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.avatarBox {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: #0F172A;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
   font-weight: 700;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.userName {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.userRole {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .networkPill, .userInfo {
+    display: none;
+  }
 }

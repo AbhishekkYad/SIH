@@ -1,30 +1,56 @@
 .tabsContainer {
   display: flex;
-  gap: 24px;
-  border-bottom: 1px solid var(--color-oat-200);
+  align-items: center;
+  gap: 8px;
   margin-bottom: 24px;
+  padding: 4px;
   background: #FFFFFF;
-  padding: 0 4px;
+  border: 1px solid #EAEFEA;
+  border-radius: 14px;
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
+  box-shadow: 0 1px 3px rgba(20, 51, 36, 0.02);
 }
 
 .tab {
-  padding: 14px 0;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-muted);
-  border-bottom: 2px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #5A685D;
+  border-radius: 10px;
   cursor: pointer;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 180ms ease;
   white-space: nowrap;
 }
 
 .tab:hover {
-  color: var(--color-bean-400);
+  background-color: #F4F7F4;
+  color: #1A251D;
 }
 
 .tabActive {
-  color: var(--brand-green);
-  border-bottom-color: var(--brand-green);
-  font-weight: 700;
+  background-color: #1E4633;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.tabActive:hover {
+  background-color: #163627;
+  color: #FFFFFF;
+}
+
+@media (max-width: 768px) {
+  .tabsContainer {
+    width: 100%;
+    border-radius: 10px;
+  }
+  .tab {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
 }

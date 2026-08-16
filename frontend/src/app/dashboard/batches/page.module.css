@@ -1,202 +1,341 @@
-.pageHeader {
-  margin-bottom: 24px;
-}
-.title {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 16px;
-}
-.tabs {
+.container {
   display: flex;
-  gap: 24px;
-  border-bottom: 1px solid var(--color-oat-200);
-  margin-bottom: 24px;
+  flex-direction: column;
+  gap: 16px;
 }
-.tab {
-  padding: 12px 0;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-muted);
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
-  text-decoration: none;
-}
-.tabActive {
-  color: var(--brand-green);
-  border-bottom-color: var(--brand-green);
-}
-.controls {
+
+.topBar {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 4px;
 }
-.search {
-  padding: 10px 16px;
-  border: 1px solid var(--color-oat-300);
-  border-radius: var(--radius-full);
-  width: 300px;
-  font-size: 14px;
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pageTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.pageSubtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ── Status Metrics Strip ──────────────────────────────────── */
+.metricsStrip {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  box-shadow: var(--shadow-xs);
+}
+
+.metricCell {
+  padding: 10px 14px;
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.metricCell:last-child {
+  border-right: none;
+}
+
+.metricLabel {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.metricVal {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+}
+
+/* ── Filter Bar ────────────────────────────────────────────── */
+.filterBar {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-xs);
+}
+
+.searchBox {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+}
+
+.searchInput {
+  width: 100%;
+  height: 32px;
+  padding: 0 10px 0 28px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  font-size: 12px;
+  background-color: var(--bg-subtle);
   outline: none;
 }
-.actions {
+
+.searchInput:focus {
+  border-color: var(--border-focus);
+  background-color: #FFFFFF;
+}
+
+.chipGroup {
   display: flex;
-  gap: 12px;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
 }
+
+.filterBtn {
+  height: 28px;
+  padding: 0 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-surface);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.filterBtn:hover {
+  background-color: var(--bg-subtle);
+  color: var(--text-primary);
+}
+
+.filterBtnActive {
+  background-color: #0F172A;
+  color: #FFFFFF;
+  border-color: #0F172A;
+}
+
+/* ── Dense Batch Grid Table ────────────────────────────────── */
+.tableContainer {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+}
+
 .tableWrapper {
-  background: #fff;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-oat-200);
-  overflow: visible; /* to allow tooltip overflow */
+  width: 100%;
+  overflow-x: auto;
 }
+
 .table {
   width: 100%;
   border-collapse: collapse;
+  font-size: 12px;
   text-align: left;
 }
-.table th, .table td {
-  padding: 16px 24px;
-  border-bottom: 1px solid var(--color-oat-200);
-  font-size: 14px;
-  position: relative;
-}
+
 .table th {
-  background-color: var(--color-oat-light);
+  padding: 8px 12px;
+  font-size: 10.5px;
   font-weight: 600;
-  color: var(--text-secondary);
-}
-.table tr:last-child td {
-  border-bottom: none;
-}
-.table tr:hover {
-  background-color: var(--color-oat-light);
-}
-.status {
-  padding: 4px 10px;
-  border-radius: var(--radius-full);
-  font-size: 12px;
-  font-weight: 600;
-}
-.statusValidated {
-  background: var(--color-grass-100);
-  color: var(--color-grass-500);
-}
-.statusTransit {
-  background: var(--color-earth-soft);
-  color: var(--color-earth-400);
-}
-.statusBlocked {
-  background: var(--color-alert-soft);
-  color: var(--color-alert-red);
-}
-.tooltip {
-  position: absolute;
-  background: #fff;
-  border: 1px solid var(--color-oat-300);
-  box-shadow: 0 12px 36px rgba(27,41,30,0.1);
-  border-radius: var(--radius-sm);
-  padding: 16px;
-  z-index: 50;
-  width: 320px;
-  font-size: 12px;
-  margin-top: 8px;
-  right: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-}
-.tooltipRow {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 8px;
-}
-.tooltipLabel {
-  font-weight: 700;
-  color: var(--text-primary);
-}
-.tooltipValue {
-  color: var(--text-secondary);
-  word-break: break-all;
-}
-.bcInfo {
-  cursor: pointer;
-  color: var(--brand-green);
-  text-decoration: underline;
-  position: relative;
-  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  background-color: var(--bg-subtle);
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
 }
 
-/* Modal Styles */
-.modalBackdrop {
+.table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.table tbody tr {
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.table tbody tr:hover {
+  background-color: #F8FAFC;
+}
+
+.table tbody tr.rowSelected {
+  background-color: #EFF6FF;
+}
+
+/* ── Contextual Right-Side Inspection Drawer ───────────────── */
+.drawerBackdrop {
   position: fixed;
   inset: 0;
-  background: rgba(18, 28, 20, 0.6);
-  backdrop-filter: blur(4px);
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(2px);
+  z-index: 100;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+  justify-content: flex-end;
 }
 
-.modalContent {
-  background: #FFFFFF;
-  border-radius: var(--radius-xl);
+.drawerPanel {
   width: 100%;
-  max-width: 500px;
-  padding: 32px;
-  box-shadow: 0 16px 48px rgba(27, 41, 30, 0.15);
-}
-
-.modalHeader {
+  max-width: 580px;
+  height: 100vh;
+  background: #FFFFFF;
+  border-left: 1px solid var(--border-color);
   display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-drawer);
+  overflow-y: auto;
+  animation: slideIn 180ms ease forwards;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.drawerHeader {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: flex-start;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
+  background-color: var(--bg-subtle);
 }
 
-.modalTitle {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text-primary);
+.drawerBody {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
 }
 
-.modalClose {
-  font-size: 24px;
-  color: var(--text-muted);
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.formGroup {
-  margin-bottom: 16px;
+.detailSection {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.formLabel {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-secondary);
+.detailTitle {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
 }
 
-.formInput, .formSelect {
-  padding: 12px 16px;
-  border: 1px solid var(--color-oat-300);
+.detailGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
-  font-family: inherit;
-  font-size: 15px;
-  outline: none;
+  padding: 10px 12px;
 }
 
-.formInput:focus, .formSelect:focus {
-  border-color: var(--color-grass-400);
-}
-
-.formActions {
+.detailField {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.detailLabel {
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+
+.detailVal {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Vertical Chain of Custody Timeline */
+.timelineWrapper {
+  display: flex;
+  flex-direction: column;
   gap: 12px;
-  margin-top: 32px;
+  position: relative;
+  padding-left: 20px;
+}
+
+.timelineWrapper::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background-color: var(--border-color);
+}
+
+.timelineItem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.timelineDot {
+  position: absolute;
+  left: -20px;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2px solid var(--border-focus);
+}
+
+.timelineDotVerified {
+  border-color: var(--color-success);
+  background: var(--color-success);
+}
+
+.timelineHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.timelineMeta {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+@media (max-width: 960px) {
+  .metricsStrip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .metricsStrip {
+    grid-template-columns: 1fr;
+  }
 }

@@ -1,182 +1,150 @@
-.pageHeader {
-  margin-bottom: 24px;
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
-.title {
-  font-size: 24px;
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 4px;
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pageTitle {
+  font-size: 18px;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 16px;
 }
-.tabs {
-  display: flex;
-  gap: 24px;
-  border-bottom: 1px solid var(--color-oat-200);
-  margin-bottom: 24px;
-}
-.tab {
-  padding: 12px 0;
-  font-size: 15px;
-  font-weight: 600;
+
+.pageSubtitle {
+  font-size: 12px;
   color: var(--text-muted);
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
-  text-decoration: none;
 }
-.tabActive {
-  color: var(--brand-green);
-  border-bottom-color: var(--brand-green);
+
+/* ── Metrics Strip ─────────────────────────────────────────── */
+.metricsStrip {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  box-shadow: var(--shadow-xs);
 }
-.controls {
+
+.metricCell {
+  padding: 10px 14px;
+  border-right: 1px solid var(--border-color);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
+  flex-direction: column;
+  gap: 3px;
 }
-.search {
-  padding: 10px 16px;
-  border: 1px solid var(--color-oat-300);
-  border-radius: var(--radius-full);
-  width: 300px;
-  font-size: 14px;
-  outline: none;
+
+.metricCell:last-child {
+  border-right: none;
 }
-.actions {
-  display: flex;
-  gap: 12px;
+
+.metricLabel {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
-.qrSection {
-  background: var(--color-grass-100);
-  border: 1px solid rgba(46, 107, 78, 0.2);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.qrText h3 {
-  color: var(--color-grass-600);
-  margin-bottom: 4px;
+
+.metricVal {
   font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
 }
-.qrText p {
-  color: var(--color-grass-500);
-  font-size: 14px;
+
+/* ── Dual-QR Architecture Banner ───────────────────────────── */
+.banner {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  box-shadow: var(--shadow-xs);
+  flex-wrap: wrap;
 }
-.tableWrapper {
-  background: #fff;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-oat-200);
+
+.bannerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 620px;
+}
+
+.bannerTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.bannerText {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* ── Dense Table ───────────────────────────────────────────── */
+.tableContainer {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
   overflow: hidden;
 }
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;
+  font-size: 12px;
   text-align: left;
 }
-.table th, .table td {
-  padding: 16px 24px;
-  border-bottom: 1px solid var(--color-oat-200);
-  font-size: 14px;
-}
+
 .table th {
-  background-color: var(--color-oat-light);
+  padding: 8px 12px;
+  font-size: 10.5px;
   font-weight: 600;
-  color: var(--text-secondary);
-}
-.table tr:last-child td {
-  border-bottom: none;
-}
-.table tr:hover {
-  background-color: var(--color-oat-light);
-}
-.status {
-  padding: 4px 10px;
-  border-radius: var(--radius-full);
-  font-size: 12px;
-  font-weight: 600;
-  background: var(--color-oat-200);
-  color: var(--color-bean-400);
-}
-.qrCode {
-  font-family: monospace;
-  background: var(--color-oat-100);
-  padding: 4px 8px;
-  border-radius: 4px;
-  border: 1px solid var(--color-oat-300);
-}
-
-/* Modal Styles */
-.modalBackdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(18, 28, 20, 0.6);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modalContent {
-  background: #FFFFFF;
-  border-radius: var(--radius-xl);
-  width: 100%;
-  max-width: 500px;
-  padding: 32px;
-  box-shadow: 0 16px 48px rgba(27, 41, 30, 0.15);
-}
-
-.modalHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-}
-
-.modalTitle {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.modalClose {
-  font-size: 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
   color: var(--text-muted);
-  background: none;
-  border: none;
-  cursor: pointer;
+  background-color: var(--bg-subtle);
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
 }
 
-.formGroup {
-  margin-bottom: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  vertical-align: middle;
+  white-space: nowrap;
 }
 
-.formLabel {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-secondary);
+.table tbody tr:hover {
+  background-color: #F8FAFC;
 }
 
-.formInput, .formSelect {
-  padding: 12px 16px;
-  border: 1px solid var(--color-oat-300);
-  border-radius: var(--radius-sm);
-  font-family: inherit;
-  font-size: 15px;
-  outline: none;
-}
-
-.formInput:focus, .formSelect:focus {
-  border-color: var(--color-grass-400);
-}
-
-.formActions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 32px;
+@media (max-width: 960px) {
+  .metricsStrip {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
