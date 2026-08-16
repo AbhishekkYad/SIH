@@ -27,8 +27,8 @@ export default function WhyFoodTrace() {
             </div>
 
             <div>
-              <a href="#risk-engine" className="btn btn--grass">
-                Inspect Risk Traversal Engine →
+              <a href="#stakeholders" className="btn btn--grass">
+                Explore Stakeholder Network →
               </a>
             </div>
           </div>

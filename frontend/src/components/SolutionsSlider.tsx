@@ -52,7 +52,7 @@ const TABS: SolutionTab[] = [
     strongPart: 'automated POS lot freezes in < 200ms.',
     desc: 'Statistical deviations cluster complaints by SKU and regional hub. The risk engine traverses the DAG to isolate the exact root cause and freeze only affected units.',
     img: '/images/logineko/food-development-solutions.jpg',
-    link: '#risk-engine',
+    link: '#stakeholders',
   },
 ];
 

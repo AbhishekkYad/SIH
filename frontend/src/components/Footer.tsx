@@ -29,7 +29,7 @@ export default function Footer() {
               <li><a href="#mission" className={styles.footerLink}>Ecosystem Architecture</a></li>
               <li><a href="#crops" className={styles.footerLink}>Commodity Registry</a></li>
               <li><a href="#solutions" className={styles.footerLink}>Lineage DAG Engine</a></li>
-              <li><a href="#risk-engine" className={styles.footerLink}>Blast Radius Traversal</a></li>
+              <li><a href="#stakeholders" className={styles.footerLink}>Ecosystem Matrix</a></li>
             </ul>
           </div>
 
