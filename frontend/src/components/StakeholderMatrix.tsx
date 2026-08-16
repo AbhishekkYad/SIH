@@ -1,116 +1,87 @@
 'use client';
 import styles from './StakeholderMatrix.module.css';
 
-interface RoleCard {
-  role: string;
-  badge: string;
-  desc: string;
-  icon: string;
-  permissions: string[];
+interface Stakeholder {
+  id: string;
+  stepTag: string;
+  headline: string;
+  benefit: string;
+  img: string;
 }
 
-const ROLES: RoleCard[] = [
+const STAKEHOLDERS: Stakeholder[] = [
   {
-    role: 'Farmer / Producer',
-    badge: 'ORIGIN TIER',
-    desc: 'Where the food begins. Production details, geofence harvesting and genesis registration.',
-    icon: '🌾',
-    permissions: [
-      'Create genesis crop production records',
-      'View & audit own harvest batches',
-      'Update soil health & pesticide records',
-      'Sign initial custody handover DID',
-    ],
+    id: 'farmer',
+    stepTag: '01 — FARMER',
+    headline: 'Start with a trusted origin.',
+    benefit: 'Register raw materials, attach supporting evidence and create a verifiable starting point for every food journey.',
+    img: '/images/stakeholders/stakeholder-farmer.jpg',
   },
   {
-    role: 'Processor / Miller',
-    badge: 'TRANSFORMATION TIER',
-    desc: 'Milling, optical sortex grading, batch transformation and lab food safety compliance.',
-    icon: '⚙️',
-    permissions: [
-      'Receive raw aggregation shipments',
-      'Add processing & moisture parameters',
-      'Link input crops to output packaged lots',
-      'Attach accredited NABL lab certificates',
-    ],
+    id: 'processor',
+    stepTag: '02 — PRODUCER / PROCESSOR',
+    headline: 'Transform without losing lineage.',
+    benefit: 'Validate incoming materials, record processing events and connect every transformed batch to its source.',
+    img: '/images/stakeholders/stakeholder-processor.jpg',
   },
   {
-    role: 'Distributor / Logistics',
-    badge: 'TRANSIT TIER',
-    desc: 'Cold-chain telemetry, reefer temperature monitoring and inter-facility transit handovers.',
-    icon: '🚚',
-    permissions: [
-      'View cryptographically assigned shipments',
-      'Stream real-time IoT temperature & GPS',
-      'Log transit delay or seal status events',
-      'Confirm custody delivery to warehouse / POS',
-    ],
+    id: 'manufacturer',
+    stepTag: '03 — MANUFACTURER',
+    headline: 'Know every batch you create.',
+    benefit: 'Create traceable batches and units, monitor product status and act quickly when a safety issue emerges.',
+    img: '/images/stakeholders/stakeholder-manufacturer.png',
   },
   {
-    role: 'Retailer / Supermarket',
-    badge: 'COMMERCE TIER',
-    desc: 'Inbound dock verification, POS inventory sync, shelf tracking and immediate quarantine receipt.',
-    icon: '🏬',
-    permissions: [
-      'Verify incoming pallet cryptographic seals',
-      'Manage inventory & shelf life limits',
-      'Execute sub-second POS barcode lock',
-      'Review and respond to consumer issues',
-    ],
+    id: 'logistics',
+    stepTag: '04 — TRANSPORTER / LOGISTICS',
+    headline: 'Keep the chain moving & visible.',
+    benefit: 'Record verified transfers and maintain a clear chain of custody as products move between supply-chain stages.',
+    img: '/images/stakeholders/stakeholder-logistics.png',
   },
   {
-    role: 'Consumer / Citizen',
-    badge: 'VERIFICATION TIER',
-    desc: 'GS1 Digital Link smartphone scan, farm-to-fork journey verification and quality feedback loop.',
-    icon: '📱',
-    permissions: [
-      'Verify authentic farm origin & harvest date',
-      'View complete 8-stage custody history',
-      'Inspect pesticide & nutritional lab reports',
-      'Submit direct quality feedback or defect alert',
-    ],
+    id: 'retailer',
+    stepTag: '05 — RETAILER',
+    headline: 'Turn the final handoff into trust.',
+    benefit: 'Receive traceable inventory, connect products with consumer interactions and respond to complaints within context.',
+    img: '/images/stakeholders/stakeholder-retailer.png',
+  },
+  {
+    id: 'consumer',
+    stepTag: '06 — CONSUMER',
+    headline: "Know what you're buying.",
+    benefit: "Scan the product, view its permitted journey, verify traceability and report concerns when something isn't right.",
+    img: '/images/stakeholders/stakeholder-consumer.png',
   },
 ];
 
 export default function StakeholderMatrix() {
   return (
-    <section className={styles.section} id="stakeholders">
+    <section className={styles.blockStakeholders} id="stakeholders">
       <div className="container">
-        {/* Header */}
-        <div className={styles.header}>
-          <span className="eyebrow">ROLE-BASED ECOSYSTEM ACCESS</span>
-          <h2 className={styles.title}>
-            Permissioned Ecosystem: <strong>Tailored for every stakeholder.</strong>
+        <header className={styles.sectionHeader}>
+          <span className="eyebrow">WHO WE EMPOWER</span>
+          <h2 className={styles.sectionTitle}>
+            One connected platform. Six stakeholders. <strong>One trusted food journey.</strong>
           </h2>
-          <p className={styles.lead}>
-            FoodTrace operates on a clean, role-based access model. Every participant accesses precisely the data and actions relevant to their operational responsibility.
+          <p className={styles.sectionLead}>
+            FoodTrace gives every participant visibility, accountability and the right tools to manage food from source to consumer — without breaking the chain of trust.
           </p>
-        </div>
+        </header>
 
-        {/* Card-Based Grid */}
-        <div className={styles.grid}>
-          {ROLES.map((item) => (
-            <div key={item.role} className={styles.card}>
-              <div className={styles.cardTop}>
-                <span className={styles.roleIcon}>{item.icon}</span>
-                <span className={styles.roleBadge}>{item.badge}</span>
+        <div className={styles.matrixGrid} role="list">
+          {STAKEHOLDERS.map((s) => (
+            <article key={s.id} className={styles.actorCard}>
+              <div className={styles.circleWrap}>
+                <img src={s.img} alt={s.headline} loading="lazy" className={styles.circleImg} />
               </div>
 
-              <h3 className={styles.roleTitle}>{item.role}</h3>
-              <p className={styles.roleDesc}>{item.desc}</p>
-
-              <div className={styles.permsWrap}>
-                <span className={styles.permsHead}>PERMITTED ACTIONS</span>
-                <ul className={styles.permsList}>
-                  {item.permissions.map((p, idx) => (
-                    <li key={idx} className={styles.permItem}>
-                      <span className={styles.permCheck}>✓</span>
-                      <span>{p}</span>
-                    </li>
-                  ))}
-                </ul>
+              <div className={styles.cardHeader}>
+                <span className={styles.stepTag}>{s.stepTag}</span>
+                <h3 className={styles.headline}>{s.headline}</h3>
               </div>
-            </div>
+
+              <p className={styles.benefit}>{s.benefit}</p>
+            </article>
           ))}
         </div>
       </div>

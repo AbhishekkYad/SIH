@@ -1,241 +1,226 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import styles from './page.module.css';
-import { fetchUnits, generateUnits } from '@/lib/api';
+import {
+  IconSearch,
+  IconDownload,
+  IconExternal,
+} from '@/components/icons/Icons';
 
-const MOCK_UNITS = [
-  { id: 'UNIT-1001', batchId: 'BATCH-MBTSDM2UM', status: 'PRINTED', outerQR: 'QR-A1B2C3D4', innerCode: 'SEC-9981-A' },
-  { id: 'UNIT-1002', batchId: 'BATCH-MBTSDM2UM', status: 'PRINTED', outerQR: 'QR-X9Y8Z7W6', innerCode: 'SEC-4412-B' },
-  { id: 'UNIT-1003', batchId: 'BATCH-IKHJWTOYD', status: 'PENDING', outerQR: 'N/A', innerCode: 'N/A' },
+interface SerialUnit {
+  id: string;
+  serialNumber: string;
+  batchNumber: string;
+  outerQR: string;
+  scratchKey: string;
+  printDate: string;
+  scanCount: number;
+  status: 'SEALED' | 'AUTHENTICATED' | 'QUARANTINED';
+}
+
+const UNITS_DATA: SerialUnit[] = [
+  { id: '1', serialNumber: 'UNIT-WF-1002-001', batchNumber: 'BATCH-WF-2025-042', outerQR: 'https://foodtrace.io/qr/u1002001', scratchKey: 'SEC-9812-WF', printDate: '10 Aug 2026', scanCount: 1, status: 'AUTHENTICATED' },
+  { id: '2', serialNumber: 'UNIT-WF-1002-002', batchNumber: 'BATCH-WF-2025-042', outerQR: 'https://foodtrace.io/qr/u1002002', scratchKey: 'SEC-7714-WF', printDate: '10 Aug 2026', scanCount: 0, status: 'SEALED' },
+  { id: '3', serialNumber: 'UNIT-BR-2018-044', batchNumber: 'BATCH-BR-2025-018', outerQR: 'https://foodtrace.io/qr/u2018044', scratchKey: 'SEC-4421-BR', printDate: '08 Aug 2026', scanCount: 2, status: 'AUTHENTICATED' },
+  { id: '4', serialNumber: 'UNIT-MO-3003-012', batchNumber: 'BATCH-MO-2025-003', outerQR: 'https://foodtrace.io/qr/u3003012', scratchKey: 'SEC-1190-MO', printDate: '05 Aug 2026', scanCount: 0, status: 'SEALED' },
+  { id: '5', serialNumber: 'UNIT-TD-9009-088', batchNumber: 'BATCH-TD-2025-009', outerQR: 'https://foodtrace.io/qr/u9009088', scratchKey: 'SEC-6632-TD', printDate: '12 Aug 2026', scanCount: 0, status: 'SEALED' },
+  { id: '6', serialNumber: 'UNIT-CD-4004-009', batchNumber: 'BATCH-CD-2025-004', outerQR: 'https://foodtrace.io/qr/u4004009', scratchKey: 'SEC-8821-CD', printDate: '28 Jul 2026', scanCount: 5, status: 'QUARANTINED' },
 ];
 
 export default function UnitsPage() {
-  const [units, setUnits] = useState(MOCK_UNITS);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
-  const [revealCredentials, setRevealCredentials] = useState(false);
-  const [formData, setFormData] = useState({
-    batchId: 'BATCH-MBTSDM2UM',
-    count: '10'
-  });
+  const [units] = useState<SerialUnit[]>(UNITS_DATA);
+  const [search, setSearch] = useState('');
+  const [revealedKeys, setRevealedKeys] = useState<Record<string, boolean>>({});
 
-  // Load units from API on mount
-  useEffect(() => {
-    async function loadData() {
-      const data = await fetchUnits();
-      if (data && data.length > 0) {
-        const formatted = data.map((u: any) => ({
-          id: u.id,
-          batchId: u.batchId,
-          status: u.status || 'PRINTED',
-          outerQR: u.outerQR || 'N/A',
-          innerCode: u.innerCredential || u.innerCode || 'N/A'
-        }));
-        setUnits(formatted);
-      }
-    }
-    loadData();
-  }, []);
-
-  const handleGenerateSerials = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const count = parseInt(formData.count, 10) || 1;
-
-    // Call backend API
-    const result = await generateUnits({
-      batchId: formData.batchId,
-      count: count
-    });
-
-    let newUnits;
-    if (result.units && result.units.length > 0) {
-      newUnits = result.units.map((u: any) => ({
-        id: u.id,
-        batchId: u.batchId,
-        status: u.status || 'PRINTED',
-        outerQR: u.outerQR || `QR-${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
-        innerCode: u.innerCredential || u.innerCode || `SEC-${Math.floor(1000 + Math.random() * 9000)}-A`
-      }));
-    } else {
-      // Fallback: generate locally
-      newUnits = Array.from({ length: count }).map((_, i) => ({
-        id: `UNIT-${1004 + i + units.length}`,
-        batchId: formData.batchId,
-        status: 'PRINTED',
-        outerQR: `QR-${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
-        innerCode: `SEC-${Math.floor(1000 + Math.random() * 9000)}-${String.fromCharCode(65 + (i % 26))}`
-      }));
-    }
-    
-    setUnits([...newUnits, ...units]);
-    setIsModalOpen(false);
+  const toggleKey = (id: string) => {
+    setRevealedKeys((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
+  const filtered = units.filter((u) =>
+    u.serialNumber.toLowerCase().includes(search.toLowerCase()) ||
+    u.batchNumber.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <div>
-      <div className={styles.pageHeader}>
-        <div className={styles.title}>Admin / Consumer Unit Identities & Credentials</div>
-      </div>
-
-      <div className={styles.qrSection}>
-        <div className={styles.qrText}>
-          <h3>QR Code & Credential Provisioning</h3>
-          <p>Generate Outer QR codes for batch-level traceability and secure Inner Credentials for physical product packaging.</p>
+    <div className={styles.container}>
+      {/* ── Top Header ────────────────────────────────────────── */}
+      <div className={styles.topBar}>
+        <div className={styles.titleBlock}>
+          <h1 className={styles.pageTitle}>Units & Dual-QR Security Serialization</h1>
+          <p className={styles.pageSubtitle}>
+            Item-level cryptographic provenance: public outer GS1 Digital Link paired with tamper-evident scratch-off credentials.
+          </p>
         </div>
-        <div style={{ display: 'flex', gap: '12px' }}>
-          <button className="btn btn--outline" onClick={() => setRevealCredentials(!revealCredentials)}>
-            {revealCredentials ? '🔒 Hide Creator Keys' : '🔓 Unhide Creator Inner Keys'}
+
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button
+            className="btn btn--secondary"
+            onClick={() => alert('Exporting factory laser applicator print sheet (24 labels/A4)...')}
+          >
+            <IconDownload size={13} /> Print Sheet
           </button>
-          <button className="btn btn--outline" onClick={() => setIsPrintModalOpen(true)}>
-            🖨️ Print Label Sheet
-          </button>
-          <button className="btn btn--grass" onClick={() => setIsModalOpen(true)}>
-            + Generate Unit Serials
+          <button
+            className="btn btn--primary"
+            onClick={() => alert('Provisioning 500 new cryptographic serial pairs on Hyperledger Fabric...')}
+          >
+            + Provision Serial Range
           </button>
         </div>
       </div>
 
-      <div className={styles.controls}>
-        <input type="text" placeholder="Search units by ID, Batch, or QR..." className={styles.search} />
+      {/* ── Metrics Strip ──────────────────────────────────────── */}
+      <div className={styles.metricsStrip}>
+        <div className={styles.metricCell}>
+          <span className={styles.metricLabel}>Total Provisioned Units</span>
+          <span className={styles.metricVal}>45,200</span>
+          <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Dual-QR Encoded</span>
+        </div>
+        <div className={styles.metricCell}>
+          <span className={styles.metricLabel}>Consumer Verifications</span>
+          <span className={styles.metricVal}>18,450</span>
+          <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>40.8% scratch validation rate</span>
+        </div>
+        <div className={styles.metricCell}>
+          <span className={styles.metricLabel}>Anti-Counterfeit Score</span>
+          <span className={styles.metricVal} style={{ color: 'var(--color-success)' }}>99.98%</span>
+          <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Zero duplicate collision</span>
+        </div>
+        <div className={styles.metricCell}>
+          <span className={styles.metricLabel}>Quarantined Serials</span>
+          <span className={styles.metricVal} style={{ color: 'var(--color-danger)' }}>2</span>
+          <span style={{ fontSize: '11px', color: 'var(--color-danger)' }}>Excessive scan collision</span>
+        </div>
       </div>
 
-      <div className={styles.tableWrapper}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Unit ID</th>
-              <th>Parent Batch</th>
-              <th>Status</th>
-              <th>Outer QR (Traceability)</th>
-              <th>Inner Credential (Authenticity)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {units.map(unit => (
-              <tr key={unit.id}>
-                <td style={{fontWeight: 600}}>{unit.id}</td>
-                <td>{unit.batchId}</td>
-                <td><span className={styles.status}>{unit.status}</span></td>
-                <td>
-                  {unit.outerQR !== 'N/A' ? (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <img 
-                        src={`https://api.qrserver.com/v1/create-qr-code/?size=48x48&data=${encodeURIComponent(`http://localhost:3000/track/batch/${unit.batchId}`)}`} 
-                        alt="Outer QR" 
-                        style={{ width: '36px', height: '36px', borderRadius: '4px', border: '1px solid var(--color-oat-300)' }}
-                      />
-                      <span className={styles.qrCode}>{unit.outerQR}</span>
-                    </div>
-                  ) : '-'}
-                </td>
-                <td>
-                  {unit.innerCode === 'N/A' ? '-' : (
-                    revealCredentials ? (
-                      <span style={{ fontFamily: 'var(--font-mono)', fontWeight: '700', color: 'var(--color-grass-500)', background: 'var(--color-grass-100)', padding: '4px 8px', borderRadius: '4px' }}>
-                        {unit.innerCode}
-                      </span>
-                    ) : (
-                      <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                        •••••••• (Hidden)
-                      </span>
-                    )
-                  )}
-                </td>
+      {/* ── Dual-QR Architecture Banner ───────────────────────── */}
+      <div className={styles.banner}>
+        <div className={styles.bannerLeft}>
+          <span className={styles.bannerTitle}>Dual-Layer Anti-Counterfeiting Security Architecture</span>
+          <p className={styles.bannerText}>
+            Public Outer QR is accessible to retail scanners to trace farm-to-fork chain-of-custody. The Scratch-Off Secret Key is validated exclusively by the end consumer via SHA-256 HMAC verification to prevent packaging clone attacks.
+          </p>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: 'var(--bg-subtle)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', padding: '8px 14px' }}>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: '10.5px', fontWeight: 700, color: 'var(--text-muted)' }}>OUTER QR</div>
+            <code className="mono-num" style={{ fontSize: '11px', color: 'var(--color-info)' }}>GS1 DigitalLink</code>
+          </div>
+          <span style={{ color: 'var(--text-subtle)' }}>+</span>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: '10.5px', fontWeight: 700, color: 'var(--text-muted)' }}>SCRATCH SECRET</div>
+            <code className="mono-num" style={{ fontSize: '11px', color: 'var(--color-success)' }}>HMAC Token</code>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Dense Table ───────────────────────────────────────── */}
+      <div className={styles.tableContainer}>
+        <div style={{ padding: '8px 12px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-subtle)' }}>
+          <div style={{ position: 'relative', width: '100%', maxWidth: '280px' }}>
+            <span style={{ position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-subtle)' }}>
+              <IconSearch size={13} />
+            </span>
+            <input
+              type="text"
+              style={{
+                width: '100%',
+                height: '28px',
+                padding: '0 8px 0 26px',
+                borderRadius: '4px',
+                border: '1px solid var(--border-color)',
+                fontSize: '11.5px',
+                backgroundColor: '#FFFFFF',
+                outline: 'none',
+              }}
+              placeholder="Search serial or parent batch..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+
+          <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+            Showing <strong>{filtered.length}</strong> serialized records
+          </span>
+        </div>
+
+        <div className={styles.tableWrapper}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Serial Identifier</th>
+                <th>Parent Batch ID</th>
+                <th>Public GS1 QR URI</th>
+                <th>Tamper Scratch Secret</th>
+                <th>Scan Velocity</th>
+                <th>Printed Date</th>
+                <th>State</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Generation Modal */}
-      {isModalOpen && (
-        <div className={styles.modalBackdrop} onClick={() => setIsModalOpen(false)}>
-          <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
-            <div className={styles.modalHeader}>
-              <h2 className={styles.modalTitle}>Generate Unit Serials</h2>
-              <button className={styles.modalClose} onClick={() => setIsModalOpen(false)}>✕</button>
-            </div>
-            
-            <form onSubmit={handleGenerateSerials}>
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Parent Production Batch</label>
-                <select className={styles.formSelect} value={formData.batchId} onChange={e => setFormData({...formData, batchId: e.target.value})}>
-                  <option value="BATCH-MBTSDM2UM">BATCH-MBTSDM2UM (Organic Wheat Flour 5KG)</option>
-                  <option value="BATCH-IKHJWTOYD">BATCH-IKHJWTOYD (Cold Pressed Mustard Oil 1L)</option>
-                  <option value="BATCH-GQU2F3SI4">BATCH-GQU2F3SI4 (Pure Himalayan Honey 500g)</option>
-                </select>
-              </div>
-
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Number of Units to Generate</label>
-                <input type="number" className={styles.formInput} value={formData.count} onChange={e => setFormData({...formData, count: e.target.value})} min="1" max="1000" />
-              </div>
-
-              <div style={{ marginTop: '16px', padding: '16px', background: 'var(--color-oat-100)', borderRadius: '8px' }}>
-                <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
-                  <strong>Packaging Dual-Code Spec:</strong>
-                </p>
-                <ul style={{ fontSize: '13px', color: 'var(--text-secondary)', marginLeft: '20px', marginTop: '8px' }}>
-                  <li><strong>Outer QR:</strong> Printed on carton label. Links to <code>/track/batch/[id]</code>.</li>
-                  <li><strong>Inner Credential:</strong> Sealed under scratch-off strip for physical product verification.</li>
-                </ul>
-              </div>
-
-              <div className={styles.formActions}>
-                <button type="button" className="btn btn--outline" onClick={() => setIsModalOpen(false)}>Cancel</button>
-                <button type="submit" className="btn btn--grass">Generate & Provision</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Dual Label Print Export Modal */}
-      {isPrintModalOpen && (
-        <div className={styles.modalBackdrop} onClick={() => setIsPrintModalOpen(false)}>
-          <div className={styles.modalContent} style={{ maxWidth: '640px' }} onClick={e => e.stopPropagation()}>
-            <div className={styles.modalHeader}>
-              <h2 className={styles.modalTitle}>Dual Packaging Label Export Sheet</h2>
-              <button className={styles.modalClose} onClick={() => setIsPrintModalOpen(false)}>✕</button>
-            </div>
-
-            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
-              Export sheet for factory laser printers. Ready to print on packaging lines.
-            </p>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', maxHeight: '350px', overflowY: 'auto', padding: '8px' }}>
-              {units.filter(u => u.outerQR !== 'N/A').map(u => (
-                <div key={u.id} style={{ border: '2px dashed var(--color-oat-300)', padding: '12px', borderRadius: '8px', background: '#FFF', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center', textAlign: 'center' }}>
-                  <span style={{ fontSize: '11px', fontWeight: '800', fontFamily: 'var(--font-mono)' }}>{u.id} ({u.batchId})</span>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div>
-                      <img 
-                        src={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${encodeURIComponent(`http://localhost:3000/track/batch/${u.batchId}`)}`} 
-                        alt="Outer QR" 
-                        style={{ width: '60px', height: '60px' }}
-                      />
-                      <div style={{ fontSize: '9px', fontWeight: '700', marginTop: '2px' }}>OUTER QR (Scan)</div>
-                    </div>
-                    <div style={{ background: 'var(--color-oat-200)', padding: '8px', borderRadius: '6px' }}>
-                      <div style={{ fontSize: '10px', fontWeight: '800', color: 'var(--color-bean-400)', fontFamily: 'var(--font-mono)' }}>
-                        {u.innerCode}
+            </thead>
+            <tbody>
+              {filtered.map((u) => {
+                const isRevealed = revealedKeys[u.id];
+                return (
+                  <tr key={u.id}>
+                    <td>
+                      <span className="mono-num" style={{ fontWeight: 700, color: 'var(--text-primary)' }}>
+                        {u.serialNumber}
+                      </span>
+                    </td>
+                    <td>
+                      <Link href={`/track/batch/${u.batchNumber}`} style={{ color: 'var(--color-info)', textDecoration: 'underline' }}>
+                        {u.batchNumber}
+                      </Link>
+                    </td>
+                    <td>
+                      <code className="badge badge--neutral mono-num" style={{ fontSize: '10.5px' }}>
+                        {u.outerQR.replace('https://', '')}
+                      </code>
+                    </td>
+                    <td>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <code className="mono-num" style={{ color: isRevealed ? 'var(--text-primary)' : 'var(--text-muted)' }}>
+                          {isRevealed ? u.scratchKey : '••••••••••••'}
+                        </code>
+                        <button
+                          onClick={() => toggleKey(u.id)}
+                          style={{ fontSize: '10.5px', color: 'var(--color-info)', textDecoration: 'underline' }}
+                        >
+                          {isRevealed ? 'Hide' : 'Reveal'}
+                        </button>
                       </div>
-                      <div style={{ fontSize: '8px', color: 'var(--text-muted)', marginTop: '2px' }}>INNER SCRATCH CODE</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className={styles.formActions} style={{ marginTop: '20px' }}>
-              <button type="button" className="btn btn--outline" onClick={() => setIsPrintModalOpen(false)}>Close</button>
-              <button type="button" className="btn btn--grass" onClick={() => window.print()}>🖨️ Send to Factory Printer</button>
-            </div>
-          </div>
+                    </td>
+                    <td className="mono-num" style={{ fontWeight: 600 }}>
+                      {u.scanCount} scans
+                    </td>
+                    <td style={{ color: 'var(--text-muted)', fontSize: '11px' }}>{u.printDate}</td>
+                    <td>
+                      {u.status === 'AUTHENTICATED' ? (
+                        <span className="badge badge--success">✓ Authenticated</span>
+                      ) : u.status === 'SEALED' ? (
+                        <span className="badge badge--info">● Sealed</span>
+                      ) : (
+                        <span className="badge badge--danger">● Quarantined</span>
+                      )}
+                    </td>
+                    <td>
+                      <Link
+                        href={`/track/batch/${u.batchNumber}`}
+                        style={{ color: 'var(--color-info)', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '3px' }}
+                      >
+                        <IconExternal size={11} /> Validate
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
-      )}
+      </div>
     </div>
   );
 }

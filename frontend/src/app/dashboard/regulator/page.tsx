@@ -2,298 +2,218 @@
 
 import { useState } from 'react';
 import styles from './page.module.css';
+import {
+  IconSearch,
+  IconCopy,
+  IconExternal,
+} from '@/components/icons/Icons';
 
-const MOCK_INCIDENTS = [
-  {
-    id: 'INC-9942', unitId: 'UNIT-1002', batchId: 'BATCH-MBTSDM2UM',
-    category: 'Spoilage', reporter: 'Consumer (App)', status: 'UNDER_INVESTIGATION',
-    evidenceCid: 'QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco',
-    description: 'Consumer reported foul odor and discoloration in wheat flour bag. Product was within shelf-life.',
-    nearestOrg: 'Sahyadri Agro Processing', escalation: 'LEVEL_1_WARNING',
-    date: '15 Aug 2026', resolvedDate: null,
-    affectedScope: ['BATCH-FLOUR-881', 'BATCH-RTL-90A', 'BATCH-RTL-90B'],
-  },
-  {
-    id: 'INC-9941', unitId: 'UNIT-1001', batchId: 'BATCH-MBTSDM2UM',
-    category: 'Packaging Defect', reporter: 'Retailer', status: 'ESCALATED',
-    evidenceCid: 'QmTp2hEo8eXRp6wg7jXv1qE9RzT3fV4dJkLKmNgG1BqCw',
-    description: 'Retailer found compromised seal on 12 units. Inner credential exposed.',
-    nearestOrg: 'Central Packaging Hub', escalation: 'ESCALATED_WARNING',
-    date: '14 Aug 2026', resolvedDate: null,
-    affectedScope: ['BATCH-MBTSDM2UM'],
-  },
-  {
-    id: 'INC-9938', unitId: 'UNIT-0892', batchId: 'BATCH-IKHJWTOYD',
-    category: 'Taste/Odor', reporter: 'Consumer (Web)', status: 'RESOLVED',
-    evidenceCid: 'QmResolvedEvidence12345',
-    description: 'Slight rancid taste detected. Lab confirmed oil batch within safety threshold.',
-    nearestOrg: 'Sahyadri Agro Processing', escalation: 'LEVEL_1_WARNING',
-    date: '12 Aug 2026', resolvedDate: '13 Aug 2026',
-    affectedScope: [],
-  },
+interface Certificate {
+  id: string;
+  certNumber: string;
+  facility: string;
+  certType: string;
+  authority: string;
+  validUntil: string;
+  ipfsHash: string;
+  status: 'ACTIVE' | 'RENEWAL_DUE' | 'AUDIT_PENDING';
+}
+
+const CERTS_DATA: Certificate[] = [
+  { id: '1', certNumber: 'FSSAI-MH-2026-004', facility: 'Sahyadri Milling Unit #04', certType: 'Central Food Safety License (Manufacturing)', authority: 'FSSAI Regional MH', validUntil: '31 Dec 2026', ipfsHash: 'QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG', status: 'ACTIVE' },
+  { id: '2', certNumber: 'ORG-APEDA-2026-091', facility: 'Nashik Organic Farmer Cluster #402', certType: 'NPOP Organic Farming Certification', authority: 'APEDA India', validUntil: '15 Oct 2026', ipfsHash: 'QmRAQB6YaCyidP37UdDnjFY5vQuiBrcqdyoW1CuDgwxkD4', status: 'ACTIVE' },
+  { id: '3', certNumber: 'ISO-22000-FSMS-2026', facility: 'Alwar Cold-Press Unit #02', certType: 'ISO 22000:2018 Food Safety Management', authority: 'Bureau Veritas', validUntil: '20 Sep 2026', ipfsHash: 'QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq', status: 'RENEWAL_DUE' },
+  { id: '4', certNumber: 'FSSAI-MP-2026-112', facility: 'Indore Pulse Processing Plant', certType: 'Central Food Processing License', authority: 'FSSAI Regional MP', validUntil: '10 Aug 2026 (Expired)', ipfsHash: 'QmZ4tDuvesekSs4qM5ZBKpXiZGun7S2hLDFms8Cwo7W3hB', status: 'AUDIT_PENDING' },
 ];
-
-const MOCK_RECALLS = [
-  {
-    id: 'RECALL-44102', batchId: 'BATCH-MBTSDM2UM', scope: 3,
-    status: 'ACTIVE', issuedBy: 'RegulatorOrg', date: '15 Aug 2026',
-    affectedRetailLocations: ['GreenBasket Bandra', 'GreenBasket Juhu'],
-  },
-];
-
-const STATUS_MAP: Record<string, { label: string; color: string }> = {
-  'UNDER_INVESTIGATION': { label: 'Under Investigation', color: 'var(--color-earth-400)' },
-  'ESCALATED': { label: 'Escalated', color: 'var(--color-alert-red)' },
-  'RESOLVED': { label: 'Resolved', color: 'var(--color-grass-400)' },
-  'NEW': { label: 'New', color: 'var(--color-grass-300)' },
-  'ACTIVE': { label: 'Active Recall', color: 'var(--color-alert-red)' },
-  'CLOSED': { label: 'Closed', color: 'var(--text-muted)' },
-};
 
 export default function RegulatorPage() {
-  const [selectedIncident, setSelectedIncident] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'incidents' | 'recalls' | 'evidence'>('incidents');
+  const [certs] = useState<Certificate[]>(CERTS_DATA);
+  const [search, setSearch] = useState('');
+  const [selectedCert, setSelectedCert] = useState<Certificate | null>(CERTS_DATA[0]);
 
-  const detail = MOCK_INCIDENTS.find((i) => i.id === selectedIncident);
+  const filtered = certs.filter((c) =>
+    c.certNumber.toLowerCase().includes(search.toLowerCase()) ||
+    c.facility.toLowerCase().includes(search.toLowerCase()) ||
+    c.certType.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
-    <div>
-      <div className={styles.pageHeader}>
-        <div className={styles.headerTop}>
-          <div>
-            <div className={styles.eyebrow}>🛡️ REGULATORY OVERSIGHT CONSOLE</div>
-            <div className={styles.title}>Regulator Dashboard</div>
-            <div className={styles.subtitle}>
-              Review incidents, inspect evidence, assess recall scope, and issue corrective actions with full chain-of-custody visibility.
-            </div>
-          </div>
-          <div className={styles.headerStats}>
-            <div className={styles.statBox}>
-              <span className={styles.statValue} style={{ color: 'var(--color-alert-red)' }}>2</span>
-              <span className={styles.statLabel}>Open Incidents</span>
-            </div>
-            <div className={styles.statBox}>
-              <span className={styles.statValue} style={{ color: 'var(--color-earth-400)' }}>1</span>
-              <span className={styles.statLabel}>Active Recalls</span>
-            </div>
-            <div className={styles.statBox}>
-              <span className={styles.statValue} style={{ color: 'var(--color-grass-400)' }}>1</span>
-              <span className={styles.statLabel}>Resolved</span>
-            </div>
-          </div>
+    <div className={styles.container}>
+      {/* ── Top Header ────────────────────────────────────────── */}
+      <div className={styles.topBar}>
+        <div className={styles.titleBlock}>
+          <h1 className={styles.pageTitle}>Regulatory Compliance & Evidence Vault</h1>
+          <p className={styles.pageSubtitle}>
+            FSSAI Section 16 compliance dossiers, APEDA organic credentials, ISO certifications, and auditor attestations.
+          </p>
         </div>
-      </div>
 
-      {/* Tabs */}
-      <div className={styles.tabBar}>
-        {(['incidents', 'recalls', 'evidence'] as const).map((tab) => (
+        <div style={{ display: 'flex', gap: '8px' }}>
           <button
-            key={tab}
-            className={`${styles.tabBtn} ${activeTab === tab ? styles.tabBtnActive : ''}`}
-            onClick={() => setActiveTab(tab)}
+            className="btn btn--primary"
+            onClick={() => alert('Generating FSSAI Comprehensive Annual Compliance Certificate on Blockchain...')}
           >
-            {tab === 'incidents' ? '📋 Incident Review' : tab === 'recalls' ? '🚨 Recall Registry' : '📎 Evidence Vault'}
+            Generate FSSAI Dossier
           </button>
-        ))}
+        </div>
       </div>
 
-      <div className={styles.mainGrid}>
-        {/* ── Left Panel: Table ──────────────────────────────── */}
-        <div className={styles.listPanel}>
-          {activeTab === 'incidents' && (
-            <>
-              <div className={styles.panelHead}>
-                <h3 className={styles.panelTitle}>All Incidents</h3>
-                <input type="text" placeholder="Search by ID, batch, or category..." className={styles.searchInput} />
-              </div>
-              <div className={styles.incidentList}>
-                {MOCK_INCIDENTS.map((inc) => {
-                  const st = STATUS_MAP[inc.status] || { label: inc.status, color: 'var(--text-muted)' };
-                  return (
-                    <div
-                      key={inc.id}
-                      className={`${styles.incidentRow} ${selectedIncident === inc.id ? styles.incidentRowActive : ''}`}
-                      onClick={() => setSelectedIncident(inc.id)}
-                    >
-                      <div className={styles.incidentMeta}>
-                        <span className={styles.incidentId}>{inc.id}</span>
-                        <span className={styles.incidentDate}>{inc.date}</span>
-                      </div>
-                      <div className={styles.incidentTitle}>{inc.category} — {inc.batchId}</div>
-                      <div className={styles.incidentFooter}>
-                        <span className={styles.incidentReporter}>by {inc.reporter}</span>
-                        <span className={styles.statusBadge} style={{ color: st.color, borderColor: st.color }}>{st.label}</span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </>
-          )}
-
-          {activeTab === 'recalls' && (
-            <>
-              <div className={styles.panelHead}>
-                <h3 className={styles.panelTitle}>Recall Actions</h3>
-              </div>
-              <div className={styles.incidentList}>
-                {MOCK_RECALLS.map((r) => {
-                  const st = STATUS_MAP[r.status] || { label: r.status, color: 'var(--text-muted)' };
-                  return (
-                    <div key={r.id} className={styles.incidentRow}>
-                      <div className={styles.incidentMeta}>
-                        <span className={styles.incidentId}>{r.id}</span>
-                        <span className={styles.incidentDate}>{r.date}</span>
-                      </div>
-                      <div className={styles.incidentTitle}>Batch {r.batchId} — {r.scope} downstream nodes blocked</div>
-                      <div className={styles.incidentFooter}>
-                        <span className={styles.incidentReporter}>Issued by {r.issuedBy}</span>
-                        <span className={styles.statusBadge} style={{ color: st.color, borderColor: st.color }}>{st.label}</span>
-                      </div>
-                      <div className={styles.recallLocations}>
-                        {r.affectedRetailLocations.map((loc) => (
-                          <span key={loc} className={styles.locationChip}>📍 {loc}</span>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </>
-          )}
-
-          {activeTab === 'evidence' && (
-            <>
-              <div className={styles.panelHead}>
-                <h3 className={styles.panelTitle}>Evidence Vault (IPFS)</h3>
-              </div>
-              <div className={styles.incidentList}>
-                {MOCK_INCIDENTS.filter((i) => i.evidenceCid.length > 10).map((inc) => (
-                  <div key={inc.id} className={styles.incidentRow}>
-                    <div className={styles.incidentMeta}>
-                      <span className={styles.incidentId}>{inc.id}</span>
-                      <span className={styles.incidentDate}>Evidence uploaded {inc.date}</span>
-                    </div>
-                    <div className={styles.incidentTitle}>{inc.category} — {inc.description.substring(0, 60)}...</div>
-                    <div className={styles.evidenceCidRow}>
-                      <code className={styles.cidCode}>{inc.evidenceCid}</code>
-                      <a
-                        href={`https://ipfs.io/ipfs/${inc.evidenceCid}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className={styles.cidLink}
-                      >
-                        View on IPFS →
-                      </a>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
+      {/* ── Status Metrics Strip ──────────────────────────────── */}
+      <div className={styles.metricsStrip}>
+        <div className={styles.metricCell}>
+          <span className={styles.metricLabel}>Audit Readiness Score</span>
+          <span className={styles.metricVal} style={{ color: 'var(--color-success)' }}>98.4%</span>
+          <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>FSSAI Schedule IV Compliant</span>
         </div>
+        <div className={styles.metricCell}>
+          <span className={styles.metricLabel}>Active Licenses</span>
+          <span className={styles.metricVal}>156</span>
+          <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Valid across 27 facilities</span>
+        </div>
+        <div className={styles.metricCell}>
+          <span className={styles.metricLabel}>Renewals Due (30 Days)</span>
+          <span className={styles.metricVal} style={{ color: 'var(--color-warning)' }}>7</span>
+          <span style={{ fontSize: '11px', color: 'var(--color-warning)' }}>Action required</span>
+        </div>
+        <div className={styles.metricCell}>
+          <span className={styles.metricLabel}>Audit Trail Integrity</span>
+          <span className={styles.metricVal} style={{ color: 'var(--color-success)' }}>100%</span>
+          <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Zero ledger tampering</span>
+        </div>
+      </div>
 
-        {/* ── Right Panel: Detail ────────────────────────────── */}
-        <div className={styles.detailPanel}>
-          {detail ? (
-            <>
-              <div className={styles.detailHeader}>
-                <div>
-                  <span className={styles.detailEyebrow}>INCIDENT DETAIL</span>
-                  <h2 className={styles.detailId}>{detail.id}</h2>
-                </div>
-                <span
-                  className={styles.detailStatus}
-                  style={{ color: STATUS_MAP[detail.status]?.color, borderColor: STATUS_MAP[detail.status]?.color }}
-                >
-                  {STATUS_MAP[detail.status]?.label}
-                </span>
-              </div>
-
-              <div className={styles.detailSection}>
-                <h4 className={styles.sectionLabel}>Description</h4>
-                <p className={styles.sectionText}>{detail.description}</p>
-              </div>
-
-              <div className={styles.detailGrid}>
-                <div className={styles.detailItem}>
-                  <span className={styles.detailKey}>Category</span>
-                  <span className={styles.detailVal}>{detail.category}</span>
-                </div>
-                <div className={styles.detailItem}>
-                  <span className={styles.detailKey}>Reporter</span>
-                  <span className={styles.detailVal}>{detail.reporter}</span>
-                </div>
-                <div className={styles.detailItem}>
-                  <span className={styles.detailKey}>Batch ID</span>
-                  <span className={styles.detailVal}>{detail.batchId}</span>
-                </div>
-                <div className={styles.detailItem}>
-                  <span className={styles.detailKey}>Unit ID</span>
-                  <span className={styles.detailVal}>{detail.unitId}</span>
-                </div>
-                <div className={styles.detailItem}>
-                  <span className={styles.detailKey}>Nearest Accountable Org</span>
-                  <span className={styles.detailVal}>{detail.nearestOrg}</span>
-                </div>
-                <div className={styles.detailItem}>
-                  <span className={styles.detailKey}>Escalation Level</span>
-                  <span className={styles.detailVal} style={{ color: detail.escalation === 'ESCALATED_WARNING' ? 'var(--color-alert-red)' : 'var(--color-earth-400)' }}>
-                    {detail.escalation}
-                  </span>
-                </div>
-              </div>
-
-              {detail.affectedScope.length > 0 && (
-                <div className={styles.detailSection}>
-                  <h4 className={styles.sectionLabel}>Affected Downstream Scope ({detail.affectedScope.length} batches)</h4>
-                  <div className={styles.scopeChips}>
-                    {detail.affectedScope.map((b) => (
-                      <span key={b} className={styles.scopeChip}>{b}</span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <div className={styles.detailSection}>
-                <h4 className={styles.sectionLabel}>Evidence (IPFS)</h4>
-                <a href={`https://ipfs.io/ipfs/${detail.evidenceCid}`} target="_blank" rel="noreferrer" className={styles.evidenceLink}>
-                  <code>{detail.evidenceCid}</code>
-                  <span>Open in IPFS Gateway →</span>
-                </a>
-              </div>
-
-              <div className={styles.actionBar}>
-                {detail.status !== 'RESOLVED' && (
-                  <>
-                    <button className={styles.btnAction} style={{ backgroundColor: 'var(--color-grass-400)', color: '#fff' }}>
-                      ✓ Resolve & Close
-                    </button>
-                    <button className={styles.btnAction} style={{ backgroundColor: 'var(--color-alert-red)', color: '#fff' }}>
-                      🚨 Issue Recall
-                    </button>
-                    <button className={styles.btnAction} style={{ backgroundColor: 'var(--color-earth-400)', color: '#fff' }}>
-                      ⬆ Escalate
-                    </button>
-                  </>
-                )}
-                {detail.status === 'RESOLVED' && (
-                  <div className={styles.resolvedBanner}>
-                    ✓ Incident resolved on {detail.resolvedDate}. No further action required.
-                  </div>
-                )}
-              </div>
-            </>
-          ) : (
-            <div className={styles.emptyDetail}>
-              <div className={styles.emptyIcon}>🔍</div>
-              <h3 className={styles.emptyTitle}>Select an incident to review</h3>
-              <p className={styles.emptyText}>
-                Click any incident from the left panel to inspect its full details, evidence chain, affected scope, and available regulatory actions.
-              </p>
+      {/* ── Split Auditor Console Layout ──────────────────────── */}
+      <div className={styles.consoleGrid}>
+        {/* Left: Certificate Registry Table */}
+        <div className={styles.tableContainer}>
+          <div style={{ padding: '8px 12px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-subtle)' }}>
+            <div style={{ position: 'relative', width: '100%', maxWidth: '280px' }}>
+              <span style={{ position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-subtle)' }}>
+                <IconSearch size={13} />
+              </span>
+              <input
+                type="text"
+                style={{
+                  width: '100%',
+                  height: '28px',
+                  padding: '0 8px 0 26px',
+                  borderRadius: '4px',
+                  border: '1px solid var(--border-color)',
+                  fontSize: '11.5px',
+                  backgroundColor: '#FFFFFF',
+                  outline: 'none',
+                }}
+                placeholder="Search certificate, facility..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
             </div>
-          )}
+
+            <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+              Showing <strong>{filtered.length}</strong> certificates
+            </span>
+          </div>
+
+          <div className={styles.tableWrapper}>
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  <th>License / Cert No</th>
+                  <th>Facility Location</th>
+                  <th>Scope</th>
+                  <th>Valid Until</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((c) => (
+                  <tr
+                    key={c.id}
+                    onClick={() => setSelectedCert(c)}
+                    style={{ background: selectedCert?.id === c.id ? '#EFF6FF' : undefined, cursor: 'pointer' }}
+                  >
+                    <td>
+                      <span className="mono-num" style={{ fontWeight: 700, color: 'var(--text-primary)' }}>
+                        {c.certNumber}
+                      </span>
+                    </td>
+                    <td style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{c.facility}</td>
+                    <td style={{ color: 'var(--text-secondary)' }}>{c.certType}</td>
+                    <td style={{ color: 'var(--text-muted)', fontSize: '11px' }}>{c.validUntil}</td>
+                    <td>
+                      {c.status === 'ACTIVE' ? (
+                        <span className="badge badge--success">✓ Valid</span>
+                      ) : c.status === 'RENEWAL_DUE' ? (
+                        <span className="badge badge--warning">● Renewal Due</span>
+                      ) : (
+                        <span className="badge badge--danger">● Audit Pending</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
+
+        {/* Right: Auditor Evidence Dossier */}
+        {selectedCert && (
+          <div className={styles.dossierCard}>
+            <div>
+              <span className="badge badge--neutral mono-num">{selectedCert.certNumber}</span>
+              <h3 style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)', marginTop: '4px' }}>
+                {selectedCert.certType}
+              </h3>
+              <div style={{ fontSize: '11.5px', color: 'var(--text-muted)', marginTop: '2px' }}>
+                Facility: <strong>{selectedCert.facility}</strong>
+              </div>
+            </div>
+
+            {/* Verification Metadata */}
+            <div style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', padding: '10px 12px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+              <div>
+                <div style={{ fontSize: '10.5px', color: 'var(--text-muted)' }}>Issuing Authority</div>
+                <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>{selectedCert.authority}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: '10.5px', color: 'var(--text-muted)' }}>Validity Period</div>
+                <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>{selectedCert.validUntil}</div>
+              </div>
+            </div>
+
+            {/* IPFS Proof */}
+            <div style={{ background: '#FFFFFF', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', padding: '10px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <span style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Encrypted IPFS Certificate Proof</span>
+                <div className="mono-num" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>{selectedCert.ipfsHash.substring(0, 24)}...</div>
+              </div>
+              <button
+                onClick={() => alert(`IPFS Certificate Hash:\n${selectedCert.ipfsHash}`)}
+                style={{ fontSize: '11px', color: 'var(--color-info)', display: 'flex', alignItems: 'center', gap: '3px' }}
+              >
+                <IconCopy size={11} /> Copy
+              </button>
+            </div>
+
+            {/* Auditor Actions */}
+            <div style={{ marginTop: 'auto', display: 'flex', gap: '8px' }}>
+              <button
+                className="btn btn--secondary"
+                style={{ flex: 1 }}
+                onClick={() => alert(`Certificate ${selectedCert.certNumber} PDF downloaded.`)}
+              >
+                <IconExternal size={12} /> Download PDF
+              </button>
+              <button
+                className="btn btn--primary"
+                style={{ flex: 1 }}
+                onClick={() => alert(`Cryptographic verification proof confirmed for ${selectedCert.certNumber}.`)}
+              >
+                Verify On-Chain
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
