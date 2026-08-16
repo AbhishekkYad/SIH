@@ -3,14 +3,11 @@ import { useEffect, useState } from 'react';
 import styles from './Navbar.module.css';
 
 const NAV_LINKS = [
-  { label: 'Ecosystem',        href: '/#mission' },
-  { label: 'Live Workflow',    href: '/#workflow' },
-  { label: 'How We Do It',     href: '/#how-it-works' },
-  { label: 'Why FoodTrace',    href: '/#why' },
-  { label: 'Feedback Loop',    href: '/#feedback' },
-  { label: 'We Track',         href: '/wetrack' },
+  { label: 'Platform Home',    href: '/' },
+  { label: 'Dashboard',        href: '/dashboard' },
+  { label: 'Scratch & Verify', href: '/verify' },
+  { label: 'Feedback & Report',href: '/feedback' },
   { label: 'Batch Explorer',   href: '/one-food' },
-  { label: 'Knowledge & FAQ',  href: '/#knowledge' },
 ];
 
 export default function Navbar() {
@@ -29,12 +26,12 @@ export default function Navbar() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
-    setSearchResult(`Found verified on-chain batch record for "${searchQuery}" with 8 verified custody checkpoints.`);
+    setSearchResult(`Found verified on-chain batch record for "${searchQuery}" with verified custody checkpoints.`);
   };
 
   const handleQuickTag = (tag: string) => {
     setSearchQuery(tag);
-    setSearchResult(`Found verified batch "${tag}" with 8 cryptographic custody checkpoint commits.`);
+    setSearchResult(`Found verified batch "${tag}" with cryptographic custody checkpoint commits.`);
   };
 
   return (
@@ -57,7 +54,7 @@ export default function Navbar() {
           {/* ── Center Navigation Links ── */}
           <nav className={styles.centerNav} aria-label="Primary">
             <div className={styles.navPill}>
-              {NAV_LINKS.slice(0, 6).map((link) => (
+              {NAV_LINKS.map((link) => (
                 <a key={link.label} href={link.href} className={styles.navLink}>
                   {link.label}
                 </a>
@@ -80,8 +77,8 @@ export default function Navbar() {
               <span className={styles.searchLabel}>Verify Batch</span>
             </button>
 
-            <a href="/one-food" className={styles.ctaBtn}>
-              Explore Demo →
+            <a href="/dashboard" className={styles.ctaBtn}>
+              Console Dashboard →
             </a>
 
             {/* Mobile Toggle */}
@@ -130,7 +127,7 @@ export default function Navbar() {
                 <input
                   type="text"
                   className={styles.searchInput}
-                  placeholder="Enter Batch ID (e.g. WF-2026-0815) or scan QR URI..."
+                  placeholder="Enter Batch ID (e.g. BATCH-MBTSDM2UM) or scan QR URI..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   autoFocus
@@ -144,9 +141,9 @@ export default function Navbar() {
             <div className={styles.quickTags}>
               <span className={styles.quickTagLabel}>Verified on-chain samples:</span>
               {[
-                { id: 'WF-2026-0815', label: 'WF-2026-0815 (Sharbati Wheat)' },
-                { id: 'OAT-2026-NSK', label: 'OAT-2026-NSK (Organic Oats)' },
-                { id: 'CHANA-MH-402', label: 'CHANA-MH-402 (Chickpeas)' },
+                { id: 'BATCH-MBTSDM2UM', label: 'BATCH-MBTSDM2UM (Paddy)' },
+                { id: 'BATCH-IKHJWTOYD', label: 'BATCH-IKHJWTOYD (Soybean)' },
+                { id: 'BATCH-GQU2F3SI4', label: 'BATCH-GQU2F3SI4 (Wheat)' },
               ].map((tag) => (
                 <button key={tag.id} className={styles.quickTagBtn} onClick={() => handleQuickTag(tag.id)}>
                   {tag.label}
@@ -160,7 +157,7 @@ export default function Navbar() {
                   <span style={{ fontSize: '16px' }}>✓</span>
                   <span>{searchResult}</span>
                 </div>
-                <a href="/one-food" className="btn btn--grass" style={{ marginTop: '12px', fontSize: '12px', padding: '6px 14px' }}>
+                <a href={`/track/batch/${searchQuery || 'BATCH-MBTSDM2UM'}`} className="btn btn--grass" style={{ marginTop: '12px', fontSize: '12px', padding: '6px 14px' }}>
                   Open Batch in Provenance Explorer →
                 </a>
               </div>
@@ -186,12 +183,12 @@ export default function Navbar() {
               ))}
             </nav>
             <a
-              href="/one-food"
+              href="/dashboard"
               className={styles.ctaBtn}
               style={{ width: '100%', justifyContent: 'center' }}
               onClick={() => setMobileOpen(false)}
             >
-              Explore Batch Demo →
+              Console Dashboard →
             </a>
           </div>
         </div>

@@ -14,9 +14,9 @@ class Settings(BaseSettings):
     # Direct Database / Cache / IPFS / Fabric Connection URIs
     POSTGRES_SERVER: str = "localhost"
     POSTGRES_PORT: str = "5432"
-    POSTGRES_USER: str = "postgres"
-    POSTGRES_PASSWORD: str = "postgres"
-    POSTGRES_DB: str = "food_traceability_db"
+    POSTGRES_USER: str = "sih_user"
+    POSTGRES_PASSWORD: str = "sih_password"
+    POSTGRES_DB: str = "sih_db"
     
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:

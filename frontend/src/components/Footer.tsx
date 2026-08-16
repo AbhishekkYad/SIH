@@ -8,7 +8,7 @@ export default function Footer() {
         <div className={styles.footerGrid}>
           {/* Brand Col */}
           <div className={styles.brandCol}>
-            <a href="#" className={styles.footerLogo}>
+            <a href="/" className={styles.footerLogo}>
               <div className={styles.logoIcon}>
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -24,34 +24,34 @@ export default function Footer() {
 
           {/* Col 1 */}
           <div>
-            <h4 className={styles.colTitle}>Platform</h4>
+            <h4 className={styles.colTitle}>Applications</h4>
             <ul className={styles.linkList}>
-              <li><a href="#mission" className={styles.footerLink}>Ecosystem Architecture</a></li>
-              <li><a href="#crops" className={styles.footerLink}>Commodity Registry</a></li>
-              <li><a href="#solutions" className={styles.footerLink}>Lineage DAG Engine</a></li>
-              <li><a href="#risk-engine" className={styles.footerLink}>Blast Radius Traversal</a></li>
+              <li><a href="/dashboard" className={styles.footerLink}>Admin Console</a></li>
+              <li><a href="/dashboard/regulator" className={styles.footerLink}>Regulator Dashboard</a></li>
+              <li><a href="/verify" className={styles.footerLink}>Scratch &amp; Verify</a></li>
+              <li><a href="/feedback" className={styles.footerLink}>Consumer Feedback</a></li>
             </ul>
           </div>
 
           {/* Col 2 */}
           <div>
-            <h4 className={styles.colTitle}>Stakeholders</h4>
+            <h4 className={styles.colTitle}>Traceability</h4>
             <ul className={styles.linkList}>
-              <li><a href="#stakeholders" className={styles.footerLink}>Farmers &amp; Growers</a></li>
-              <li><a href="#stakeholders" className={styles.footerLink}>Sortex Processors</a></li>
-              <li><a href="#stakeholders" className={styles.footerLink}>Cold Logistics Fleets</a></li>
-              <li><a href="#stakeholders" className={styles.footerLink}>Retail POS Terminals</a></li>
+              <li><a href="/dashboard/batches" className={styles.footerLink}>Production Batches</a></li>
+              <li><a href="/dashboard/units" className={styles.footerLink}>Serialized Units</a></li>
+              <li><a href="/dashboard/recall" className={styles.footerLink}>Risk &amp; Recalls</a></li>
+              <li><a href="/one-food" className={styles.footerLink}>Batch Explorer</a></li>
             </ul>
           </div>
 
           {/* Col 3 */}
           <div>
-            <h4 className={styles.colTitle}>Compliance &amp; Trust</h4>
+            <h4 className={styles.colTitle}>Compliance &amp; Infrastructure</h4>
             <ul className={styles.linkList}>
-              <li><a href="#knowledge" className={styles.footerLink}>GS1 Digital Link URI</a></li>
-              <li><a href="#knowledge" className={styles.footerLink}>FSSAI Traceability</a></li>
-              <li><a href="#knowledge" className={styles.footerLink}>Hyperledger Fabric v2.5</a></li>
-              <li><a href="#knowledge" className={styles.footerLink}>IPFS Evidence Vault</a></li>
+              <li><a href="/dashboard/admin" className={styles.footerLink}>System Liveness</a></li>
+              <li><a href="/#knowledge" className={styles.footerLink}>GS1 Digital Link URI</a></li>
+              <li><a href="/#knowledge" className={styles.footerLink}>Hyperledger Fabric v2.5</a></li>
+              <li><a href="/#knowledge" className={styles.footerLink}>IPFS Evidence Vault</a></li>
             </ul>
           </div>
         </div>
