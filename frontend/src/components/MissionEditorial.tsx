@@ -11,45 +11,48 @@ export default function MissionEditorial() {
             <span className="eyebrow">WHO WE ARE &amp; WHAT WE SOLVE</span>
 
             <h2 className={styles.title}>
-              One food ecosystem. On an even <strong>bigger trust mission.</strong>
+              One food ecosystem. <strong>One trusted journey.</strong>
             </h2>
 
             <div className={styles.bodyText}>
               <p>
-                Across <strong>12,400+ MT</strong> of certified agricultural harvest and <strong>48,000+</strong> committed batches,
-                FoodTrace replaces fragmented paper chits and siloed ERP spreadsheets with a unified, permissioned <strong>Hyperledger Fabric DAG</strong>.
+                Food moves through many hands before it reaches your plate. FoodTrace connects that entire journey — from source and processing to distribution, retail, and the consumer.
               </p>
             </div>
 
             <div className={styles.bodyText}>
               <p>
-                Every grain blending, mill transformation, and temperature-controlled freight handover is cryptographically signed — giving consumers, brands, and regulators verifiable truth from soil to fork.
+                Every meaningful event builds a trusted, auditable product history. When something goes wrong, FoodTrace helps identify the source, trace what else may be affected, and turn consumer signals into targeted action.
               </p>
             </div>
 
+            {/* 3 PRD-aligned stats highlights */}
             <div className={styles.statsHighlightRow}>
               <div className={styles.statsItem}>
-                <span className={styles.statsVal}>12+ Clusters</span>
-                <span className={styles.statsSub}>APMC Farm Networks</span>
+                <span className={styles.statsVal}>End-to-End</span>
+                <span className={styles.statsLabel}>SOURCE → CONSUMER</span>
+                <span className={styles.statsSub}>CONNECTED JOURNEY</span>
               </div>
               <div className={styles.statsItem}>
-                <span className={styles.statsVal}>&lt; 200ms</span>
-                <span className={styles.statsSub}>Targeted Recall Traversal</span>
+                <span className={styles.statsVal}>Bidirectional</span>
+                <span className={styles.statsLabel}>UPSTREAM + DOWNSTREAM</span>
+                <span className={styles.statsSub}>RISK PROPAGATION</span>
               </div>
               <div className={styles.statsItem}>
-                <span className={styles.statsVal}>GS1 / W3C</span>
-                <span className={styles.statsSub}>Open Global Standards</span>
+                <span className={styles.statsVal}>Targeted</span>
+                <span className={styles.statsLabel}>RECALL SCOPE</span>
+                <span className={styles.statsSub}>LESS WASTE. FASTER ACTION.</span>
               </div>
             </div>
 
-            <div>
-              <a href="#crops" className="btn btn--primary" style={{ marginTop: '8px' }}>
-                View Harvested Commodities →
+            <div className={styles.ctaWrap}>
+              <a href="#solutions" className="btn btn--grass">
+                EXPLORE THE FOOD JOURNEY →
               </a>
             </div>
           </div>
 
-          {/* Media Frame */}
+          {/* Media Frame (Kept original image intact) */}
           <div className={styles.mediaFrame}>
             <img
               src="/images/logineko/logineko-who-we-are.jpg"
