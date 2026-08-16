@@ -6,7 +6,6 @@ import styles from './page.module.css';
 import {
   IconSearch,
   IconClose,
-  IconCopy,
 } from '@/components/icons/Icons';
 
 interface Product {

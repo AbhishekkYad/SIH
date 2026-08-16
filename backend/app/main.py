@@ -202,6 +202,7 @@ def read_root():
         "services": service_status
     }
 
+@app.get("/health")
 @app.get("/api/v1/health")
 async def health_check():
     await probe_services()
@@ -211,6 +212,7 @@ async def health_check():
         "services": service_status,
         "database_file": str(DATA_FILE)
     }
+
 
 
 # ── Products ──────────────────────────────────────────────────

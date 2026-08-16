@@ -6,7 +6,6 @@ import styles from './page.module.css';
 import {
   IconSearch,
   IconDownload,
-  IconCopy,
   IconExternal,
 } from '@/components/icons/Icons';
 

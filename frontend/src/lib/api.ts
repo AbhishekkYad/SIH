@@ -1,5 +1,6 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
 
+// ── Products ────────────────────────────────────────────
 export async function fetchProducts() {
   try {
     const res = await fetch(`${API_BASE_URL}/api/v1/products`);
@@ -8,12 +9,38 @@ export async function fetchProducts() {
   } catch (err) {
     console.warn('Backend offline, returning mock products fallback.');
     return [
-      { id: 'PROD-001', name: 'Organic Sharbati Wheat Flour', category: 'Flour & Grains', gtin: '8901234567890', manufacturer: 'Sahyadri Agro Processing' },
-      { id: 'PROD-002', name: 'Cold Pressed Mustard Oil 1L', category: 'Edible Oils', gtin: '8901234567891', manufacturer: 'Sahyadri Agro Processing' }
+      { id: 'PROD-001', name: 'Organic Sharbati Wheat Flour', category: 'Flour & Grains', gtin: '8901234567890', manufacturer: 'Sahyadri Agro Processing', date: '10 Aug 2026' },
+      { id: 'PROD-002', name: 'Cold Pressed Mustard Oil 1L', category: 'Edible Oils', gtin: '8901234567891', manufacturer: 'Sahyadri Agro Processing', date: '12 Aug 2026' }
     ];
   }
 }
 
+export async function createProduct(payload: { name: string; category: string; gtin: string; manufacturer: string; shelfLife?: string; storage?: string }) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/v1/products`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error('API Error');
+    return await res.json();
+  } catch (err) {
+    console.warn('Backend offline, returning mock create product fallback.');
+    return {
+      status: 'success',
+      product: {
+        id: `PROD-${Math.floor(8804 + Math.random() * 1000)}`,
+        name: payload.name,
+        category: payload.category,
+        gtin: payload.gtin,
+        manufacturer: payload.manufacturer,
+        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+      }
+    };
+  }
+}
+
+// ── Batches ─────────────────────────────────────────────
 export async function fetchBatches() {
   try {
     const res = await fetch(`${API_BASE_URL}/api/v1/batches`);
@@ -22,11 +49,39 @@ export async function fetchBatches() {
   } catch (err) {
     console.warn('Backend offline, returning mock batches fallback.');
     return [
-      { id: 'BATCH-MBTSDM2UM', productId: 'PROD-001', status: 'IN_TRANSIT', quantity: 5000, uom: 'KG', custodian: 'AgriTransit Logistics' }
+      { id: 'BATCH-MBTSDM2UM', productId: 'PROD-001', status: 'IN_TRANSIT', quantity: 5000, uom: 'KG', custodian: 'AgriTransit Logistics', date: '12 Aug 2026' }
     ];
   }
 }
 
+export async function createBatch(payload: { productId: string; quantity: number; uom: string; custodian: string }) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/v1/batches`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error('API Error');
+    return await res.json();
+  } catch (err) {
+    console.warn('Backend offline, returning mock create batch fallback.');
+    const batchId = `BATCH-${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
+    return {
+      status: 'success',
+      batch: {
+        id: batchId,
+        productId: payload.productId,
+        status: 'PROCESSING',
+        quantity: payload.quantity,
+        uom: payload.uom,
+        custodian: payload.custodian,
+        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+      }
+    };
+  }
+}
+
+// ── Units ───────────────────────────────────────────────
 export async function fetchUnits() {
   try {
     const res = await fetch(`${API_BASE_URL}/api/v1/units`);
@@ -41,6 +96,29 @@ export async function fetchUnits() {
   }
 }
 
+export async function generateUnits(payload: { batchId: string; count: number }) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/v1/units/generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error('API Error');
+    return await res.json();
+  } catch (err) {
+    console.warn('Backend offline, returning mock generate units fallback.');
+    const units = Array.from({ length: payload.count }).map((_, i) => ({
+      id: `UNIT-${1004 + i}`,
+      batchId: payload.batchId,
+      status: 'PRINTED',
+      outerQR: `QR-${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
+      innerCredential: `SEC-${Math.floor(1000 + Math.random() * 9000)}-${String.fromCharCode(65 + (i % 26))}`
+    }));
+    return { status: 'success', units };
+  }
+}
+
+// ── Incidents ───────────────────────────────────────────
 export async function fetchIncidents() {
   try {
     const res = await fetch(`${API_BASE_URL}/api/v1/incidents`);
@@ -54,6 +132,7 @@ export async function fetchIncidents() {
   }
 }
 
+// ── QR & Verification ───────────────────────────────────
 export async function resolveQR(qrId: string) {
   try {
     const res = await fetch(`${API_BASE_URL}/api/v1/qr/resolve/${qrId}`);
@@ -92,6 +171,7 @@ export async function verifyInnerCredential(code: string) {
   }
 }
 
+// ── Consumer Feedback ───────────────────────────────────
 export async function submitConsumerFeedback(payload: { category: string; description: string; unitId?: string }) {
   try {
     const res = await fetch(`${API_BASE_URL}/api/v1/feedback/submit`, {
@@ -111,6 +191,7 @@ export async function submitConsumerFeedback(payload: { category: string; descri
   }
 }
 
+// ── Risk & Recall ───────────────────────────────────────
 export async function propagateRisk(sourceBatchId: string, direction: string = 'BOTH') {
   try {
     const res = await fetch(`${API_BASE_URL}/api/v1/risk/propagate`, {
@@ -124,10 +205,13 @@ export async function propagateRisk(sourceBatchId: string, direction: string = '
     return {
       source_batch_id: sourceBatchId,
       direction,
+      affected_parent_batches: [],
       affected_child_batches: [
         { batch_id: 'BATCH-FLOUR-881', state: 'IN_TRANSIT' },
         { batch_id: 'BATCH-RTL-90A', state: 'ON_SHELF' },
+        { batch_id: 'BATCH-RTL-90B', state: 'ON_SHELF' },
       ],
+      affected_organizations: ['Sahyadri Agro Processing', 'AgriTransit Logistics', 'GreenBasket Retail'],
       risk_level: 'HIGH'
     };
   }
@@ -152,6 +236,7 @@ export async function issueRecall(scope: { batch_id: string }) {
   }
 }
 
+// ── Lineage ─────────────────────────────────────────────
 export async function fetchLineage(batchId: string) {
   try {
     const res = await fetch(`${API_BASE_URL}/api/v1/lineage/${batchId}`);
@@ -169,6 +254,7 @@ export async function fetchLineage(batchId: string) {
   }
 }
 
+// ── Health ──────────────────────────────────────────────
 export async function checkHealth() {
   try {
     const res = await fetch(`${API_BASE_URL}/api/v1/health`);

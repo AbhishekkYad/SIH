@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import styles from './page.module.css';
 import {
-  IconArrowUpRight,
   IconShield,
 } from '@/components/icons/Icons';
 
