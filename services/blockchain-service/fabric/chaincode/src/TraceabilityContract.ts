@@ -75,6 +75,29 @@ export class TraceabilityContract extends Contract {
     }
 
     @Transaction()
+    public async validateBatch(ctx: Context, batchId: string, validationResult: string): Promise<void> {
+        const batchBytes = await ctx.stub.getState(`BATCH_${batchId}`);
+        if (!batchBytes || batchBytes.length === 0) {
+            throw new Error(`Batch ${batchId} does not exist`);
+        }
+        const batch: Batch = JSON.parse(batchBytes.toString());
+
+        if (batch.state !== BatchState.REGISTERED) {
+            throw new Error(`Invalid state transition: Cannot validate batch in state ${batch.state}`);
+        }
+
+        if (validationResult === 'VALID') {
+            batch.state = BatchState.VALIDATED;
+        } else {
+            batch.state = BatchState.BLOCKED;
+        }
+        
+        batch.updated_at = ctx.stub.getDateTimestamp().toISOString();
+        await ctx.stub.putState(`BATCH_${batchId}`, Buffer.from(JSON.stringify(batch)));
+        ctx.stub.setEvent('BATCH_VALIDATED', Buffer.from(JSON.stringify(batch)));
+    }
+
+    @Transaction()
     public async transferBatch(ctx: Context, batchId: string, targetOrg: string): Promise<void> {
         const mspId = ctx.clientIdentity.getMSPID();
         

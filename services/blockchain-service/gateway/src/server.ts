@@ -1,7 +1,15 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import app from './app';
 import { startEventListener } from './fabric/eventListener';
 
-const PORT = process.env.PORT || 7051;
+if (!process.env.PORT) {
+    console.error('CRITICAL: PORT environment variable is not defined.');
+    process.exit(1);
+}
+
+const PORT = process.env.PORT;
 
 async function startServer() {
     try {
