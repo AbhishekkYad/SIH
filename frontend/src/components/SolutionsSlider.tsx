@@ -22,7 +22,7 @@ const TABS: SolutionTab[] = [
     strongPart: 'GPS & organic soil lab proof.',
     desc: 'Each raw batch is minted directly at field origin with W3C digital twin credentials, pesticide assay certificates, and IPFS content-addressed storage.',
     img: '/images/logineko/farming-at-logineko-1.jpg',
-    link: '#crops',
+    link: '/dashboard/batches',
   },
   {
     id: '1',
@@ -32,7 +32,7 @@ const TABS: SolutionTab[] = [
     strongPart: 'without losing origin links.',
     desc: 'When sortex mills blend harvests from multiple farms, FoodTrace commits directed acyclic graph edges to PostgreSQL and Hyperledger Fabric to maintain bidirectional traceability.',
     img: '/images/logineko/farming-software-maps-solution.jpg',
-    link: '#why',
+    link: '/track/batch/BATCH-MBTSDM2UM',
   },
   {
     id: '2',
@@ -42,7 +42,7 @@ const TABS: SolutionTab[] = [
     strongPart: 'cryptographic seal verification.',
     desc: 'An open GS1 Digital Link outer QR code enables consumer journey inspection, while a concealed ECDSA inner credential under a scratch seal guarantees anti-counterfeit proof.',
     img: '/images/logineko/origin-solutions-for-transaprency-1536x1025.jpg',
-    link: '#stakeholders',
+    link: '/verify',
   },
   {
     id: '3',
@@ -52,7 +52,7 @@ const TABS: SolutionTab[] = [
     strongPart: 'automated POS lot freezes in < 200ms.',
     desc: 'Statistical deviations cluster complaints by SKU and regional hub. The risk engine traverses the DAG to isolate the exact root cause and freeze only affected units.',
     img: '/images/logineko/food-development-solutions.jpg',
-    link: '#stakeholders',
+    link: '/dashboard/recall',
   },
 ];
 

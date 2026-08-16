@@ -76,7 +76,7 @@ export default function Navbar() {
               <span className={styles.searchLabel}>Search</span>
             </button>
 
-            <a href="#solutions" className={styles.ctaBtn}>
+            <a href="/dashboard" className={styles.ctaBtn}>
               Launch Platform
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12" />
@@ -130,7 +130,7 @@ export default function Navbar() {
                 <input
                   type="text"
                   className={styles.searchInput}
-                  placeholder="Enter Batch ID (e.g. WF-2026-0815) or Crop..."
+                  placeholder="Enter Batch ID (e.g. BATCH-MBTSDM2UM) or crop..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   autoFocus
@@ -144,9 +144,9 @@ export default function Navbar() {
             <div className={styles.quickTags}>
               <span className={styles.quickTagLabel}>Try quick samples:</span>
               {[
-                { id: 'WF-2026-0815', label: 'WF-2026-0815 (Sharbati Wheat)' },
-                { id: 'LOT-MH-402', label: 'LOT-MH-402 (Nashik Organic)' },
-                { id: 'CHANA-2026-PUNE', label: 'CHANA-2026-PUNE' },
+                { id: 'BATCH-MBTSDM2UM', label: 'BATCH-MBTSDM2UM (Paddy)' },
+                { id: 'BATCH-IKHJWTOYD', label: 'BATCH-IKHJWTOYD (Soybean)' },
+                { id: 'BATCH-GQU2F3SI4', label: 'BATCH-GQU2F3SI4 (Wheat)' },
               ].map((tag) => (
                 <button key={tag.id} className={styles.quickTagBtn} onClick={() => handleQuickTag(tag.id)}>
                   {tag.label}
@@ -156,11 +156,20 @@ export default function Navbar() {
 
             {searchResult && (
               <div className={styles.searchResultCard}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                  <polyline points="22 4 12 14.01 9 11.01" />
-                </svg>
-                <span>{searchResult}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                  <span>{searchResult}</span>
+                </div>
+                <a
+                  href={`/track/batch/${searchQuery || 'BATCH-MBTSDM2UM'}`}
+                  className="btn btn--grass"
+                  style={{ marginTop: '12px', fontSize: '12px', padding: '8px 18px', height: 'auto', alignSelf: 'flex-start' }}
+                >
+                  Open Batch in Provenance Explorer →
+                </a>
               </div>
             )}
           </div>
@@ -184,7 +193,7 @@ export default function Navbar() {
               ))}
             </nav>
             <a
-              href="#solutions"
+              href="/dashboard"
               className={styles.ctaBtn}
               style={{ width: '100%', justifyContent: 'center' }}
               onClick={() => setMobileOpen(false)}
@@ -194,9 +203,6 @@ export default function Navbar() {
           </div>
         </div>
       )}
-    </>
-  );
-}
     </>
   );
 }

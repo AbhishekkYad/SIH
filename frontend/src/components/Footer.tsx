@@ -26,10 +26,10 @@ export default function Footer() {
           <div>
             <h4 className={styles.colTitle}>Applications</h4>
             <ul className={styles.linkList}>
-              <li><a href="#mission" className={styles.footerLink}>Ecosystem Architecture</a></li>
-              <li><a href="#crops" className={styles.footerLink}>Commodity Registry</a></li>
-              <li><a href="#solutions" className={styles.footerLink}>Lineage DAG Engine</a></li>
-              <li><a href="#stakeholders" className={styles.footerLink}>Ecosystem Matrix</a></li>
+              <li><a href="/dashboard" className={styles.footerLink}>Admin Console</a></li>
+              <li><a href="/dashboard/regulator" className={styles.footerLink}>Regulator Audit Portal</a></li>
+              <li><a href="/verify" className={styles.footerLink}>Scratch &amp; Verify QR</a></li>
+              <li><a href="/feedback" className={styles.footerLink}>Consumer Feedback</a></li>
             </ul>
           </div>
 
@@ -40,7 +40,7 @@ export default function Footer() {
               <li><a href="/dashboard/batches" className={styles.footerLink}>Production Batches</a></li>
               <li><a href="/dashboard/units" className={styles.footerLink}>Serialized Units</a></li>
               <li><a href="/dashboard/recall" className={styles.footerLink}>Risk &amp; Recalls</a></li>
-              <li><a href="/one-food" className={styles.footerLink}>Batch Explorer</a></li>
+              <li><a href="/track/batch/BATCH-MBTSDM2UM" className={styles.footerLink}>Batch Explorer</a></li>
             </ul>
           </div>
 
