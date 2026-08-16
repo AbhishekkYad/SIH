@@ -9,6 +9,7 @@ interface SupplyChainEvent {
   title: string;
   description: string;
   meta: string;
+  img?: string;
 }
 
 const EVENTS: SupplyChainEvent[] = [
@@ -19,6 +20,7 @@ const EVENTS: SupplyChainEvent[] = [
     title: 'Raw material registered at source',
     description: 'Wheat batch W001 registered with its origin, evidence and source details.',
     meta: 'SOURCE EVENT · BATCH_W001',
+    img: '/images/logineko/card-source-origin.jpg',
   },
   {
     id: '2',
@@ -104,19 +106,28 @@ export default function LiveEventsTicker() {
         <div className={styles.sliderTrack}>
           {visibleEvents.map((evt) => (
             <article key={evt.id} className={styles.eventCard}>
-              <div className={styles.cardHeader}>
-                <span className={styles.tagChip}>{evt.tag}</span>
-                <span className={styles.stepNum}>{evt.stepNum}</span>
-              </div>
+              {evt.img && (
+                <div className={styles.cardMedia}>
+                  <img src={evt.img} alt={evt.title} loading="lazy" />
+                  <span className={styles.mediaTag}>{evt.stepNum}</span>
+                </div>
+              )}
 
-              <div className={styles.cardBody}>
-                <h3 className={styles.cardHeading}>{evt.title}</h3>
-                <p className={styles.cardDesc}>{evt.description}</p>
-              </div>
+              <div className={styles.cardInner}>
+                <div className={styles.cardHeader}>
+                  <span className={styles.tagChip}>{evt.tag}</span>
+                  {!evt.img && <span className={styles.stepNum}>{evt.stepNum}</span>}
+                </div>
 
-              <div className={styles.cardFooter}>
-                <span className={styles.metaIndicator} />
-                <span className={styles.metaText}>{evt.meta}</span>
+                <div className={styles.cardBody}>
+                  <h3 className={styles.cardHeading}>{evt.title}</h3>
+                  <p className={styles.cardDesc}>{evt.description}</p>
+                </div>
+
+                <div className={styles.cardFooter}>
+                  <span className={styles.metaIndicator} />
+                  <span className={styles.metaText}>{evt.meta}</span>
+                </div>
               </div>
             </article>
           ))}

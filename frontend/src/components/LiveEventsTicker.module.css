@@ -1,5 +1,5 @@
 /* ============================================================
-   LIVE SUPPLY CHAIN EVENTS — Clean structured cards without images
+   LIVE SUPPLY CHAIN EVENTS — Modern LoginEKO Editorial Cards
    ============================================================ */
 
 .blockNews {
@@ -72,6 +72,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--size-24);
+  align-items: stretch;
   transition: transform var(--transition-base);
 }
 
@@ -94,9 +95,7 @@
   border-radius: var(--radius-xl);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 280px;
-  padding: var(--size-28) var(--size-24);
+  overflow: hidden;
   transition: all var(--transition-base);
   box-shadow: 0 4px 20px rgba(27, 41, 30, 0.04);
 }
@@ -105,6 +104,49 @@
   transform: translateY(-4px);
   box-shadow: 0 16px 36px rgba(27, 41, 30, 0.08);
   border-color: var(--color-grass-300);
+}
+
+/* Media Banner if provided */
+.cardMedia {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background-color: var(--color-oat-200);
+  overflow: hidden;
+}
+
+.cardMedia img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.eventCard:hover .cardMedia img {
+  transform: scale(1.06);
+}
+
+.mediaTag {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #FFFFFF;
+  background-color: rgba(18, 28, 20, 0.7);
+  backdrop-filter: blur(6px);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+}
+
+/* Card Content Area */
+.cardInner {
+  padding: var(--size-24);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
 }
 
 /* Card Header */
@@ -146,9 +188,9 @@
 }
 
 .cardHeading {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.35;
   color: var(--color-bean-400);
 }
 
@@ -164,7 +206,7 @@
   align-items: center;
   gap: var(--size-8);
   margin-top: var(--size-20);
-  padding-top: var(--size-16);
+  padding-top: var(--size-14);
   border-top: 1px solid var(--color-oat-200);
 }
 
