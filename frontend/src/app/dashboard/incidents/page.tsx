@@ -1,7 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './page.module.css';
+import { fetchIncidents } from '@/lib/api';
 
 const MOCK_INCIDENTS = [
   { id: 'INC-9942', unitId: 'UNIT-1002', category: 'Spoilage', reporter: 'Consumer (App)', status: 'NEW', evidenceCid: 'QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco' },
@@ -10,7 +11,26 @@ const MOCK_INCIDENTS = [
 ];
 
 export default function IncidentsPage() {
-  const [incidents] = useState(MOCK_INCIDENTS);
+  const [incidents, setIncidents] = useState(MOCK_INCIDENTS);
+
+  // Load incidents from API on mount
+  useEffect(() => {
+    async function loadData() {
+      const data = await fetchIncidents();
+      if (data && data.length > 0) {
+        const formatted = data.map((inc: any) => ({
+          id: inc.id,
+          unitId: inc.unitId || 'N/A',
+          category: inc.category || 'Unknown',
+          reporter: inc.reporter || 'Consumer (Web)',
+          status: inc.status || 'NEW',
+          evidenceCid: inc.ipfsCid || inc.evidenceCid || 'N/A'
+        }));
+        setIncidents(formatted);
+      }
+    }
+    loadData();
+  }, []);
 
   return (
     <div>

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
-import { fetchProducts } from '@/lib/api';
+import { fetchProducts, createProduct } from '@/lib/api';
 
 const INITIAL_PRODUCTS = [
   { id: 'PROD-8801', name: 'Organic Sharbati Wheat Flour 5KG', category: 'Packaged Goods', gtin: '8901234567890', manufacturer: 'Sahyadri Agro Processing', date: '10 Aug 2026' },
@@ -22,12 +22,12 @@ export default function ProductsPage() {
       const data = await fetchProducts();
       if (data && data.length > 0) {
         const formatted = data.map((p: any) => ({
-          id: p.id || `PROD-${p.gtin.slice(-4)}`,
+          id: p.id || `PROD-${(p.gtin || '0000').slice(-4)}`,
           name: p.name,
           category: p.category || 'Packaged Goods',
           gtin: p.gtin || '8901234567890',
           manufacturer: p.manufacturer || 'Sahyadri Agro',
-          date: '16 Aug 2026'
+          date: p.date || '16 Aug 2026'
         }));
         setProducts(formatted);
       }
@@ -43,17 +43,36 @@ export default function ProductsPage() {
     storage: 'Cool & Dry Place'
   });
 
-  const handleRegisterProduct = (e: React.FormEvent) => {
+  const handleRegisterProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name) return;
 
-    const newProd = {
+    const today = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+    // Call the backend API
+    const result = await createProduct({
+      name: formData.name,
+      category: formData.category,
+      gtin: formData.gtin,
+      manufacturer: formData.manufacturer,
+      shelfLife: formData.shelfLife,
+      storage: formData.storage
+    });
+
+    const newProd = result.product ? {
+      id: result.product.id,
+      name: result.product.name,
+      category: result.product.category,
+      gtin: result.product.gtin,
+      manufacturer: result.product.manufacturer,
+      date: result.product.date || today
+    } : {
       id: `PROD-${Math.floor(8804 + products.length)}`,
       name: formData.name,
       category: formData.category,
       gtin: formData.gtin,
       manufacturer: formData.manufacturer,
-      date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+      date: today
     };
 
     setProducts([newProd, ...products]);

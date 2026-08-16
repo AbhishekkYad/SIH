@@ -1,6 +1,22 @@
 {
   "products": [
     {
+      "id": "PROD-8808",
+      "name": "Organic Basmati Rice 1kg",
+      "category": "Packaged Goods",
+      "gtin": "8908421823927",
+      "manufacturer": "Sahyadri Agro Processing",
+      "date": "16 Aug 2026"
+    },
+    {
+      "id": "PROD-8807",
+      "name": "Test Grain",
+      "category": "Grains",
+      "gtin": "1234567890123",
+      "manufacturer": "Sahyadri",
+      "date": "16 Aug 2026"
+    },
+    {
       "id": "PROD-001",
       "name": "Organic Sharbati Wheat Flour",
       "category": "Flour & Grains",
@@ -27,6 +43,24 @@
   ],
   "batches": [
     {
+      "id": "BATCH-8KVDA20G",
+      "productId": "Organic Sharbati Wheat",
+      "status": "PROCESSING",
+      "quantity": 1000,
+      "uom": "KG",
+      "custodian": "Sahyadri Agro Processing",
+      "date": "16 Aug 2026"
+    },
+    {
+      "id": "BATCH-BNSAW95Y",
+      "productId": "PROD-001",
+      "status": "PROCESSING",
+      "quantity": 100,
+      "uom": "KG",
+      "custodian": "Sahyadri",
+      "date": "16 Aug 2026"
+    },
+    {
       "id": "BATCH-MBTSDM2UM",
       "productId": "PROD-001",
       "status": "IN_TRANSIT",
@@ -47,6 +81,86 @@
   ],
   "units": [
     {
+      "id": "UNIT-1012",
+      "batchId": "BATCH-GQU2F3SI4",
+      "status": "PRINTED",
+      "outerQR": "QR-CL5IVW",
+      "innerCredential": "SEC-YOIG8AQX",
+      "date": "16 Aug 2026"
+    },
+    {
+      "id": "UNIT-1011",
+      "batchId": "BATCH-GQU2F3SI4",
+      "status": "PRINTED",
+      "outerQR": "QR-Q74FFT",
+      "innerCredential": "SEC-S0BV6XUD",
+      "date": "16 Aug 2026"
+    },
+    {
+      "id": "UNIT-1010",
+      "batchId": "BATCH-GQU2F3SI4",
+      "status": "PRINTED",
+      "outerQR": "QR-W1KZAJ",
+      "innerCredential": "SEC-86DY5QGD",
+      "date": "16 Aug 2026"
+    },
+    {
+      "id": "UNIT-1009",
+      "batchId": "BATCH-GQU2F3SI4",
+      "status": "PRINTED",
+      "outerQR": "QR-K3L7HT",
+      "innerCredential": "SEC-4A1G3DN5",
+      "date": "16 Aug 2026"
+    },
+    {
+      "id": "UNIT-1008",
+      "batchId": "BATCH-GQU2F3SI4",
+      "status": "PRINTED",
+      "outerQR": "QR-5GR4PA",
+      "innerCredential": "SEC-10QUZSJM",
+      "date": "16 Aug 2026"
+    },
+    {
+      "id": "UNIT-1007",
+      "batchId": "BATCH-GQU2F3SI4",
+      "status": "PRINTED",
+      "outerQR": "QR-6KVZ24",
+      "innerCredential": "SEC-P7XVTUAS",
+      "date": "16 Aug 2026"
+    },
+    {
+      "id": "UNIT-1006",
+      "batchId": "BATCH-GQU2F3SI4",
+      "status": "PRINTED",
+      "outerQR": "QR-UL949A",
+      "innerCredential": "SEC-UTCIBOTJ",
+      "date": "16 Aug 2026"
+    },
+    {
+      "id": "UNIT-1005",
+      "batchId": "BATCH-GQU2F3SI4",
+      "status": "PRINTED",
+      "outerQR": "QR-7GA46B",
+      "innerCredential": "SEC-UA0M5C7L",
+      "date": "16 Aug 2026"
+    },
+    {
+      "id": "UNIT-1004",
+      "batchId": "BATCH-GQU2F3SI4",
+      "status": "PRINTED",
+      "outerQR": "QR-QQFO5I",
+      "innerCredential": "SEC-U6UI1JZA",
+      "date": "16 Aug 2026"
+    },
+    {
+      "id": "UNIT-1003",
+      "batchId": "BATCH-GQU2F3SI4",
+      "status": "PRINTED",
+      "outerQR": "QR-89OAEJ",
+      "innerCredential": "SEC-ID6APYXW",
+      "date": "16 Aug 2026"
+    },
+    {
       "id": "UNIT-1001",
       "batchId": "BATCH-MBTSDM2UM",
       "status": "PRINTED",
@@ -64,6 +178,24 @@
     }
   ],
   "incidents": [
+    {
+      "id": "INC-5605",
+      "unitId": "UNIT-1001",
+      "category": "Spoilage",
+      "reporter": "Consumer (Web)",
+      "status": "NEW",
+      "ipfsCid": "QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco",
+      "date": "16 Aug 2026"
+    },
+    {
+      "id": "INC-3727",
+      "unitId": "UNIT-1034",
+      "category": "Unusual Taste or Odor",
+      "reporter": "Consumer (Web)",
+      "status": "NEW",
+      "ipfsCid": "QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco",
+      "date": "16 Aug 2026"
+    },
     {
       "id": "INC-9942",
       "unitId": "UNIT-1002",

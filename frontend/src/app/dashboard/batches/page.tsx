@@ -2,8 +2,9 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './page.module.css';
+import { fetchBatches, createBatch } from '@/lib/api';
 
-// Mock data based on PRD/TRD specs
+// Fallback initial data (used before API loads or if API is offline)
 const MOCK_BATCHES = [
   { id: 'BATCH-MBTSDM2UM', product: 'Paddy', state: 'VALIDATED', custodian: 'Applewood Orchard', date: '27 Jul 2024 10:17 AM', txId: '193fdf9f5898be03b4a606b7f6c9733f3b7fdd83af5df2c96587212743e7afba' },
   { id: 'BATCH-IKHJWTOYD', product: 'Soybean', state: 'IN_TRANSIT', custodian: 'Cloverdale Ranch', date: '26 Jul 2024 09:00 AM', txId: '824dafa3433be03b4a606b7f6c9733f3b7fdd83af5df2c96587212743e7a123' },
@@ -15,33 +16,72 @@ export default function BatchesPage() {
   const [batches, setBatches] = useState(MOCK_BATCHES);
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [createdBatchQrModal, setCreatedBatchQrModal] = useState<any>(null);
+
+  // Load batches from API on mount
+  useEffect(() => {
+    async function loadData() {
+      const data = await fetchBatches();
+      if (data && data.length > 0) {
+        const formatted = data.map((b: any) => ({
+          id: b.id,
+          product: b.productId || b.product || 'Unknown',
+          state: b.status || b.state || 'PROCESSING',
+          custodian: b.custodian || 'Unknown',
+          date: b.date || new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+          txId: b.txId || `0x${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`
+        }));
+        setBatches(formatted);
+      }
+    }
+    loadData();
+  }, []);
 
   const [formData, setFormData] = useState({
     product: 'Organic Sharbati Wheat',
     quantity: '5000',
     uom: 'KG',
-    custodian: 'Default Org',
+    custodian: 'Sahyadri Agro Processing',
     date: new Date().toISOString().split('T')[0]
   });
 
-  const handleCreateBatch = (e: React.FormEvent) => {
+  const handleCreateBatch = async (e: React.FormEvent) => {
     e.preventDefault();
+    const formattedDate = new Date().toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' AM';
+
+    // Call the backend API
+    const result = await createBatch({
+      productId: formData.product,
+      quantity: parseInt(formData.quantity),
+      uom: formData.uom,
+      custodian: formData.custodian
+    });
+
+    const batchId = result.batch?.id || `BATCH-${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
+    const txId = result.batch?.txId || `0x${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`;
+
     const newBatch = {
-      id: `BATCH-${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
+      id: batchId,
       product: formData.product,
-      state: 'CREATED',
+      state: result.batch?.status || 'VALIDATED',
       custodian: formData.custodian,
-      date: new Date().toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' AM',
-      txId: 'Pending Fabric Tx...'
+      date: result.batch?.date || formattedDate,
+      txId: txId
     };
+
     setBatches([newBatch, ...batches]);
     setIsModalOpen(false);
+    
+    // Open QR Code & Track Action Modal for the newly created batch
+    const trackingUrl = `http://localhost:3000/track/batch/${batchId}`;
+    const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(trackingUrl)}`;
+    
+    setCreatedBatchQrModal({
+      batch: newBatch,
+      trackingUrl,
+      qrImageUrl
+    });
   };
-
-  // In a real scenario, this would fetch from GET /api/v1/dashboard/batches
-  useEffect(() => {
-    // fetch('/api/v1/dashboard/batches').then(...)
-  }, []);
 
   return (
     <div>
@@ -67,13 +107,17 @@ export default function BatchesPage() {
               <th>Current Custodian</th>
               <th>Created Date</th>
               <th>Blockchain Info</th>
-              <th></th>
+              <th>Stakeholder Trace</th>
             </tr>
           </thead>
           <tbody>
             {batches.map(batch => (
               <tr key={batch.id}>
-                <td style={{fontWeight: 600}}>{batch.id}</td>
+                <td style={{fontWeight: 600}}>
+                  <Link href={`/track/batch/${batch.id}`} style={{color: 'var(--color-grass-500)', textDecoration: 'underline'}}>
+                    {batch.id}
+                  </Link>
+                </td>
                 <td>{batch.product}</td>
                 <td>
                   <span className={`${styles.status} ${batch.state === 'VALIDATED' ? styles.statusValidated : batch.state === 'IN_TRANSIT' ? styles.statusTransit : batch.state === 'BLOCKED' ? styles.statusBlocked : ''}`}>
@@ -96,10 +140,10 @@ export default function BatchesPage() {
                         </div>
                         <div className={styles.tooltipRow}>
                           <span className={styles.tooltipLabel}>Channel Id</span>
-                          <span className={styles.tooltipValue}>foodtraze-channel</span>
+                          <span className={styles.tooltipValue}>tracechannel</span>
                         </div>
                         <div className={styles.tooltipRow}>
-                          <span className={styles.tooltipLabel}>Event When</span>
+                          <span className={styles.tooltipLabel}>Event Timestamp</span>
                           <span className={styles.tooltipValue}>{batch.date}</span>
                         </div>
                       </div>
@@ -107,7 +151,9 @@ export default function BatchesPage() {
                   </div>
                 </td>
                 <td>
-                  <button style={{background:'transparent', border:'none', cursor:'pointer', fontSize:'20px'}}>⋮</button>
+                  <Link href={`/track/batch/${batch.id}`} className="btn btn--oat" style={{height: '32px', fontSize: '11px', padding: '0 12px'}}>
+                    🔍 View Trace & Act
+                  </Link>
                 </td>
               </tr>
             ))}
@@ -115,6 +161,7 @@ export default function BatchesPage() {
         </table>
       </div>
 
+      {/* Modal: Create Batch */}
       {isModalOpen && (
         <div className={styles.modalBackdrop} onClick={() => setIsModalOpen(false)}>
           <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
@@ -149,8 +196,8 @@ export default function BatchesPage() {
               </div>
 
               <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Initial Custodian (Auto-filled)</label>
-                <input type="text" className={styles.formInput} value={formData.custodian} disabled />
+                <label className={styles.formLabel}>Initial Custodian</label>
+                <input type="text" className={styles.formInput} value={formData.custodian} onChange={e => setFormData({...formData, custodian: e.target.value})} />
               </div>
 
               <div className={styles.formGroup}>
@@ -160,9 +207,50 @@ export default function BatchesPage() {
 
               <div className={styles.formActions}>
                 <button type="button" className="btn btn--outline" onClick={() => setIsModalOpen(false)}>Cancel</button>
-                <button type="submit" className="btn btn--primary">Register Batch</button>
+                <button type="submit" className="btn btn--primary">Register Batch & Generate QR</button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Generated Batch QR & Stakeholder Actions */}
+      {createdBatchQrModal && (
+        <div className={styles.modalBackdrop} onClick={() => setCreatedBatchQrModal(null)}>
+          <div className={styles.modalContent} style={{textAlign: 'center', maxWidth: '480px'}} onClick={e => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <h2 className={styles.modalTitle}>Batch Registered & QR Generated</h2>
+              <button className={styles.modalClose} onClick={() => setCreatedBatchQrModal(null)}>✕</button>
+            </div>
+
+            <div style={{margin: '20px 0'}}>
+              <div style={{fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '12px'}}>
+                Outer QR Code generated for <strong>{createdBatchQrModal.batch.id}</strong>
+              </div>
+              <div style={{display: 'inline-block', padding: '12px', background: '#fff', border: '1px solid var(--color-oat-200)', borderRadius: '12px'}}>
+                <img src={createdBatchQrModal.qrImageUrl} alt="Batch QR Code" width={180} height={180} />
+              </div>
+              <div style={{fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-muted)', marginTop: '8px'}}>
+                {createdBatchQrModal.trackingUrl}
+              </div>
+            </div>
+
+            <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '20px'}}>
+              <Link 
+                href={`/track/batch/${createdBatchQrModal.batch.id}`} 
+                className="btn btn--grass" 
+                style={{width: '100%', justifyContent: 'center'}}
+              >
+                🔍 Open Stakeholder Trace & Action Portal →
+              </Link>
+              <button 
+                className="btn btn--outline" 
+                onClick={() => setCreatedBatchQrModal(null)}
+                style={{width: '100%', justifyContent: 'center'}}
+              >
+                Close & Return to Dashboard
+              </button>
+            </div>
           </div>
         </div>
       )}

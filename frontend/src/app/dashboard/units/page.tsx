@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './page.module.css';
+import { fetchUnits, generateUnits } from '@/lib/api';
 
 const MOCK_UNITS = [
   { id: 'UNIT-1001', batchId: 'BATCH-MBTSDM2UM', status: 'PRINTED', outerQR: 'QR-A1B2C3D4', innerCode: 'SEC-9981-A' },
@@ -20,16 +21,53 @@ export default function UnitsPage() {
     count: '10'
   });
 
-  const handleGenerateSerials = (e: React.FormEvent) => {
+  // Load units from API on mount
+  useEffect(() => {
+    async function loadData() {
+      const data = await fetchUnits();
+      if (data && data.length > 0) {
+        const formatted = data.map((u: any) => ({
+          id: u.id,
+          batchId: u.batchId,
+          status: u.status || 'PRINTED',
+          outerQR: u.outerQR || 'N/A',
+          innerCode: u.innerCredential || u.innerCode || 'N/A'
+        }));
+        setUnits(formatted);
+      }
+    }
+    loadData();
+  }, []);
+
+  const handleGenerateSerials = async (e: React.FormEvent) => {
     e.preventDefault();
     const count = parseInt(formData.count, 10) || 1;
-    const newUnits = Array.from({ length: count }).map((_, i) => ({
-      id: `UNIT-${1004 + i + units.length}`,
+
+    // Call backend API
+    const result = await generateUnits({
       batchId: formData.batchId,
-      status: 'PRINTED',
-      outerQR: `QR-${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
-      innerCode: `SEC-${Math.floor(1000 + Math.random() * 9000)}-${String.fromCharCode(65 + (i % 26))}`
-    }));
+      count: count
+    });
+
+    let newUnits;
+    if (result.units && result.units.length > 0) {
+      newUnits = result.units.map((u: any) => ({
+        id: u.id,
+        batchId: u.batchId,
+        status: u.status || 'PRINTED',
+        outerQR: u.outerQR || `QR-${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
+        innerCode: u.innerCredential || u.innerCode || `SEC-${Math.floor(1000 + Math.random() * 9000)}-A`
+      }));
+    } else {
+      // Fallback: generate locally
+      newUnits = Array.from({ length: count }).map((_, i) => ({
+        id: `UNIT-${1004 + i + units.length}`,
+        batchId: formData.batchId,
+        status: 'PRINTED',
+        outerQR: `QR-${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
+        innerCode: `SEC-${Math.floor(1000 + Math.random() * 9000)}-${String.fromCharCode(65 + (i % 26))}`
+      }));
+    }
     
     setUnits([...newUnits, ...units]);
     setIsModalOpen(false);
