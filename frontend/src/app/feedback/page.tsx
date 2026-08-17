@@ -1,195 +1,125 @@
 'use client';
-
 import { useState } from 'react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import { submitConsumerFeedback } from '@/lib/api';
-import styles from './page.module.css';
+import '../app.css';
 
-const CATEGORIES = [
-  { id: 'spoilage', label: 'Spoilage / Expiry', description: 'Product shows abnormal moisture, rot, or mold.' },
-  { id: 'taste_odor', label: 'Unusual Taste / Odor', description: 'Off-flavor or unexpected chemical pungent smell.' },
-  { id: 'packaging', label: 'Tamper Seal Defect', description: 'Broken seal or scratched verification foil.' },
-  { id: 'foreign_matter', label: 'Foreign Contaminant', description: 'Unintended physical matter found in the commodity.' },
-  { id: 'labeling', label: 'Labeling Discrepancy', description: 'Mismatched GTIN barcode or nutrition specs.' },
-  { id: 'counterfeit', label: 'Suspected Fake Clone', description: 'Inner credential verification failed on ledger.' },
-];
+const CATEGORIES = ['Spoilage', 'Contamination', 'Mislabeling', 'Packaging Damage', 'Foreign Object', 'Other'];
+
+interface FeedbackResult { status: string; incidentId: string; ipfsCid: string; message: string; }
 
 export default function FeedbackPage() {
-  const [step, setStep] = useState<'category' | 'form' | 'submitted'>('category');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [unitId, setUnitId] = useState('');
-  const [description, setDescription] = useState('');
+  const [form, setForm] = useState({ unitId: '', category: '', description: '' });
   const [submitting, setSubmitting] = useState(false);
-  const [result, setResult] = useState<{ incidentId: string; ipfsCid: string; message: string } | null>(null);
+  const [result, setResult] = useState<FeedbackResult | null>(null);
+  const [error, setError] = useState('');
 
-  const selectedCat = CATEGORIES.find((c) => c.id === selectedCategory);
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
+    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!selectedCategory || !description.trim()) return;
-
+    if (!form.category || !form.description.trim()) {
+      setError('Category and description are required.');
+      return;
+    }
     setSubmitting(true);
+    setError('');
     try {
       const res = await submitConsumerFeedback({
-        category: selectedCat?.label || selectedCategory,
-        description,
-        unitId: unitId || undefined,
+        unitId: form.unitId.trim() || 'UNKNOWN',
+        category: form.category,
+        description: form.description,
       });
-      setResult({
-        incidentId: res.incidentId,
-        ipfsCid: res.ipfsCid,
-        message: res.message,
-      });
-      setStep('submitted');
+      setResult(res);
     } catch {
-      setResult({
-        incidentId: `INC-${Math.floor(10000 + Math.random() * 90000)}`,
-        ipfsCid: 'QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco',
-        message: 'Incident recorded on ledger and evidence hashed to IPFS.',
-      });
-      setStep('submitted');
-    } finally {
-      setSubmitting(false);
+      setError('Failed to submit feedback. Please try again.');
     }
-  };
-
-  const handleReset = () => {
-    setStep('category');
-    setSelectedCategory(null);
-    setUnitId('');
-    setDescription('');
-    setResult(null);
-  };
+    setSubmitting(false);
+  }
 
   return (
-    <div className={styles.pageWrap}>
-      <Navbar />
-      <main className={styles.main}>
-        <section className={styles.heroSection}>
-          <span className="badge badge--danger">FSSAI & QA Consumer Inquest Intake</span>
-          <h1 className={styles.pageTitle}>
-            File Quality Defect or Sensory Incident
+    <div style={{ minHeight: '100vh', background: '#0f172a', fontFamily: 'Inter, sans-serif' }}>
+      <nav style={{ background: '#0f172a', borderBottom: '1px solid #1e293b', padding: '0 24px', height: '52px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <a href="/" style={{ color: '#22d3ee', fontWeight: 700, fontSize: '15px', textDecoration: 'none', fontFamily: 'monospace' }}>🥦 FoodTrace</a>
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <a href="/track" style={{ color: '#94a3b8', fontSize: '13px', textDecoration: 'none' }}>Track QR</a>
+          <a href="/verify" style={{ color: '#94a3b8', fontSize: '13px', textDecoration: 'none' }}>Verify</a>
+          <a href="/login" style={{ color: '#22d3ee', fontSize: '13px', textDecoration: 'none', fontWeight: 600 }}>Sign In →</a>
+        </div>
+      </nav>
+
+      <div style={{ maxWidth: '600px', margin: '0 auto', padding: '60px 24px 40px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>⚠️</div>
+          <h1 style={{ fontSize: '26px', fontWeight: 700, color: '#f1f5f9', marginBottom: '10px' }}>
+            Report a Food Safety Issue
           </h1>
-          <p className={styles.pageLead}>
-            Reports are cryptographically linked to the specific serial lot, pinned to IPFS, and surfaced directly to QA auditors in real time.
+          <p style={{ color: '#64748b', fontSize: '14px', lineHeight: 1.6 }}>
+            Your complaint is immediately hashed to IPFS, stored immutably, and escalated to the responsible organization and food safety regulator.
           </p>
-        </section>
+        </div>
 
-        {/* Step 1: Category Selection */}
-        {step === 'category' && (
-          <div className={styles.categoryGrid}>
-            <div style={{ textAlign: 'center', marginBottom: '8px' }}>
-              <h2 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>
-                Step 1: Select Observation Category
-              </h2>
-            </div>
-            <div className={styles.cardGrid}>
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat.id}
-                  type="button"
-                  className={`${styles.categoryCard} ${selectedCategory === cat.id ? styles.categoryCardActive : ''}`}
-                  onClick={() => setSelectedCategory(cat.id)}
-                >
-                  <h3 className={styles.catLabel}>{cat.label}</h3>
-                  <p className={styles.catDesc}>{cat.description}</p>
-                </button>
-              ))}
-            </div>
-
-            {selectedCategory && (
-              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '12px' }}>
-                <button className="btn btn--primary" onClick={() => setStep('form')}>
-                  Continue with "{selectedCat?.label}" →
-                </button>
+        {result ? (
+          <div>
+            <div style={{ background: '#14532d', border: '2px solid #4ade80', borderRadius: '12px', padding: '28px', textAlign: 'center', marginBottom: '24px' }}>
+              <div style={{ fontSize: '40px', marginBottom: '12px' }}>✅</div>
+              <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#4ade80', marginBottom: '8px' }}>Report Submitted</h2>
+              <p style={{ color: '#86efac', fontSize: '13px', marginBottom: '16px' }}>{result.message}</p>
+              <div style={{ background: '#0f172a', borderRadius: '8px', padding: '12px', fontFamily: 'monospace', fontSize: '12px', textAlign: 'left' }}>
+                <div style={{ color: '#64748b', marginBottom: '4px' }}>Incident ID</div>
+                <div style={{ color: '#22d3ee', marginBottom: '10px' }}>{result.incidentId}</div>
+                <div style={{ color: '#64748b', marginBottom: '4px' }}>IPFS CID</div>
+                <div style={{ color: '#94a3b8', wordBreak: 'break-all' }}>{result.ipfsCid}</div>
               </div>
-            )}
+            </div>
+            <div className="alert alert-info">
+              🔍 Regulators have been notified. This report is permanently stored on the blockchain and cannot be deleted or modified.
+            </div>
+            <button className="btn btn-ghost" style={{ width: '100%' }} onClick={() => { setResult(null); setForm({ unitId: '', category: '', description: '' }); }}>
+              Submit Another Report
+            </button>
           </div>
-        )}
-
-        {/* Step 2: Detail Form */}
-        {step === 'form' && (
-          <div className={styles.formWrapper}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '10px' }}>
-              <div>
-                <span className="badge badge--neutral">{selectedCat?.label}</span>
-                <h2 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', marginTop: '4px' }}>
-                  Step 2: Describe Observation Details
-                </h2>
-              </div>
-              <button className="btn btn--ghost" onClick={() => setStep('category')}>← Change Category</button>
-            </div>
-
+        ) : (
+          <div className="form-section">
+            {error && <div className="alert alert-danger">{error}</div>}
             <form onSubmit={handleSubmit}>
-              <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>Serialized Unit / Batch ID (Optional)</label>
-                <input
-                  type="text"
-                  className={styles.fieldInput}
-                  placeholder="e.g. UNIT-WF-1002-001 or BATCH-WF-2025-042"
-                  value={unitId}
-                  onChange={(e) => setUnitId(e.target.value)}
-                />
+              <div className="form-group" style={{ marginBottom: '14px' }}>
+                <label className="form-label">Unit ID (optional)</label>
+                <input id="feedback-unitId" name="unitId" className="form-input" value={form.unitId} onChange={handleChange} placeholder="e.g. UNIT-1002 (leave blank if unknown)" />
               </div>
-
-              <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>Detailed Defect Description *</label>
+              <div className="form-group" style={{ marginBottom: '14px' }}>
+                <label className="form-label">Issue Category *</label>
+                <select id="feedback-category" name="category" className="form-select" value={form.category} onChange={handleChange}>
+                  <option value="">Select issue type…</option>
+                  {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
+              <div className="form-group" style={{ marginBottom: '20px' }}>
+                <label className="form-label">Description *</label>
                 <textarea
-                  className={styles.fieldTextarea}
-                  placeholder="Provide precise sensory details, date of opening, packaging condition..."
-                  rows={4}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  required
+                  id="feedback-description"
+                  name="description"
+                  className="form-textarea"
+                  style={{ minHeight: '120px' }}
+                  value={form.description}
+                  onChange={handleChange}
+                  placeholder="Please describe the issue in detail. Include batch/product info if visible on packaging."
                 />
               </div>
-
-              <div style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', padding: '10px 12px', fontSize: '11.5px', color: 'var(--text-muted)', marginBottom: '16px' }}>
-                Your submission triggers an automated QA audit ticket and hashes all statements to IPFS with timestamped block consensus.
-              </div>
-
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <button type="submit" className="btn btn--danger" disabled={submitting || !description.trim()} style={{ flex: 1 }}>
-                  {submitting ? 'Submitting to Ledger...' : 'Submit Incident Inquest →'}
-                </button>
-              </div>
+              <button id="feedback-submit" type="submit" className="btn btn-primary" style={{ width: '100%' }} disabled={submitting}>
+                {submitting ? 'Submitting…' : '🚨 Submit Report'}
+              </button>
             </form>
           </div>
         )}
 
-        {/* Step 3: Confirmation */}
-        {step === 'submitted' && result && (
-          <div className={styles.confirmCard}>
-            <span className="badge badge--success" style={{ fontSize: '13px', padding: '6px 12px' }}>
-              ✓ Inquest Filed to Hyperledger Fabric
-            </span>
-            <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--text-primary)' }}>
-              Incident Registered: {result.incidentId}
-            </h2>
-            <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', maxWidth: '500px' }}>
-              Your report has been logged to the immutable QC triage desk and dispatched to the facility QA lead.
-            </p>
-
-            <div style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', padding: '12px 16px', width: '100%', maxWidth: '440px', display: 'flex', flexDirection: 'column', gap: '6px', textAlign: 'left', fontSize: '12px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>Incident Code:</span>
-                <strong className="mono-num">{result.incidentId}</strong>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span>IPFS Dossier CID:</span>
-                <code className="mono-num">{result.ipfsCid.substring(0, 20)}...</code>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <button className="btn btn--secondary" onClick={handleReset}>Submit Another Report</button>
-              <a href="/dashboard/incidents" className="btn btn--primary">View QC Command Center →</a>
-            </div>
-          </div>
-        )}
-      </main>
-      <Footer />
+        <p style={{ textAlign: 'center', marginTop: '24px', fontSize: '12px', color: '#475569' }}>
+          <a href="/track" style={{ color: '#22d3ee', textDecoration: 'none' }}>← Track QR Code</a>
+          {' · '}
+          <a href="/verify" style={{ color: '#22d3ee', textDecoration: 'none' }}>Verify Authenticity</a>
+        </p>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,45 @@
+1. Design and Implementation of a Trusted Food Supply Chain Traceability System with Incentive Using Hyperledger Fabric
+   - https://www.mdpi.com/2073-431X/15/2/108
+   - https://doi.org/10.3390/computers15020108
+
+2. Supply Chain Traceability by Recording EPCIS Data on Hyperledger Fabric
+   - https://www.sciencedirect.com/science/article/pii/S1877050926006344
+   - https://doi.org/10.1016/j.procs.2026.03.042
+
+3. A Blockchain-Based System for Agri-Food Supply Chain Traceability Management
+   - https://link.springer.com/article/10.1007/s42979-022-01148-3
+   - https://doi.org/10.1007/s42979-022-01148-3
+
+4. Hyperledger Fabric Gateway & Node.js API
+   - https://hyperledger.github.io/fabric-gateway/
+   - https://hyperledger.github.io/fabric-gateway/main/api/node/
+
+5. Hyperledger Fabric Private Data
+   - https://hyperledger-fabric-doc.readthedocs.io/en/latest/private-data/private-data.html
+
+6. Improving Agricultural Product Traceability Using Blockchain
+   - https://www.mdpi.com/1424-8220/22/9/3388
+   - https://doi.org/10.3390/s22093388
+
+7. Blockchain and Smart Contracts Based Agricultural Supply Chain
+   - https://www.sciencedirect.com/science/article/pii/S1877050924011657
+   - https://doi.org/10.1016/j.procs.2024.05.149
+
+8. Food Supply Chain Traceability System Based on Blockchain Technology
+   - https://doi.org/10.54254/2755-2721/8/20230176
+
+9. Hyperledger Fabric Main Documentation
+   - https://hyperledger-fabric.readthedocs.io/en/latest/
+
+10. Hyperledger Fabric MSP / Identity
+    - https://hyperledger-fabric.readthedocs.io/en/latest/membership/membership.html
+
+11. Hyperledger Fabric Peer Event Services
+    - https://hyperledger-fabric.readthedocs.io/en/latest/peer_event_services.html
+
+12. PostgreSQL Documentation
+    - https://www.postgresql.org/docs/
+
+13. Alembic Documentation & Tutorial
+    - https://alembic.sqlalchemy.org/en/latest/
+    - https://alembic.sqlalchemy.org/en/latest/tutorial.html
