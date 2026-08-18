@@ -6,8 +6,8 @@ import '../app.css';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [form, setForm]     = useState({ username: '', password: '' });
-  const [error, setError]   = useState('');
+  const [form, setForm] = useState({ username: '', password: '' });
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -38,13 +38,13 @@ export default function LoginPage() {
   }
 
   const roleColor: Record<string, string> = {
-    FARMER:      '#4ade80',
-    PROCESSOR:   '#818cf8',
-    PACKAGER:    '#fbbf24',
+    FARMER: '#4ade80',
+    PROCESSOR: '#818cf8',
+    PACKAGER: '#fbbf24',
     DISTRIBUTOR: '#22d3ee',
-    RETAILER:    '#f472b6',
-    REGULATOR:   '#fb923c',
-    ADMIN:       '#f87171',
+    RETAILER: '#f472b6',
+    REGULATOR: '#fb923c',
+    ADMIN: '#f87171',
   };
 
   return (

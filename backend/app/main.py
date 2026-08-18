@@ -1009,7 +1009,7 @@ async def get_dashboard_metrics():
     scans = db.get("scan_events", [])
     custody = db.get("custody_events", [])
 
-    in_transit = len([b for b in batches if b.get("status") == "IN_TRANSIT"])
+    in_transit = len([b for b in batches if b.get("status") in ("IN_TRANSIT", "PROCESSING") or b.get("custody_status") == "PENDING_TRANSFER"])
     quarantined = len([b for b in batches if b.get("status") in ("RECALLED", "BLOCKED")])
     open_incidents = len([i for i in incidents if i.get("status") in ("NEW", "OPEN")])
 
