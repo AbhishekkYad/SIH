@@ -43,7 +43,7 @@
 .inputRow {
   display: flex;
   gap: var(--size-8);
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   border: 1.5px solid var(--color-grass-200);
   border-radius: var(--radius-full);
   padding: 6px;
@@ -75,7 +75,7 @@
 
 @media (max-width: 580px) {
   .emailInput {
-    background-color: #ffffff;
+    background-color: #FFFFFF;
     border: 1.5px solid var(--color-grass-200);
     border-radius: var(--radius-full);
   }
@@ -85,7 +85,7 @@
   padding: 12px 20px;
   border-radius: var(--radius-full);
   background-color: var(--color-grass-400);
-  color: #ffffff;
+  color: #FFFFFF;
   font-size: 14px;
   font-weight: 600;
 }

@@ -1,9 +1,9 @@
-"use client";
-import { useState } from "react";
-import styles from "./SubscribeCTA.module.css";
+'use client';
+import { useState } from 'react';
+import styles from './SubscribeCTA.module.css';
 
 export default function SubscribeCTA() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -16,13 +16,12 @@ export default function SubscribeCTA() {
     <section className={styles.blockSubscribe}>
       <div className="container">
         <div className={styles.subscribeCard}>
-          <span className="eyebrow" style={{ color: "var(--color-grass-400)" }}>
+          <span className="eyebrow" style={{ color: 'var(--color-grass-400)' }}>
             PILOT &amp; PLATFORM REGISTRATION
           </span>
 
           <h2 className={styles.subscribeTitle}>
-            Join the national movement for{" "}
-            <strong>verifiable food safety &amp; transparency.</strong>
+            Join the national movement for <strong>verifiable food safety &amp; transparency.</strong>
           </h2>
 
           <div className={styles.formWrap}>
@@ -42,8 +41,7 @@ export default function SubscribeCTA() {
               </form>
             ) : (
               <div className={styles.successMsg}>
-                ✓ Thank you! We&apos;ve registered your enterprise access
-                request.
+                ✓ Thank you! We&apos;ve registered your enterprise access request.
               </div>
             )}
           </div>

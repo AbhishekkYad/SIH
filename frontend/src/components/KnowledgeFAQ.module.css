@@ -1,293 +1,217 @@
-.section {
+.blockKnowledge {
   padding: var(--size-80) 0;
-  background-color: var(--color-oat-light);
-}
-
-.header {
-  text-align: center;
-  max-width: 680px;
-  margin: 0 auto var(--size-40);
-}
-
-.title {
-  font-size: clamp(28px, 3.8vw, 44px);
-  font-weight: 800;
-  line-height: 1.12;
-  letter-spacing: -0.025em;
-  color: var(--color-bean-400);
-  margin-top: 4px;
-}
-
-.title strong {
-  color: var(--color-grass-400);
-}
-
-.lead {
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--text-secondary);
-  margin-top: var(--size-12);
-}
-
-/* ── Category Controls ── */
-.controlsRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--size-16);
-  margin-bottom: var(--size-32);
-  flex-wrap: wrap;
-}
-
-.catTabs {
-  display: flex;
-  align-items: center;
-  gap: var(--size-8);
-  flex-wrap: wrap;
-}
-
-.catTab {
-  padding: 8px 18px;
-  border-radius: var(--radius-full);
   background-color: var(--color-oat-200);
-  border: 1px solid var(--color-oat-300);
-  color: var(--color-bean-300);
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all var(--transition-fast);
 }
 
-.catTab:hover {
-  background-color: var(--color-oat-300);
-}
-
-.catTabActive {
-  background-color: var(--color-grass-400);
-  border-color: var(--color-grass-400);
-  color: #ffffff;
-}
-
-.searchBar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background-color: #ffffff;
-  border: 1.5px solid var(--color-oat-300);
-  border-radius: var(--radius-full);
-  padding: 4px 16px;
-  width: 280px;
-}
-
-.searchBar:focus-within {
-  border-color: var(--color-grass-400);
-}
-
-.searchInput {
-  border: none;
-  outline: none;
-  font-family: inherit;
-  font-size: 13px;
-  color: var(--color-bean-400);
-  width: 100%;
-  background: transparent;
-  height: 32px;
-}
-
-/* ── Articles Grid ── */
-.articlesGrid {
+.knowledgeGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--size-24);
-  margin-bottom: var(--size-80);
+  margin-bottom: var(--size-64);
 }
 
 @media (max-width: 960px) {
-  .articlesGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 600px) {
-  .articlesGrid {
+  .knowledgeGrid {
     grid-template-columns: 1fr;
   }
 }
 
-.articleCard {
-  background-color: #ffffff;
+.knowledgeCard {
+  background-color: #FFFFFF;
   border: 1px solid var(--color-oat-300);
   border-radius: var(--radius-xl);
-  padding: var(--size-28);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: var(--size-12);
   transition: all var(--transition-base);
-  box-shadow: 0 4px 16px rgba(27, 41, 30, 0.03);
+  box-shadow: 0 4px 16px rgba(27, 41, 30, 0.04);
 }
 
-.articleCard:hover {
+.knowledgeCard:hover {
   transform: translateY(-4px);
-  border-color: var(--color-grass-300);
-  box-shadow: 0 12px 32px rgba(46, 107, 78, 0.08);
+  border-color: var(--color-grass-400);
+  box-shadow: 0 16px 36px rgba(46, 107, 78, 0.12);
 }
 
-.artHead {
+.cardImageWrap {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background-color: var(--color-oat-200);
+  border-bottom: 1px solid var(--color-oat-200);
+  display: block;
+  padding: 0;
+}
+
+.cardImageWrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform var(--transition-slow);
+}
+
+.knowledgeCard:hover .cardImageWrap img {
+  transform: scale(1.05);
+}
+
+.cardBody {
+  padding: var(--size-24);
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--size-12);
 }
 
-.artTag {
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  font-weight: 700;
-  color: var(--color-grass-500);
-  background-color: var(--color-grass-100);
-  padding: 3px 8px;
-  border-radius: var(--radius-xs);
+.tagRow {
+  display: flex;
+  gap: var(--size-8);
 }
 
-.artTime {
+.researchTag {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--text-muted);
-}
-
-.artTitle {
-  font-size: 18px;
   font-weight: 700;
   color: var(--color-bean-400);
-  line-height: 1.3;
+  background-color: var(--color-oat-100);
+  border: 1px solid var(--color-oat-300);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.04em;
 }
 
-.artExcerpt {
-  font-size: 13.5px;
+.cardTitle {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--color-bean-400);
+  letter-spacing: -0.01em;
+}
+
+.cardDescription {
+  font-size: 14px;
   line-height: 1.6;
   color: var(--text-secondary);
   flex: 1;
 }
 
-.artFooter {
+.cardFooter {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: var(--size-12);
+  gap: var(--size-12);
+  margin-top: var(--size-16);
+  padding-top: var(--size-16);
   border-top: 1px solid var(--color-oat-200);
-  margin-top: 4px;
 }
 
-.artAuthor {
-  font-size: 11.5px;
-  color: var(--text-muted);
+.sourceWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sourceLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
   font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
 }
 
-.artLink {
-  font-size: 12px;
+.sourceName {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--color-bean-400);
+}
+
+.ctaLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
   font-weight: 700;
   color: var(--color-grass-500);
+  background-color: var(--color-grass-100);
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.04em;
+  transition: all var(--transition-base);
 }
 
-/* ── FAQ Section ── */
-.faqWrap {
-  background-color: #ffffff;
-  border: 1px solid var(--color-oat-300);
-  border-radius: var(--radius-xxl);
-  padding: var(--size-48);
-  box-shadow: 0 12px 36px rgba(27, 41, 30, 0.05);
+.ctaLink:hover {
+  background-color: var(--color-grass-400);
+  color: #FFFFFF;
+  transform: translateX(2px);
 }
 
-@media (max-width: 768px) {
-  .faqWrap {
-    padding: var(--size-28);
-  }
+/* FAQ Accordion */
+.faqSection {
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .faqHeader {
+  text-align: center;
   margin-bottom: var(--size-32);
-  max-width: 680px;
-}
-
-.faqTitle {
-  font-size: clamp(24px, 3.2vw, 36px);
-  font-weight: 800;
-  color: var(--color-bean-400);
-  margin-top: 4px;
-  letter-spacing: -0.02em;
-}
-
-.faqTitle strong {
-  color: var(--color-grass-400);
-}
-
-.faqLead {
-  font-size: 14.5px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin-top: 6px;
 }
 
 .faqList {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--color-oat-300);
+  gap: var(--size-12);
 }
 
-.faqItem {
-  border-bottom: 1px solid var(--color-oat-200);
-  transition: background-color var(--transition-fast);
+.faqCard {
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-oat-300);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all var(--transition-fast);
 }
 
-.faqItemOpen {
-  background-color: var(--color-oat-light);
-}
-
-.faqQuestion {
+.faqQuestionBtn {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--size-20) 0;
-  background: transparent;
-  border: none;
-  font-family: inherit;
+  padding: var(--size-20) var(--size-24);
+  text-align: left;
   font-size: 16px;
   font-weight: 700;
   color: var(--color-bean-400);
-  text-align: left;
-  cursor: pointer;
   gap: var(--size-16);
 }
 
-.faqQuestion:hover {
-  color: var(--color-grass-500);
+.faqQuestionBtn:hover {
+  background-color: var(--color-oat-100);
 }
 
 .faqIcon {
-  font-family: var(--font-mono);
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--color-grass-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--color-oat-200);
+  color: var(--color-grass-400);
+  font-weight: 800;
   flex-shrink: 0;
 }
 
 .faqAnswer {
-  padding: 0 0 var(--size-20);
-  font-size: 14px;
+  padding: 0 var(--size-24) var(--size-20);
+  font-size: 14.5px;
   line-height: 1.65;
   color: var(--text-secondary);
   animation: fadeIn 0.2s ease-out;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -104,7 +104,7 @@
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
-  color: #a8ceaf;
+  color: #A8CEAF;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -113,16 +113,16 @@
   font-size: clamp(24px, 3.4vw, 38px);
   font-weight: 800;
   line-height: 1.15;
-  color: #ffffff;
+  color: #FFFFFF;
 }
 
 .cardTitle strong {
-  color: #a8ceaf;
+  color: #A8CEAF;
 }
 
 .cardDesc {
   font-size: 16px;
   line-height: 1.6;
-  color: #e2ece4;
+  color: #E2ECE4;
   max-width: 620px;
 }

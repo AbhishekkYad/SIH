@@ -1,12 +1,12 @@
-"use client";
-import styles from "./PartnersStrip.module.css";
+'use client';
+import styles from './PartnersStrip.module.css';
 
 const PARTNERS = [
-  { name: "GS1 Digital Link URI Standard", short: "GS1 GLOBAL" },
-  { name: "FSSAI Traceability Guidelines", short: "FSSAI INDIA" },
-  { name: "Hyperledger Fabric v2.5", short: "LINUX FOUNDATION" },
-  { name: "W3C Verifiable Credentials", short: "W3C COMPLIANT" },
-  { name: "IPFS Content-Addressing Vault", short: "IPFS NETWORK" },
+  { name: 'GS1 Digital Link URI Standard', short: 'GS1 GLOBAL' },
+  { name: 'FSSAI Traceability Guidelines', short: 'FSSAI INDIA' },
+  { name: 'Hyperledger Fabric v2.5', short: 'LINUX FOUNDATION' },
+  { name: 'W3C Verifiable Credentials', short: 'W3C COMPLIANT' },
+  { name: 'IPFS Content-Addressing Vault', short: 'IPFS NETWORK' },
 ];
 
 export default function PartnersStrip() {
@@ -14,9 +14,7 @@ export default function PartnersStrip() {
     <section className={styles.blockPartners}>
       <div className="container">
         <div className={styles.partnersHeader}>
-          <span className="eyebrow">
-            OPEN ARCHITECTURAL &amp; REGULATORY STANDARDS
-          </span>
+          <span className="eyebrow">OPEN ARCHITECTURAL &amp; REGULATORY STANDARDS</span>
         </div>
 
         <ul className={styles.logosList} role="list">

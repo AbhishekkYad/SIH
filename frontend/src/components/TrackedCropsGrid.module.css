@@ -23,7 +23,7 @@
 }
 
 .cropCard {
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   border: 1px solid var(--color-oat-300);
   border-radius: var(--radius-xl);
   padding: var(--size-24) var(--size-16);

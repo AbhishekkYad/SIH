@@ -1,96 +1,120 @@
 /* ============================================================
-   FOODTRACE — LOGIN-EKO MODERN ORGANIC TECH DESIGN SYSTEM
-   Ultra-clean, calm, organic agricultural & institutional tech aesthetic.
+   FOODTRACE DESIGN SYSTEM & GLOBAL STYLES
+   Full LoginEKO Organic Tech Aesthetic + Enterprise Tokens
    ============================================================ */
 
-@import url("https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Public+Sans:wght@300;400;500;600;700;800&display=swap');
 
-/* ── COLOR SYSTEM & DESIGN TOKENS ──────────────────────────── */
 :root {
-  /* Oat & Sand Palette (Light warm organic surfaces) */
-  --color-oat-light: #faf8f5;
-  --color-oat-100: #f4efeb;
-  --color-oat-200: #ede5d8;
-  --color-oat-300: #e2d3bd;
-  --color-oat-400: #d8c3a4;
-  --color-oat-500: #bfaa88;
-  --color-oat-alt: #ffe9c6;
+  /* ── EXACT PALETTE ── */
+  /* Oat / Canvas Neutrals */
+  --color-oat-light:   #F5EFEB;
+  --color-oat-100:     #EFE7DF;
+  --color-oat-200:     #E8DDD1;
+  --color-oat-300:     #DDD0C1;
+  --color-oat-400:     #C8B8A6;
+  --color-oat-alt:     #EFE9E1;
 
-  /* Grass & Forest Green Palette (Primary Brand) */
-  --color-grass-100: #e2ece4;
-  --color-grass-200: #b7d5bd;
-  --color-grass-300: #5c966d;
-  --color-grass-400: #2e6b4e;
-  --color-grass-500: #22523b;
-  --color-grass-600: #183b2b;
+  /* Bean / Deep Charcoal Greens */
+  --color-bean-400:    #1B291E;
+  --color-bean-300:    #253629;
+  --color-bean-200:    #374C3C;
+  --color-bean-100:    #4D6352;
 
-  /* Bean & Deep Olive/Charcoal Palette (High Contrast Text & Dark Shells) */
-  --color-bean-0: #c0c2bb;
-  --color-bean-100: #969a8d;
-  --color-bean-200: #6b715f;
-  --color-bean-300: #3e4b35;
-  --color-bean-400: #1b291e;
-  --color-bean-500: #121c14;
-  --color-bean-alt: #727562;
+  /* Grass / Vibrant Organic Greens */
+  --color-grass-500:   #23533D;
+  --color-grass-400:   #2E6B4E;
+  --color-grass-300:   #3D8763;
+  --color-grass-200:   #62A984;
+  --color-grass-100:   #D4EADF;
+  --color-grass-50:    #EAF6F0;
 
-  /* Earth / Amber / Alert Tones */
-  --color-earth-400: #c89132;
-  --color-earth-soft: #f8f0e3;
-  --color-clay: #c97264;
-  --color-alert-red: #b64a42;
-  --color-alert-soft: #fce8e8;
+  /* Soil / Warm Accents */
+  --color-earth-400:   #C89132;
+  --color-earth-soft:  #F8F0E3;
+  --color-clay:        #C97264;
+  --color-alert-red:   #B64A42;
+  --color-alert-soft:  #FCE8E8;
 
-  /* Semantic Variables */
-  --bg-primary: var(--color-oat-light);
-  --bg-surface: #ffffff;
-  --bg-subtle: var(--color-oat-100);
-  --bg-card: #ffffff;
-  --text-primary: var(--color-bean-400);
-  --text-secondary: #555f56;
-  --text-muted: #7e8a7f;
-  --brand-green: var(--color-grass-400);
+  /* Semantic Landing Variables */
+  --bg-primary:        var(--color-oat-light);
+  --bg-surface:        #FFFFFF;
+  --bg-subtle:         var(--color-oat-100);
+  --bg-card:           #FFFFFF;
+  --text-primary:      var(--color-bean-400);
+  --text-secondary:    #555F56;
+  --text-muted:        #7E8A7F;
+  --text-subtle:       #94A3B8;
+  --text-inverse:      #FFFFFF;
+  --brand-green:       var(--color-grass-400);
   --brand-green-hover: var(--color-grass-500);
 
+  /* Dashboard / Enterprise Tokens */
+  --bg-app:            var(--color-oat-light);
+  --bg-dark:           #0F172A;
+  --border-color:      #E2E8F0;
+  --border-subtle:     #F1F5F9;
+  --border-strong:     #CBD5E1;
+  --border-focus:      #2E6B4E;
+  --color-success:     #059669;
+  --color-success-bg:  #ECFDF5;
+  --color-success-border:#A7F3D0;
+  --color-warning:     #D97706;
+  --color-warning-bg:  #FFFBEB;
+  --color-warning-border:#FDE68A;
+  --color-danger:      #DC2626;
+  --color-danger-bg:   #FEF2F2;
+  --color-danger-border:#FECACA;
+  --color-info:        #2563EB;
+  --color-info-bg:     #EFF6FF;
+  --color-info-border: #BFDBFE;
+  --color-neutral:     #475569;
+  --color-neutral-bg:  #F8FAFC;
+  --color-neutral-border:#E2E8F0;
+
   /* Typography */
-  --font-sans:
-    "Public Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, sans-serif;
-  --font-mono: "JetBrains Mono", "IBM Plex Mono", monospace;
+  --font-sans:         'Public Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono:         'JetBrains Mono', 'IBM Plex Mono', monospace;
 
   /* Radii */
-  --radius-xs: 4px;
-  --radius-sm: 8px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-xl: 32px;
-  --radius-xxl: 48px;
-  --radius-full: 9999px;
+  --radius-xs:         4px;
+  --radius-sm:         8px;
+  --radius-md:         16px;
+  --radius-lg:         24px;
+  --radius-xl:         32px;
+  --radius-xxl:        48px;
+  --radius-full:       9999px;
 
   /* Spacing Scale */
-  --size-4: 4px;
-  --size-8: 8px;
-  --size-12: 12px;
-  --size-16: 16px;
-  --size-20: 20px;
-  --size-24: 24px;
-  --size-32: 32px;
-  --size-40: 40px;
-  --size-48: 48px;
-  --size-64: 64px;
-  --size-80: 80px;
-  --size-96: 96px;
+  --size-4:   4px;
+  --size-8:   8px;
+  --size-12:  12px;
+  --size-16:  16px;
+  --size-20:  20px;
+  --size-24:  24px;
+  --size-28:  28px;
+  --size-32:  32px;
+  --size-40:  40px;
+  --size-48:  48px;
+  --size-64:  64px;
+  --size-80:  80px;
+  --size-96:  96px;
   --size-120: 120px;
 
+  /* Shadows */
+  --shadow-xs:         0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-sm:         0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md:         0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  --shadow-drawer:     -4px 0 24px rgba(15, 23, 42, 0.12);
+
   /* Transitions */
-  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-base: 250ms cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-slow: 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast:   150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-base:   250ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow:   500ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ── BASE & RESET ───────────────────────────────────────────── */
-*,
-*::before,
-*::after {
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -110,9 +134,7 @@ body {
   overflow-x: hidden;
 }
 
-img,
-svg,
-video {
+img, svg, video {
   display: block;
   max-width: 100%;
 }
@@ -129,8 +151,7 @@ button {
   background: none;
 }
 
-ul,
-ol {
+ul, ol {
   list-style: none;
 }
 
@@ -263,14 +284,14 @@ ol {
 .btn--primary:hover {
   background-color: var(--color-grass-400);
   border-color: var(--color-grass-400);
-  color: #ffffff;
+  color: #FFFFFF;
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(27, 41, 30, 0.18);
 }
 
 .btn--grass {
   background-color: var(--color-grass-400);
-  color: #ffffff;
+  color: #FFFFFF;
   border: 1px solid var(--color-grass-400);
 }
 
@@ -306,15 +327,15 @@ ol {
 
 .btn--white-outline {
   background-color: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
+  color: #FFFFFF;
   border: 1.5px solid rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(8px);
 }
 
 .btn--white-outline:hover {
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   color: var(--color-bean-400);
-  border-color: #ffffff;
+  border-color: #FFFFFF;
   transform: translateY(-2px);
 }
 
@@ -380,7 +401,7 @@ ol {
   height: 48px;
   border-radius: 50%;
   background-color: var(--color-grass-400);
-  color: #ffffff;
+  color: #FFFFFF;
   transition: all var(--transition-base);
 }
 

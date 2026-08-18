@@ -48,7 +48,7 @@
   height: 40px;
   border-radius: var(--radius-sm);
   background: var(--color-grass-400);
-  color: #ffffff;
+  color: #FFFFFF;
 }
 
 .brandDesc {
@@ -116,6 +116,6 @@
 
 .socialLink:hover {
   background-color: var(--color-grass-400);
-  color: #ffffff;
+  color: #FFFFFF;
   transform: scale(1.08);
 }
