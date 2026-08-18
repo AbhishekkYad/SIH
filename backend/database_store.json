@@ -1,6 +1,70 @@
 {
   "products": [
     {
+      "id": "PROD-8819",
+      "name": "fghj",
+      "category": "PACKAGED_FOOD",
+      "gtin": "8901223245337",
+      "manufacturer": "Green Valley Citrus Farms",
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "PROD-8818",
+      "name": "g3",
+      "category": "RAW_MATERIAL",
+      "gtin": "8902209963414",
+      "manufacturer": "Green Valley Citrus Farms",
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "PROD-8817",
+      "name": "PixelNomad",
+      "category": "Flour & Grains",
+      "gtin": "345",
+      "manufacturer": "33",
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "PROD-8816",
+      "name": "satyam ",
+      "category": "Flour & Grains",
+      "gtin": "5656",
+      "manufacturer": "shayadri",
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "PROD-8815",
+      "name": "wheat",
+      "category": "Flour & Grains",
+      "gtin": "234567890",
+      "manufacturer": "shayadri",
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "PROD-8814",
+      "name": "food11",
+      "category": "Flour & Grains",
+      "gtin": "123321244123133",
+      "manufacturer": "FARM PRODUCE",
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "PROD-8813",
+      "name": "test1111",
+      "category": "Flour & Grains",
+      "gtin": "123321244123133",
+      "manufacturer": "satyamgarib prod",
+      "date": "17 Aug 2026"
+    },
+    {
+      "id": "PROD-8812",
+      "name": "MAngo",
+      "category": "Beverages",
+      "gtin": "123321244123133",
+      "manufacturer": "SAHYA",
+      "date": "17 Aug 2026"
+    },
+    {
       "id": "PROD-8811",
       "name": "test102",
       "category": "Edible Oils",
@@ -67,12 +131,220 @@
   ],
   "batches": [
     {
+      "id": "BATCH-X4PPW0E2",
+      "productId": "PROD-8816",
+      "status": "PROCESSING",
+      "quantity": 2,
+      "uom": "TONS",
+      "custodian": "FoodTrace Platform",
+      "next_custodian_username": "ramesh",
+      "next_custodian_org": "Ramesh Patil Farm",
+      "custody_status": "PENDING_TRANSFER",
+      "is_public": false,
+      "parent_batch_ids": [],
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "BATCH-9GYXIVIP",
+      "productId": "PROD-8817",
+      "status": "PROCESSING",
+      "quantity": 2,
+      "uom": "LITERS",
+      "custodian": "FoodTrace Platform",
+      "next_custodian_username": "ramesh",
+      "next_custodian_org": "Ramesh Patil Farm",
+      "custody_status": "PENDING_TRANSFER",
+      "is_public": false,
+      "parent_batch_ids": [],
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "BATCH-875AGQQX",
+      "productId": "prd-orange-001",
+      "status": "PROCESSING",
+      "quantity": 2500,
+      "uom": "UNITS",
+      "custodian": "Green Valley Citrus Farms",
+      "next_custodian_username": null,
+      "next_custodian_org": null,
+      "custody_status": "IN_CUSTODY",
+      "is_public": false,
+      "parent_batch_ids": [
+        "asdegh"
+      ],
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "BATCH-DN6T120X",
+      "productId": "prd-orange-001",
+      "status": "PROCESSING",
+      "quantity": 2500,
+      "uom": "KG",
+      "custodian": "Green Valley Citrus Farms",
+      "next_custodian_username": null,
+      "next_custodian_org": null,
+      "custody_status": "IN_CUSTODY",
+      "is_public": false,
+      "parent_batch_ids": [
+        "g234g22g24g"
+      ],
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "BATCH-LCYLZ4OD",
+      "productId": "prd-orange-001",
+      "status": "PROCESSING",
+      "quantity": 2500,
+      "uom": "LITERS",
+      "custodian": "Green Valley Citrus Farms",
+      "next_custodian_username": null,
+      "next_custodian_org": null,
+      "custody_status": "IN_CUSTODY",
+      "is_public": false,
+      "parent_batch_ids": [],
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "BATCH-KKA8AS70",
+      "productId": "prd-orange-001",
+      "status": "PROCESSING",
+      "quantity": 2500,
+      "uom": "LITERS",
+      "custodian": "Green Valley Citrus Farms",
+      "next_custodian_username": null,
+      "next_custodian_org": null,
+      "custody_status": "IN_CUSTODY",
+      "is_public": false,
+      "parent_batch_ids": [
+        "gfds"
+      ],
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "BATCH-3K3ZKCF1",
+      "productId": "prd-orange-001",
+      "status": "PROCESSING",
+      "quantity": 2500,
+      "uom": "KG",
+      "custodian": "Green Valley Citrus Farms",
+      "next_custodian_username": null,
+      "next_custodian_org": null,
+      "custody_status": "IN_CUSTODY",
+      "is_public": false,
+      "parent_batch_ids": [
+        "gfds"
+      ],
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "BATCH-PCX99VML",
+      "productId": "prd-orange-001",
+      "status": "PROCESSING",
+      "quantity": 2500,
+      "uom": "KG",
+      "custodian": "sumit +",
+      "next_custodian_username": null,
+      "next_custodian_org": null,
+      "custody_status": "IN_CUSTODY",
+      "is_public": false,
+      "parent_batch_ids": [
+        "gfds"
+      ],
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "BATCH-OZJAZ03G",
+      "productId": "prd-orange-001",
+      "status": "PROCESSING",
+      "quantity": 2500,
+      "uom": "KG",
+      "custodian": "Green Valley Citrus Farms",
+      "next_custodian_username": null,
+      "next_custodian_org": null,
+      "custody_status": "IN_CUSTODY",
+      "is_public": false,
+      "parent_batch_ids": [
+        "gfds"
+      ],
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "BATCH-JJFRJ2G5",
+      "productId": "PROD-8817",
+      "status": "ON_SHELF",
+      "quantity": 10,
+      "uom": "KG",
+      "custodian": "GreenBasket Supermarket",
+      "next_custodian_username": null,
+      "next_custodian_org": null,
+      "custody_status": "DELIVERED",
+      "is_public": true,
+      "parent_batch_ids": [],
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "BATCH-KN9VA1H3",
+      "productId": "PROD-8816",
+      "status": "ON_SHELF",
+      "quantity": 10,
+      "uom": "KG",
+      "custodian": "GreenBasket Supermarket",
+      "next_custodian_username": null,
+      "next_custodian_org": null,
+      "custody_status": "DELIVERED",
+      "is_public": true,
+      "parent_batch_ids": [],
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "BATCH-R36P8366",
+      "productId": "PROD-001",
+      "status": "ON_SHELF",
+      "quantity": 100,
+      "uom": "KG",
+      "custodian": "GreenBasket Supermarket",
+      "next_custodian_username": null,
+      "next_custodian_org": null,
+      "custody_status": "DELIVERED",
+      "is_public": true,
+      "parent_batch_ids": [],
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "BATCH-NNMMP8M9",
+      "productId": "PROD-8814",
+      "status": "ON_SHELF",
+      "quantity": 11,
+      "uom": "KG",
+      "custodian": "GreenBasket Supermarket",
+      "next_custodian_username": null,
+      "next_custodian_org": null,
+      "custody_status": "DELIVERED",
+      "is_public": true,
+      "parent_batch_ids": [],
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "BATCH-EQGDFOQN",
+      "productId": "PROD-1111",
+      "status": "ON_SHELF",
+      "quantity": 3,
+      "uom": "UNITS",
+      "custodian": "GreenBasket Supermarket",
+      "next_custodian_username": null,
+      "next_custodian_org": null,
+      "custody_status": "DELIVERED",
+      "is_public": true,
+      "parent_batch_ids": [],
+      "date": "18 Aug 2026"
+    },
+    {
       "id": "BATCH-XDQJOQSC",
       "productId": "Premium Organic Paddy",
       "status": "PROCESSING",
       "quantity": 5000,
       "uom": "KG",
-      "custodian": "Sahyadri",
+      "custodian": "AgriTransit Logistics",
       "date": "16 Aug 2026"
     },
     {
@@ -90,7 +362,7 @@
       "status": "PROCESSING",
       "quantity": 1000,
       "uom": "KG",
-      "custodian": "Sahyadri Agro Processing",
+      "custodian": "Central Packaging Hub",
       "date": "16 Aug 2026"
     },
     {
@@ -99,29 +371,39 @@
       "status": "PROCESSING",
       "quantity": 100,
       "uom": "KG",
-      "custodian": "Sahyadri",
+      "custodian": "Satyam",
       "date": "16 Aug 2026"
     },
     {
       "id": "BATCH-MBTSDM2UM",
       "productId": "PROD-001",
-      "status": "IN_TRANSIT",
+      "status": "ON_SHELF",
       "quantity": 5000,
       "uom": "KG",
-      "custodian": "AgriTransit Logistics",
-      "date": "12 Aug 2026"
+      "custodian": "GreenBasket Supermarket",
+      "date": "12 Aug 2026",
+      "is_public": true
     },
     {
       "id": "BATCH-IKHJWTOYD",
       "productId": "PROD-002",
-      "status": "VALIDATED",
+      "status": "ON_SHELF",
       "quantity": 1200,
       "uom": "LITERS",
-      "custodian": "GreenBasket Retail",
-      "date": "14 Aug 2026"
+      "custodian": "GreenBasket Supermarket",
+      "date": "14 Aug 2026",
+      "is_public": true
     }
   ],
   "units": [
+    {
+      "id": "UNIT-1063",
+      "batchId": "BATCH-R36P8366",
+      "status": "PRINTED",
+      "outerQR": "QR-DSL3UO",
+      "innerCredential": "SEC-M7PKP1T2",
+      "date": "18 Aug 2026"
+    },
     {
       "id": "UNIT-1062",
       "batchId": "BATCH-MBTSDM2UM",
@@ -621,6 +903,33 @@
   ],
   "incidents": [
     {
+      "id": "INC-9553",
+      "unitId": "BATCH-FLOUR-881",
+      "category": "CONTAMINATION",
+      "reporter": "Consumer (Web)",
+      "status": "NEW",
+      "ipfsCid": "QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco",
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "INC-8871",
+      "unitId": "batch-orange-001-raw",
+      "category": "TAMPERING",
+      "reporter": "Consumer (Web)",
+      "status": "NEW",
+      "ipfsCid": "QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco",
+      "date": "18 Aug 2026"
+    },
+    {
+      "id": "INC-3623",
+      "unitId": "SATYAM",
+      "category": "Mislabeling",
+      "reporter": "Consumer (Web)",
+      "status": "NEW",
+      "ipfsCid": "QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco",
+      "date": "18 Aug 2026"
+    },
+    {
       "id": "INC-6574",
       "unitId": "BATCH-9ZM86DGQ",
       "category": "Packaging Defect",
@@ -655,6 +964,552 @@
       "status": "NEW",
       "ipfsCid": "QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco",
       "date": "15 Aug 2026"
+    }
+  ],
+  "scan_events": [
+    {
+      "id": "SCAN-59240",
+      "entity_id": "QR-A1B2C3D4",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-18T12:47:02.671902+00:00",
+      "fabric_tx_id": "0xb63304a88d63ffb4c89adefbee4d53363628b66a"
+    },
+    {
+      "id": "SCAN-44917",
+      "entity_id": "QR-A1B2C3D4",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-18T12:47:02.070199+00:00",
+      "fabric_tx_id": "0xa75d3d0c8824c766bab16470f0fb95bf20e97784"
+    },
+    {
+      "id": "SCAN-15789",
+      "entity_id": "BATCH-JJFRJ2G5",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-18T12:46:37.203119+00:00",
+      "fabric_tx_id": "0x08602540e6ef671905ed52df2cf9e115d5aa55d4"
+    },
+    {
+      "id": "SCAN-91149",
+      "entity_id": "BATCH-MBTSDM2UM",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-18T08:04:02.084321+00:00",
+      "fabric_tx_id": "0x2e528434f80bc5dfecac9c44f8537b4f3ea19d72"
+    },
+    {
+      "id": "SCAN-72090",
+      "entity_id": "BATCH-JJFRJ2G5",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-18T07:57:39.672226+00:00",
+      "fabric_tx_id": "0x285a51a6f2e9576ba42910ebcec30ec3c3b8d154"
+    },
+    {
+      "id": "SCAN-79720",
+      "entity_id": "BATCH-JJFRJ2G5",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-18T07:52:34.757623+00:00",
+      "fabric_tx_id": "0xda9def5c217147a6ac6016b0b0f787ab0847ea77"
+    },
+    {
+      "id": "SCAN-24673",
+      "entity_id": "BATCH-JJFRJ2G5",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-18T07:51:24.083231+00:00",
+      "fabric_tx_id": "0x23948d066d37903adbaf7df61fead82e5d0994da"
+    },
+    {
+      "id": "SCAN-66641",
+      "entity_id": "BATCH-KN9VA1H3",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-18T07:49:06.054103+00:00",
+      "fabric_tx_id": "0x2ec7d824f70e551bebed3bf4c914f725c3144232"
+    },
+    {
+      "id": "SCAN-20764",
+      "entity_id": "BATCH-KN9VA1H3",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-18T07:48:05.248374+00:00",
+      "fabric_tx_id": "0x0b792919bf7571935819d181f3142f07a5665777"
+    },
+    {
+      "id": "SCAN-29392",
+      "entity_id": "QR-BATCH-NNMMP8M9",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T20:40:17.739685+00:00",
+      "fabric_tx_id": "0xcb41af3844a0c21a04d1b364bba20affaffeba8d"
+    },
+    {
+      "id": "SCAN-51027",
+      "entity_id": "QR-BATCH-NNMMP8M9",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T20:40:17.693791+00:00",
+      "fabric_tx_id": "0x9b7eadb6282caf02426209c9aeecb22a7cc24e72"
+    },
+    {
+      "id": "SCAN-94502",
+      "entity_id": "QR-BATCH-R36P8366",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T20:19:54.599085+00:00",
+      "fabric_tx_id": "0x75e329924476dfa5c61a6f8bdefa2ad2eca834f0"
+    },
+    {
+      "id": "SCAN-86213",
+      "entity_id": "QR-BATCH-R36P8366",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T20:19:54.594513+00:00",
+      "fabric_tx_id": "0x8f65d85637f7f9b2e9ad17ac2431921af28424aa"
+    },
+    {
+      "id": "SCAN-69976",
+      "entity_id": "QR-BATCH-R36P8366",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T20:12:05.203653+00:00",
+      "fabric_tx_id": "0x36541def4d59f0a82aa39de6c9352653873f93e0"
+    },
+    {
+      "id": "SCAN-12439",
+      "entity_id": "QR-BATCH-R36P8366",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T20:12:05.200655+00:00",
+      "fabric_tx_id": "0x02e2e004f12129ec5c3ec4a7d3d1b4d9ddf63e97"
+    },
+    {
+      "id": "SCAN-93285",
+      "entity_id": "QR-BATCH-R36P8366",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T20:09:22.699450+00:00",
+      "fabric_tx_id": "0xb24f963437450be143f38be3a6a115a30c691181"
+    },
+    {
+      "id": "SCAN-82242",
+      "entity_id": "QR-BATCH-R36P8366",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T20:09:22.696342+00:00",
+      "fabric_tx_id": "0x291bbd1e3c58665cc424331d67a8ae95b79d3759"
+    },
+    {
+      "id": "SCAN-99990",
+      "entity_id": "QR-BATCH-R36P8366",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T20:00:24.318786+00:00",
+      "fabric_tx_id": "0x11f5ff7cea2deb1f5997d5a55a7c5954ab21c0e2"
+    },
+    {
+      "id": "SCAN-45313",
+      "entity_id": "QR-BATCH-R36P8366",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T20:00:24.315244+00:00",
+      "fabric_tx_id": "0xafd705909c0135a09bf4259ca6120a8a2e6b627a"
+    },
+    {
+      "id": "SCAN-54478",
+      "entity_id": "BATCH-R36P8366",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T19:50:46.213403+00:00",
+      "fabric_tx_id": "0x1ea5b4cb1d8e5e8ced1be1b2761cd8164c762624"
+    },
+    {
+      "id": "SCAN-30678",
+      "entity_id": "QR-BATCH-R36P8366",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T19:49:55.181891+00:00",
+      "fabric_tx_id": "0x4b4f89a44e45d1022849dc62b741a1d117130d7f"
+    },
+    {
+      "id": "SCAN-21205",
+      "entity_id": "QR-BATCH-R36P8366",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T19:49:55.178361+00:00",
+      "fabric_tx_id": "0x81910d94806eb2f9d63b59328448932cdbaef50c"
+    },
+    {
+      "id": "SCAN-18174",
+      "entity_id": "QR-5FL0D8",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T19:27:41.419496+00:00",
+      "fabric_tx_id": "0xae0298c3b00c5e0d7ae26fad848108a007934638"
+    },
+    {
+      "id": "SCAN-36632",
+      "entity_id": "QR-5FL0D8",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T19:27:41.362286+00:00",
+      "fabric_tx_id": "0x51c9c76a42514a708c5aeb71f692f0966efee6d2"
+    },
+    {
+      "id": "SCAN-16473",
+      "entity_id": "QR-BATCH-NNMMP8M9",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T19:26:58.354306+00:00",
+      "fabric_tx_id": "0x3fd62e359c9a908bc62527842f245daf57b3e526"
+    },
+    {
+      "id": "SCAN-86503",
+      "entity_id": "QR-BATCH-NNMMP8M9",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T19:26:58.297743+00:00",
+      "fabric_tx_id": "0x00d7b4703cf0dbe83b6ba7e5441d2195abe786bf"
+    },
+    {
+      "id": "SCAN-94856",
+      "entity_id": "QR-BATCH-NNMMP8M9",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T19:25:48.394209+00:00",
+      "fabric_tx_id": "0x670d42d8bbd1d175c78f3c1ee70fffc82889eef6"
+    },
+    {
+      "id": "SCAN-34084",
+      "entity_id": "QR-BATCH-NNMMP8M9",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T19:25:48.335544+00:00",
+      "fabric_tx_id": "0x89c81c2cfb8deb3bc129e2efd0f88912797df9f5"
+    },
+    {
+      "id": "SCAN-24968",
+      "entity_id": "QR-BATCH-EQGDFOQN",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T18:57:21.407975+00:00",
+      "fabric_tx_id": "0xb98d6c6331d4936684c37461b3009d0d6dc501d8"
+    },
+    {
+      "id": "SCAN-45963",
+      "entity_id": "QR-BATCH-EQGDFOQN",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T18:57:21.403958+00:00",
+      "fabric_tx_id": "0x7bbd977efd0ad02c54dd341d88bd53fdd34f00d3"
+    },
+    {
+      "id": "SCAN-62303",
+      "entity_id": "QR-BATCH-EQGDFOQN",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T18:55:11.198700+00:00",
+      "fabric_tx_id": "0x49502c601c13434ad154de9253d46c2aa7a134f8"
+    },
+    {
+      "id": "SCAN-91221",
+      "entity_id": "QR-BATCH-EQGDFOQN",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T18:55:11.177955+00:00",
+      "fabric_tx_id": "0x1730d1f278530074c639975b6bfdb838190daa6c"
+    },
+    {
+      "id": "SCAN-58873",
+      "entity_id": "QR-5FL0D8",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T17:40:55.608260+00:00",
+      "fabric_tx_id": "0x11ff3cef4851bcb4528ff5a3f6723ce25b1f1cbb"
+    },
+    {
+      "id": "SCAN-69619",
+      "entity_id": "QR-5FL0D8",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T17:40:55.605376+00:00",
+      "fabric_tx_id": "0xc139d1b93547f57715128c3abfdda7ea0d0c041f"
+    },
+    {
+      "id": "SCAN-45778",
+      "entity_id": "BATCH-MBTSDM2UM",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T17:38:38.228999+00:00",
+      "fabric_tx_id": "0x26dde60a4717a65675a5252d113203665c8e5576"
+    },
+    {
+      "id": "SCAN-37736",
+      "entity_id": "BATCH-BNSAW95Y",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T17:30:43.210509+00:00",
+      "fabric_tx_id": "0x578f0fa560198d8fe5936bbcd0a772a86131751f"
+    },
+    {
+      "id": "SCAN-93062",
+      "entity_id": "QR-A1B2C3D4",
+      "actor_role": "consumer",
+      "actor_name": "Web User",
+      "location": "Web App",
+      "result": "OK",
+      "timestamp": "2026-08-17T17:13:47.120477+00:00",
+      "fabric_tx_id": "0xe4caedbef4f91ce03a0d7c59ee3e7e1ef500450d"
+    }
+  ],
+  "custody_events": [
+    {
+      "id": "CUSTODY-42161",
+      "batch_id": "BATCH-PCX99VML",
+      "from_actor": "satyam ",
+      "to_actor": "sumit +",
+      "event_type": "HANDOVER",
+      "location": "mmbai",
+      "timestamp": "2026-08-18T14:55:03.223328+00:00",
+      "fabric_tx_id": "0xea14c6ef93faf03c6594aacbd36a6f46075a8537"
+    },
+    {
+      "id": "CUSTODY-47683",
+      "batch_id": "BATCH-JJFRJ2G5",
+      "from_actor": "Central Packaging Hub",
+      "to_actor": "GreenBasket Supermarket",
+      "event_type": "CUSTODY_TRANSFER",
+      "location": "QR Scan \u2014 Delivery Gate",
+      "timestamp": "2026-08-18T07:52:29.972785+00:00",
+      "fabric_tx_id": "0x9f4fdd24b4e9e29920b79cf37e743ec8d32bfedf"
+    },
+    {
+      "id": "CUSTODY-32544",
+      "batch_id": "BATCH-JJFRJ2G5",
+      "from_actor": "Ramesh Patil Farm",
+      "to_actor": "Central Packaging Hub",
+      "event_type": "CUSTODY_TRANSFER",
+      "location": "QR Scan \u2014 Delivery Gate",
+      "timestamp": "2026-08-18T07:52:11.675628+00:00",
+      "fabric_tx_id": "0x3b19528a188dcfa690b5a5a7ce3679056db4d725"
+    },
+    {
+      "id": "CUSTODY-54666",
+      "batch_id": "BATCH-KN9VA1H3",
+      "from_actor": "Ramesh Patil Farm",
+      "to_actor": "GreenBasket Supermarket",
+      "event_type": "CUSTODY_TRANSFER",
+      "location": "QR Scan \u2014 Delivery Gate",
+      "timestamp": "2026-08-18T07:46:37.430921+00:00",
+      "fabric_tx_id": "0x651ae35a6cec2de1d30bb9e9e88936081d783513"
+    },
+    {
+      "id": "CUSTODY-74259",
+      "batch_id": "BATCH-R36P8366",
+      "from_actor": "Ramesh Patil Farm",
+      "to_actor": "GreenBasket Supermarket",
+      "event_type": "CUSTODY_TRANSFER",
+      "location": "QR Scan \u2014 Delivery Gate",
+      "timestamp": "2026-08-17T19:49:33.607580+00:00",
+      "fabric_tx_id": "0x15e88030e277f4dc6a344ed305ffe6c19becb2d1"
+    },
+    {
+      "id": "CUSTODY-97017",
+      "batch_id": "BATCH-NNMMP8M9",
+      "from_actor": "Ramesh Patil Farm",
+      "to_actor": "GreenBasket Supermarket",
+      "event_type": "CUSTODY_TRANSFER",
+      "location": "QR Scan \u2014 Delivery Gate",
+      "timestamp": "2026-08-17T19:26:31.513322+00:00",
+      "fabric_tx_id": "0xef70a1d627c33f27abb2de1163f1206b25a63540"
+    },
+    {
+      "id": "CUSTODY-68247",
+      "batch_id": "BATCH-EQGDFOQN",
+      "from_actor": "AgriTransit Logistics",
+      "to_actor": "GreenBasket Supermarket",
+      "event_type": "CUSTODY_TRANSFER",
+      "location": "QR Scan \u2014 Delivery Gate",
+      "timestamp": "2026-08-17T18:54:34.277980+00:00",
+      "fabric_tx_id": "0xd3c350aa8b38a14d1cef6d3908aba9cfe926879d"
+    },
+    {
+      "id": "CUSTODY-41457",
+      "batch_id": "BATCH-EQGDFOQN",
+      "from_actor": "Ramesh Patil Farm",
+      "to_actor": "AgriTransit Logistics",
+      "event_type": "CUSTODY_TRANSFER",
+      "location": "QR Scan \u2014 Delivery Gate",
+      "timestamp": "2026-08-17T18:54:01.929165+00:00",
+      "fabric_tx_id": "0xc22ef292bd1d5a59da21251f4bda66fa8d30f89c"
+    },
+    {
+      "id": "CUSTODY-77222",
+      "batch_id": "BATCH-XDQJOQSC",
+      "from_actor": "Central Packaging Hub",
+      "to_actor": "AgriTransit Logistics",
+      "event_type": "CUSTODY_TRANSFER",
+      "location": "Scan Gate",
+      "timestamp": "2026-08-17T17:44:13.756494+00:00",
+      "fabric_tx_id": "0xdb46e2f85c3b2c6ece8a206c4525c1c83275fc32"
+    },
+    {
+      "id": "CUSTODY-28518",
+      "batch_id": "BATCH-8KVDA20G",
+      "from_actor": "Sahyadri Agro Processing",
+      "to_actor": "Central Packaging Hub",
+      "event_type": "CUSTODY_TRANSFER",
+      "location": "Scan Gate",
+      "timestamp": "2026-08-17T17:40:06.933925+00:00",
+      "fabric_tx_id": "0x115767f0b99f962f3518d8db58bd2cf6748aaa47"
+    },
+    {
+      "id": "CUSTODY-30380",
+      "batch_id": "BATCH-MBTSDM2UM",
+      "from_actor": "AgriTransit Logistics",
+      "to_actor": "GreenBasket Supermarket",
+      "event_type": "CUSTODY_TRANSFER",
+      "location": "QR Scan \u2014 Delivery Gate",
+      "timestamp": "2026-08-17T17:38:50.294393+00:00",
+      "fabric_tx_id": "0xaa47cade64e9cbddac050e872ef5740ecb846e73"
+    },
+    {
+      "id": "CUSTODY-66890",
+      "batch_id": "BATCH-BNSAW95Y",
+      "from_actor": "Ayush",
+      "to_actor": "Satyam",
+      "event_type": "TRANSFER",
+      "location": "Mumbai",
+      "timestamp": "2026-08-17T17:38:12.280936+00:00",
+      "fabric_tx_id": "0xf1c5c69a290edecdfd793ab419c51ad1071cd84c"
+    },
+    {
+      "id": "CUSTODY-84444",
+      "batch_id": "BATCH-XDQJOQSC",
+      "from_actor": "Sahyadri",
+      "to_actor": "Central Packaging Hub",
+      "event_type": "CUSTODY_TRANSFER",
+      "location": "Scan Gate",
+      "timestamp": "2026-08-17T17:36:01.304993+00:00",
+      "fabric_tx_id": "0x1de183ca56889ac1fb4f625abca7d63251252dc8"
+    },
+    {
+      "id": "CUSTODY-42237",
+      "batch_id": "BATCH-BNSAW95Y",
+      "from_actor": "Ayush",
+      "to_actor": "Satyam",
+      "event_type": "HANDOVER",
+      "location": "Mumbai",
+      "timestamp": "2026-08-17T17:27:03.467502+00:00",
+      "fabric_tx_id": "0x5efb5eb6d62594afb7decccce418b7774c6272f1"
+    }
+  ],
+  "lineage_edges": [
+    {
+      "parent_batch_id": "gfds",
+      "child_batch_id": "BATCH-OZJAZ03G",
+      "relation_type": "TRANSFORMATION"
+    },
+    {
+      "parent_batch_id": "gfds",
+      "child_batch_id": "BATCH-PCX99VML",
+      "relation_type": "TRANSFORMATION"
+    },
+    {
+      "parent_batch_id": "gfds",
+      "child_batch_id": "BATCH-3K3ZKCF1",
+      "relation_type": "TRANSFORMATION"
+    },
+    {
+      "parent_batch_id": "gfds",
+      "child_batch_id": "BATCH-KKA8AS70",
+      "relation_type": "TRANSFORMATION"
+    },
+    {
+      "parent_batch_id": "g234g22g24g",
+      "child_batch_id": "BATCH-DN6T120X",
+      "relation_type": "TRANSFORMATION"
+    },
+    {
+      "parent_batch_id": "asdegh",
+      "child_batch_id": "BATCH-875AGQQX",
+      "relation_type": "TRANSFORMATION"
     }
   ]
 }

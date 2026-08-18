@@ -33,7 +33,7 @@ export default function RecallPage() {
             className="btn btn--danger"
             onClick={handleExecuteRecall}
           >
-            🚨 Execute On-Chain Recall Lockdown
+            Execute On-Chain Recall Lockdown
           </button>
         </div>
       </div>
@@ -161,7 +161,7 @@ export default function RecallPage() {
             <div className={`${styles.dagNode} ${isContaminated ? styles.nodeInfected : styles.nodeSafe}`}>
               <span className={styles.nodeStage}>4. Point of Sale (POS)</span>
               <span className={styles.nodeName}>Retail Shelves</span>
-              <span className={styles.nodeSub}>{recallExecuted ? '⛔ POS LOCKED' : '24 Outlets'}</span>
+              <span className={styles.nodeSub}>{recallExecuted ? 'POS LOCKED' : '24 Outlets'}</span>
             </div>
           </div>
 

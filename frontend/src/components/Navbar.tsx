@@ -76,7 +76,7 @@ export default function Navbar() {
               <span className={styles.searchLabel}>Search</span>
             </button>
 
-            <a href="/dashboard" className={styles.ctaBtn}>
+            <a href="/login" className={styles.ctaBtn}>
               Launch Platform
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12" />
@@ -164,11 +164,11 @@ export default function Navbar() {
                   <span>{searchResult}</span>
                 </div>
                 <a
-                  href={`/track/batch/${searchQuery || 'BATCH-MBTSDM2UM'}`}
+                  href="/track"
                   className="btn btn--grass"
                   style={{ marginTop: '12px', fontSize: '12px', padding: '8px 18px', height: 'auto', alignSelf: 'flex-start' }}
                 >
-                  Open Batch in Provenance Explorer →
+                  Open Provenance Explorer →
                 </a>
               </div>
             )}
@@ -193,7 +193,7 @@ export default function Navbar() {
               ))}
             </nav>
             <a
-              href="/dashboard"
+              href="/login"
               className={styles.ctaBtn}
               style={{ width: '100%', justifyContent: 'center' }}
               onClick={() => setMobileOpen(false)}
